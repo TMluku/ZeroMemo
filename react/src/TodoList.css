@@ -6,6 +6,9 @@
 .todoListul {
     list-style-type: none;
     padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: max-content;
 }
 
 .todoListdiv {
@@ -14,10 +17,10 @@
     text-align: left;
 }
 
-button.matchingButtonYes {
+button.buttonGood {
     background-color: #e5fde5;
 }
 
-button.matchingButtonNo {
+button.buttonWarning {
     background-color: #fde5e5;
 }

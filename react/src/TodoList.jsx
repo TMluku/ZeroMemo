@@ -3,12 +3,28 @@ import './TodoList.css'
 
 export default function TodoList() {
     const [todoList, setTodoList] = useState([]);
+    const [todoListSelected, setTodoListSelected] = useState([]);
+
     const [matchingItem, setMatchingItem] = useState("牛乳");
     const [matchingIndex, setMatchingIndex] = useState(1);
     const [mode, setMode] = useState("matching");
 
     function addtodoList(item) {
         setTodoList([...todoList, item]);
+        setTodoListSelected([...todoListSelected, false]);
+    }
+
+    function changeTodoListSelected(index) {
+        const newTodoListSelected = [...todoListSelected];
+        newTodoListSelected[index] = !newTodoListSelected[index];
+        setTodoListSelected(newTodoListSelected);
+    }
+
+    function deleteSelectedTodoList() {
+        const newTodoList = todoList.filter((_, index) => !todoListSelected[index]);
+        const newTodoListSelected = todoListSelected.filter((_, index) => !todoListSelected[index]);
+        setTodoList(newTodoList);
+        setTodoListSelected(newTodoListSelected);
     }
 
     function selectMatchingItem(selected) {
@@ -35,10 +51,10 @@ export default function TodoList() {
                     <h3>
                         {matchingItem}
                     </h3>
-                    <button onClick={() => selectMatchingItem(true)} className="matchingButtonYes">
+                    <button onClick={() => selectMatchingItem(true)} className="buttonGood">
                         欲しい
                     </button>
-                    <button onClick={() => selectMatchingItem(false)} className="matchingButtonNo">
+                    <button onClick={() => selectMatchingItem(false)} className="buttonWarning">
                         いらない
                     </button>
                 </div>
@@ -53,7 +69,11 @@ export default function TodoList() {
                             todoList.map((item, index) => (
                                 <li key={index}>
                                     <label>
-                                        <input type='checkbox'/>
+                                        <input
+                                            type='checkbox'
+                                            checked={todoListSelected[index]}
+                                            onChange={() => changeTodoListSelected(index)}
+                                        />
                                         {item}
                                     </label>
                                 </li>
@@ -61,8 +81,14 @@ export default function TodoList() {
                         }
                     </ul>
                     <input type='text' id='item'/>
-                    <button onClick={() => addtodoList(document.getElementById('item').value)}>
+                    <button
+                        onClick={() => addtodoList(document.getElementById('item').value)}
+                        className="buttonGood"
+                    >
                         追加
+                    </button>
+                    <button onClick={() => deleteSelectedTodoList()} className="buttonWarning">
+                        選んだ要素を削除
                     </button>
                 </div>
             </div>
