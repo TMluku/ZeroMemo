@@ -48,7 +48,7 @@ export default function TodoList() {
                 <div className="matchingItem"
                      style={{display: mode === "matching" ? "block" : "none"}}
                 >
-                    <img src={`/${matchingItem}.png`} alt={matchingItem} width={150}/>
+                    <img src={`./${matchingItem}.png`} alt={matchingItem} width={150}/>
 
                     <h3>
                         {matchingItem}
