@@ -5,6 +5,7 @@ export default function TodoList() {
     const [todoList, setTodoList] = useState([]);
     const [matchingItem, setMatchingItem] = useState("牛乳");
     const [matchingIndex, setMatchingIndex] = useState(1);
+    const [mode, setMode] = useState("matching");
 
     function addtodoList(item) {
         setTodoList([...todoList, item]);
@@ -18,16 +19,22 @@ export default function TodoList() {
         setMatchingItem(matchingList[matchingIndex])
     }
 
+    function changeMode() {
+        setMode(mode === "matching" ? "todoList" : "matching")
+    }
+
     return (
         <>
             <div className='TodoList'>
-                <h2>
-                    マッチングアイテム
-                </h2>
-                <div className="matchingItem">
-                    <p>
+                <button onClick={changeMode}>
+                    モード切替 「{mode === "matching" ? "マッチング" : "リスト"}」
+                </button>
+                <div className="matchingItem"
+                     style={{display: mode === "matching" ? "block" : "none"}}
+                >
+                    <h3>
                         {matchingItem}
-                    </p>
+                    </h3>
                     <button onClick={() => selectMatchingItem(true)} className="matchingButtonYes">
                         欲しい
                     </button>
@@ -35,8 +42,12 @@ export default function TodoList() {
                         いらない
                     </button>
                 </div>
-                <h2>買い物リスト</h2>
-                <div className='todoListdiv'>
+                <div className='todoListdiv'
+                     style={{display: mode === "todoList" ? "block" : "none"}}
+                >
+                    <p style={{display: todoList.length === 0 ? "block" : "none"}}>
+                        -- まだ何も追加されていません --
+                    </p>
                     <ul className='todoListul'>
                         {
                             todoList.map((item, index) => (
@@ -49,11 +60,11 @@ export default function TodoList() {
                             ))
                         }
                     </ul>
+                    <input type='text' id='item'/>
+                    <button onClick={() => addtodoList(document.getElementById('item').value)}>
+                        追加
+                    </button>
                 </div>
-                <input type='text' id='item'/>
-                <button onClick={() => addtodoList(document.getElementById('item').value)}>
-                    追加
-                </button>
             </div>
         </>
     )
