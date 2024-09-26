@@ -84,7 +84,11 @@ export default function TodoList() {
                     </ul>
                     <input type='text' id='item'/>
                     <button
-                        onClick={() => addtodoList(document.getElementById('item').value)}
+                        onClick={() => {
+                            if (document.getElementById('item').value === '') return
+                            addtodoList(document.getElementById('item').value)
+                            document.getElementById('item').value = ''
+                        }}
                         className="buttonGood"
                     >
                         追加
