@@ -3,6 +3,9 @@ import './TodoList.css'
 
 export default function TodoList() {
     const [todoList, setTodoList] = useState(["魚", "卵", "ハッピーターン"]);
+    function addtodoList(item) {
+        setTodoList([...todoList, item]);
+    }
     return (
         <>
             <div className='TodoList'>
@@ -21,6 +24,10 @@ export default function TodoList() {
                         }
                     </ul>
                 </div>
+                <input type='text' id='item' />
+                <button onClick={()=>addtodoList(document.getElementById('item').value)}>
+                    追加
+                </button>
             </div>
         </>
     )
