@@ -28,10 +28,10 @@ export default function TodoList() {
                     <p>
                         {matchingItem}
                     </p>
-                    <button onClick={() => selectMatchingItem(true)}>
+                    <button onClick={() => selectMatchingItem(true)} className="matchingButtonYes">
                         欲しい
                     </button>
-                    <button onClick={() => selectMatchingItem(false)}>
+                    <button onClick={() => selectMatchingItem(false)} className="matchingButtonNo">
                         いらない
                     </button>
                 </div>

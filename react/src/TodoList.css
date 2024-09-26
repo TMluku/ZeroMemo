@@ -8,3 +8,11 @@
     width: max-content;
     text-align: left;
 }
+
+button.matchingButtonYes {
+    background-color: #e5fde5;
+}
+
+button.matchingButtonNo {
+    background-color: #fde5e5;
+}
