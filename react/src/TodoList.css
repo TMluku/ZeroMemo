@@ -1,0 +1,10 @@
+.todoListul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.todoListdiv {
+    margin: 0 auto;
+    width: max-content;
+    text-align: left;
+}
