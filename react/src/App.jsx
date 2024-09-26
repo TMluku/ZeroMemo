@@ -4,7 +4,9 @@ import Description from "./Description.jsx";
 function App() {
     return (
         <>
-            <h1>ゼロメモ！！！！！！！</h1>
+            <header className="header">
+                <h1>ゼロメモ！！！！！！！</h1>
+            </header>
             <Description />
         </>
     )
