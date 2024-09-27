@@ -2,16 +2,19 @@ import {useState} from 'react'
 import './TodoList.css'
 
 export default function TodoList() {
-    const [todoList, setTodoList] = useState([]);
-    const [todoListSelected, setTodoListSelected] = useState([]);
+    const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
+    const [todoList, setTodoList] = useState(localStorageTodoList);
+    const [todoListSelected, setTodoListSelected] = useState(Array(todoList.length).fill(false));
 
     const [matchingItem, setMatchingItem] = useState("牛乳");
     const [matchingIndex, setMatchingIndex] = useState(1);
     const [mode, setMode] = useState("matching");
 
     function addtodoList(item) {
-        setTodoList([...todoList, item]);
+        const newTodoList = [...todoList, item];
+        setTodoList(newTodoList);
         setTodoListSelected([...todoListSelected, false]);
+        localStorage.setItem('todoList', JSON.stringify(newTodoList));
     }
 
     function changeTodoListSelected(index) {
@@ -25,6 +28,7 @@ export default function TodoList() {
         const newTodoListSelected = todoListSelected.filter((_, index) => !todoListSelected[index]);
         setTodoList(newTodoList);
         setTodoListSelected(newTodoListSelected);
+        localStorage.setItem('todoList', JSON.stringify(newTodoList));
     }
 
     function selectMatchingItem(selected) {
