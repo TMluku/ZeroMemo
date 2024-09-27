@@ -120,12 +120,12 @@ export default function Matchinglist() {
                             ))
                         }
                     </ul>
-                    <input type='text' id='item'/>
+                    <input type='text' id='item2'/>
                     <button
                         onClick={() => {
-                            if (document.getElementById('item').value === '') return
-                            addtodoList(document.getElementById('item').value)
-                            document.getElementById('item').value = ''
+                            if (document.getElementById('item2').value === '') return
+                            addtodoList(document.getElementById('item2').value)
+                            document.getElementById('item2').value = ''
                         }}
                         className="buttonGood"
                     >
