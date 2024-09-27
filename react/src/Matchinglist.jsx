@@ -1,22 +1,26 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import './Matchinglist.css'
 
 export default function Matchinglist() {
-    const [todoList, setTodoList] = useState([]);
-    const [todoListSelected, setTodoListSelected] = useState([]);
+    const localStorageTodoList = JSON.parse(localStorage.getItem('todoList2') || '[]');
+    const [todoList, setTodoList] = useState(localStorageTodoList);
+    const [todoListSelected, setTodoListSelected] = useState(new Array(localStorageTodoList.length).fill(false));
     const [itemListSelected, setItemListSelected] = useState(new Array(itemList.length).fill(false));
     const [mode, setMode] = useState("matching");
 
     function addtodoList(item) {
-        setTodoList([...todoList, item]);
+        const newTodoList = [...todoList, item];
+        setTodoList(newTodoList);
         setTodoListSelected([...todoListSelected, false]);
+        localStorage.setItem('todoList2', JSON.stringify(newTodoList));
     }
 
     function addBulkTodoList(items) {
         const selectedTail = Array(items.length).fill(false)
-        setTodoList(todoList.concat(items));
+        const newTodoList = todoList.concat(items);
+        setTodoList(newTodoList);
         setTodoListSelected(todoListSelected.concat(selectedTail));
-
+        localStorage.setItem('todoList2', JSON.stringify(newTodoList));
     }
 
     function changeTodoListSelected(index) {
@@ -24,6 +28,7 @@ export default function Matchinglist() {
         newTodoListSelected[index] = !newTodoListSelected[index];
         setTodoListSelected(newTodoListSelected);
     }
+
     function changeItemListSelected(index) {
         const newItemListSelected = [...itemListSelected];
         newItemListSelected[index] = !newItemListSelected[index];
@@ -35,6 +40,7 @@ export default function Matchinglist() {
         const newTodoListSelected = todoListSelected.filter((_, index) => !todoListSelected[index]);
         setTodoList(newTodoList);
         setTodoListSelected(newTodoListSelected);
+        localStorage.setItem('todoList2', JSON.stringify(newTodoList));
     }
 
     function changeMode() {
@@ -48,7 +54,7 @@ export default function Matchinglist() {
                     モード切替 「{mode === "matching" ? "マッチング" : "リスト"}」
                 </button>
                 <div className="matchingItem"
-                    style={{ display: mode === "matching" ? "block" : "none" }}
+                     style={{display: mode === "matching" ? "block" : "none"}}
                 >
                     <ul className='itemListul'>
                         {
@@ -78,9 +84,9 @@ export default function Matchinglist() {
                     </button>
                 </div>
                 <div className='todoListdiv'
-                    style={{ display: mode === "todoList" ? "block" : "none" }}
+                     style={{display: mode === "todoList" ? "block" : "none"}}
                 >
-                    <p style={{ display: todoList.length === 0 ? "block" : "none" }}>
+                    <p style={{display: todoList.length === 0 ? "block" : "none"}}>
                         -- まだ何も追加されていません --
                     </p>
                     <ul className='todoListul'>
@@ -99,7 +105,7 @@ export default function Matchinglist() {
                             ))
                         }
                     </ul>
-                    <input type='text' id='item' />
+                    <input type='text' id='item'/>
                     <button
                         onClick={() => {
                             if (document.getElementById('item').value === '') return
