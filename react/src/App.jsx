@@ -18,9 +18,9 @@ function App() {
             <button onClick={changeMode}>
                 製品切替 「{mode === "unit" ? "単品マッチ" : "リストマッチ"}」
             </button>
-            {/*<div hidden={mode !== "bulk"}>*/}
-            {/*    <Matchinglist/>*/}
-            {/*</div>*/}
+            <div hidden={mode !== "bulk"}>
+                <Matchinglist/>
+            </div>
             <div hidden={mode !== "unit"}>
                 <TodoList/>
             </div>

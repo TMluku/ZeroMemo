@@ -1,48 +1,64 @@
 import {useState} from 'react'
 import './Matchinglist.css'
+import './TodoList.css'
 
 export default function Matchinglist() {
-    const localStorageTodoList = JSON.parse(localStorage.getItem('todoList2') || '[]');
+    const localStorageTodoList = JSON.parse(localStorage.getItem('todoLists') || '{"食料品": [], "日用品": []}');
     const [itemCategory, setItemCategory] = useState("食料品");
     const [itemList, setItemList] = useState(itemLists["食料品"]);
     const [todoList, setTodoList] = useState(localStorageTodoList);
-    const [todoListSelected, setTodoListSelected] = useState(new Array(localStorageTodoList.length).fill(false));
-    const [itemListSelected, setItemListSelected] = useState(new Array(itemList.length).fill(false));
+    const [todoListSelected, setTodoListSelected] = useState({
+        '食料品': Array(todoList['食料品'].length).fill(false),
+        '日用品': Array(todoList['日用品'].length).fill(false)
+    });
+    const [itemListSelected, setItemListSelected] = useState({
+        '食料品': Array(itemLists['食料品'].length).fill(false),
+        '日用品': Array(itemLists['日用品'].length).fill(false)
+    });
     const [mode, setMode] = useState("matching");
 
-    function addtodoList(item) {
-        const newTodoList = [...todoList, item];
+    function addtodoList(category, item) {
+        const newTodoList = structuredClone(todoList);
+        const newTodoListSelected = structuredClone(todoListSelected);
+        newTodoList[category].push(item);
+        newTodoListSelected[category].push(false);
         setTodoList(newTodoList);
-        setTodoListSelected([...todoListSelected, false]);
-        localStorage.setItem('todoList2', JSON.stringify(newTodoList));
+        setTodoListSelected(newTodoListSelected);
+        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
     }
 
-    function addBulkTodoList(items) {
-        const selectedTail = Array(items.length).fill(false)
-        const newTodoList = todoList.concat(items);
+    function addBulkTodoList(category, items) {
+        const newTodoList = structuredClone(todoList);
+        const newTodoListSelected = structuredClone(todoListSelected);
+        items.forEach(item => {
+            newTodoList[category].push(item);
+            newTodoListSelected[category].push(false);
+        });
         setTodoList(newTodoList);
-        setTodoListSelected(todoListSelected.concat(selectedTail));
-        localStorage.setItem('todoList2', JSON.stringify(newTodoList));
+        setTodoListSelected(newTodoListSelected);
+        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
     }
 
-    function changeTodoListSelected(index) {
-        const newTodoListSelected = [...todoListSelected];
-        newTodoListSelected[index] = !newTodoListSelected[index];
+    function changeTodoListSelected(category, index) {
+        const newTodoListSelected = structuredClone(todoListSelected);
+        newTodoListSelected[category][index] = !newTodoListSelected[category][index];
         setTodoListSelected(newTodoListSelected);
     }
 
-    function changeItemListSelected(index) {
-        const newItemListSelected = [...itemListSelected];
-        newItemListSelected[index] = !newItemListSelected[index];
+    function changeItemListSelected(category, index) {
+        const newItemListSelected = structuredClone(itemListSelected);
+        newItemListSelected[category][index] = !newItemListSelected[category][index];
         setItemListSelected(newItemListSelected);
     }
 
-    function deleteSelectedTodoList() {
-        const newTodoList = todoList.filter((_, index) => !todoListSelected[index]);
-        const newTodoListSelected = todoListSelected.filter((_, index) => !todoListSelected[index]);
+    function deleteSelectedTodoList(category) {
+        const newTodoList = structuredClone(todoList);
+        const newTodoListSelected = structuredClone(todoListSelected);
+        newTodoList[category] = newTodoList[category].filter((_, index) => !newTodoListSelected[category][index]);
+        newTodoListSelected[category] = newTodoListSelected[category].filter(selected => !selected);
         setTodoList(newTodoList);
         setTodoListSelected(newTodoListSelected);
-        localStorage.setItem('todoList2', JSON.stringify(newTodoList));
+        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
     }
 
     function changeMode() {
@@ -53,6 +69,56 @@ export default function Matchinglist() {
         const newCategory = itemCategory === "食料品" ? "日用品" : "食料品";
         setItemCategory(newCategory);
         setItemList(itemLists[newCategory]);
+    }
+
+    function todoListDiv(category) {
+        const itemCategory = "item_" + category;
+        return <>
+            <div className='todoListdiv'
+                 style={{display: mode === "todoList" ? "block" : "none"}}
+            >
+                <h2 className='todoListHeader'>
+                    {category}
+                </h2>
+                <p style={{display: todoList[category].length === 0 ? "block" : "none", textAlign: 'center'}}>
+                    -- 未記入 --
+                </p>
+                <ul className='todoListul'>
+                    {
+                        todoList[category].map((item, index) => (
+                            <label key={index}>
+                                <li className={`todoListLi ${todoListSelected[category][index] ? 'todoListLiSelected' : ''}`}>
+                                    <input
+                                        type='checkbox'
+                                        checked={todoListSelected[category][index]}
+                                        onChange={() => changeTodoListSelected(category, index)}
+                                    />
+                                    {item}
+                                </li>
+                            </label>
+                        ))
+                    }
+                </ul>
+                <div className="todoListButtonField">
+                    <input type='text' id={itemCategory} size={6}/>
+                    <button
+                        onClick={() => {
+                            if (document.getElementById(itemCategory).value === '') return
+                            addtodoList(category, document.getElementById(itemCategory).value)
+                            document.getElementById(itemCategory).value = ''
+                        }}
+                        className="buttonGood"
+                    >
+                        追加
+                    </button>
+                </div>
+                <div className="todoListButtonField">
+                    <button onClick={() => deleteSelectedTodoList(category)} className="buttonWarning">
+                        選んだ要素を削除
+                    </button>
+                </div>
+            </div>
+        </>
     }
 
     return (
@@ -78,8 +144,8 @@ export default function Matchinglist() {
                                     <label>
                                         <input
                                             type='checkbox'
-                                            checked={itemListSelected[index]}
-                                            onChange={() => changeItemListSelected(index)}
+                                            checked={itemListSelected[itemCategory][index]}
+                                            onChange={() => changeItemListSelected(itemCategory, index)}
                                         />
                                         {item}
                                     </label>
@@ -90,7 +156,8 @@ export default function Matchinglist() {
                     <button
                         onClick={() => {
                             addBulkTodoList(
-                                itemList.filter((_, index) => itemListSelected[index])
+                                itemCategory,
+                                itemList.filter((_, index) => itemListSelected[itemCategory][index])
                             )
                         }}
                         className="buttonGood"
@@ -98,42 +165,11 @@ export default function Matchinglist() {
                         選択したものを追加
                     </button>
                 </div>
-                <div className='todoListdiv'
-                     style={{display: mode === "todoList" ? "block" : "none"}}
+                <div
+                    className='todoListColumn'
                 >
-                    <p style={{display: todoList.length === 0 ? "block" : "none"}}>
-                        -- まだ何も追加されていません --
-                    </p>
-                    <ul className='todoListul'>
-                        {
-                            todoList.map((item, index) => (
-                                <li key={index}>
-                                    <label>
-                                        <input
-                                            type='checkbox'
-                                            checked={todoListSelected[index]}
-                                            onChange={() => changeTodoListSelected(index)}
-                                        />
-                                        {item}
-                                    </label>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                    <input type='text' id='item2'/>
-                    <button
-                        onClick={() => {
-                            if (document.getElementById('item2').value === '') return
-                            addtodoList(document.getElementById('item2').value)
-                            document.getElementById('item2').value = ''
-                        }}
-                        className="buttonGood"
-                    >
-                        追加
-                    </button>
-                    <button onClick={() => deleteSelectedTodoList()} className="buttonWarning">
-                        選んだ要素を削除
-                    </button>
+                    {todoListDiv("食料品")}
+                    {todoListDiv("日用品")}
                 </div>
             </div>
         </>
