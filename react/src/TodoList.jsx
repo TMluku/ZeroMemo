@@ -2,39 +2,48 @@ import {useState} from 'react'
 import './TodoList.css'
 
 export default function TodoList() {
-    const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
+    const localStorageTodoList = JSON.parse(localStorage.getItem('todoLists') || '{"食料品": [], "日用品": []}');
     const [itemCategory, setItemCategory] = useState("食料品");
     const [itemList, setItemList] = useState(itemLists["食料品"]);
     const [todoList, setTodoList] = useState(localStorageTodoList);
-    const [todoListSelected, setTodoListSelected] = useState(Array(todoList.length).fill(false));
+    const [todoListSelected, setTodoListSelected] = useState({
+        '食料品': Array(todoList['食料品'].length).fill(false),
+        '日用品': Array(todoList['日用品'].length).fill(false)
+    });
+
     const [matchingItem, setMatchingItem] = useState("牛乳");
     const [matchingIndex, setMatchingIndex] = useState(1);
     const [mode, setMode] = useState("matching");
 
-    function addtodoList(item) {
-        const newTodoList = [...todoList, item];
+    function addtodoList(category, item) {
+        const newTodoList = structuredClone(todoList);
+        const newTodoListSelected = structuredClone(todoListSelected);
+        newTodoList[category].push(item);
+        newTodoListSelected[category].push(false);
         setTodoList(newTodoList);
-        setTodoListSelected([...todoListSelected, false]);
-        localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        setTodoListSelected(newTodoListSelected);
+        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
     }
 
-    function changeTodoListSelected(index) {
-        const newTodoListSelected = [...todoListSelected];
-        newTodoListSelected[index] = !newTodoListSelected[index];
+    function changeTodoListSelected(category, index) {
+        const newTodoListSelected = structuredClone(todoListSelected);
+        newTodoListSelected[category][index] = !newTodoListSelected[category][index];
         setTodoListSelected(newTodoListSelected);
     }
 
-    function deleteSelectedTodoList() {
-        const newTodoList = todoList.filter((_, index) => !todoListSelected[index]);
-        const newTodoListSelected = todoListSelected.filter((_, index) => !todoListSelected[index]);
+    function deleteSelectedTodoList(category) {
+        const newTodoList = structuredClone(todoList);
+        const newTodoListSelected = structuredClone(todoListSelected);
+        newTodoList[category] = newTodoList[category].filter((_, index) => !newTodoListSelected[category][index]);
+        newTodoListSelected[category] = newTodoListSelected[category].filter(selected => !selected);
         setTodoList(newTodoList);
         setTodoListSelected(newTodoListSelected);
-        localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
     }
 
     function selectMatchingItem(selected) {
         if (selected) {
-            addtodoList(matchingItem)
+            addtodoList(itemCategory, matchingItem)
         }
         setMatchingIndex((matchingIndex + 1) % itemList.length);
         setMatchingItem(itemList[matchingIndex])
@@ -50,6 +59,57 @@ export default function TodoList() {
     function changeMode() {
         setMode(mode === "matching" ? "todoList" : "matching")
     }
+
+    function todoListDiv(category) {
+        const itemCategory = "item_" + category;
+        return <>
+            <div className='todoListdiv'
+                 style={{display: mode === "todoList" ? "block" : "none"}}
+            >
+                <h2 className='todoListHeader'>
+                    {category}
+                </h2>
+                <p style={{display: todoList[category].length === 0 ? "block" : "none", textAlign: 'center'}}>
+                    -- 未記入 --
+                </p>
+                <ul className='todoListul'>
+                    {
+                        todoList[category].map((item, index) => (
+                            <label key={index}>
+                                <li className={`todoListLi ${todoListSelected[category][index] ? 'todoListLiSelected' : ''}`}>
+                                    <input
+                                        type='checkbox'
+                                        checked={todoListSelected[category][index]}
+                                        onChange={() => changeTodoListSelected(category, index)}
+                                    />
+                                    {item}
+                                </li>
+                            </label>
+                        ))
+                    }
+                </ul>
+                <div className="todoListButtonField">
+                    <input type='text' id={itemCategory} size={6}/>
+                    <button
+                        onClick={() => {
+                            if (document.getElementById(itemCategory).value === '') return
+                            addtodoList(category, document.getElementById(itemCategory).value)
+                            document.getElementById(itemCategory).value = ''
+                        }}
+                        className="buttonGood"
+                    >
+                        追加
+                    </button>
+                </div>
+                <div className="todoListButtonField">
+                    <button onClick={() => deleteSelectedTodoList(category)} className="buttonWarning">
+                        選んだ要素を削除
+                    </button>
+                </div>
+            </div>
+        </>
+    }
+
 
     return (
         <>
@@ -67,10 +127,12 @@ export default function TodoList() {
                 <div className="matchingItem"
                      style={{display: mode === "matching" ? "block" : "none"}}
                 >
-                <img
-                    src={`./${matchingItem}.png`} alt={matchingItem} width={150}
-                    onError={(e) => {e.target.src = './150.png'}}
-                />
+                    <img
+                        src={`./${matchingItem}.png`} alt={matchingItem} width={150}
+                        onError={(e) => {
+                            e.target.src = './150.png'
+                        }}
+                    />
 
                     <h3>
                         {matchingItem}
@@ -82,42 +144,11 @@ export default function TodoList() {
                         いらない
                     </button>
                 </div>
-                <div className='todoListdiv'
-                     style={{display: mode === "todoList" ? "block" : "none"}}
+                <div
+                    className='todoListColumn'
                 >
-                    <p style={{display: todoList.length === 0 ? "block" : "none"}}>
-                        -- まだ何も追加されていません --
-                    </p>
-                    <ul className='todoListul'>
-                        {
-                            todoList.map((item, index) => (
-                                <li key={index}>
-                                    <label>
-                                        <input
-                                            type='checkbox'
-                                            checked={todoListSelected[index]}
-                                            onChange={() => changeTodoListSelected(index)}
-                                        />
-                                        {item}
-                                    </label>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                    <input type='text' id='item'/>
-                    <button
-                        onClick={() => {
-                            if (document.getElementById('item').value === '') return
-                            addtodoList(document.getElementById('item').value)
-                            document.getElementById('item').value = ''
-                        }}
-                        className="buttonGood"
-                    >
-                        追加
-                    </button>
-                    <button onClick={() => deleteSelectedTodoList()} className="buttonWarning">
-                        選んだ要素を削除
-                    </button>
+                    {todoListDiv("食料品")}
+                    {todoListDiv("日用品")}
                 </div>
             </div>
         </>

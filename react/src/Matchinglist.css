@@ -1,35 +1,8 @@
-.TodoList {
-    margin: 48px auto;
-    text-align: center;
-}
-
-.todoListul {
-    list-style-type: none;
-    padding: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: max-content;
-}
-
-.todoListdiv {
-    margin: 0 auto;
-    width: max-content;
-    text-align: left;
-}
-
-button.buttonGood {
-    background-color: #e5fde5;
-}
-
-button.buttonWarning {
-    background-color: #fde5e5;
-}
 
 .itemListul {
-    list-style-type: none;
-    padding: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: max-content;
-    text-align: left;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: max-content;
+  text-align: left;
 }
