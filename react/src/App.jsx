@@ -1,5 +1,5 @@
 import './App.css'
-import TodoList from './TodoList.jsx';
+import Matchinglist from './Matchinglist.jsx';
 
 function App() {
     return (
@@ -7,7 +7,7 @@ function App() {
             <header className="header">
                 <h1>ゼロメモ！！！！！！！</h1>
             </header>
-            <TodoList />
+            <Matchinglist />
         </>
     )
 }
