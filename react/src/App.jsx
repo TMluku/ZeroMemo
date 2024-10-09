@@ -1,5 +1,5 @@
 import './App.css'
-import Matchinglist from './Matchinglist.jsx';
+import MatchingList from './MatchingList.jsx';
 import TodoList from "./TodoList.jsx";
 import {useState} from "react";
 
@@ -19,7 +19,7 @@ function App() {
                 製品切替 「{mode === "unit" ? "単品マッチ" : "リストマッチ"}」
             </button>
             <div hidden={mode !== "bulk"}>
-                <Matchinglist/>
+                <MatchingList/>
             </div>
             <div hidden={mode !== "unit"}>
                 <TodoList/>

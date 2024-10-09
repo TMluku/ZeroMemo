@@ -2,7 +2,7 @@ import {useState} from 'react'
 import './Matchinglist.css'
 import './TodoList.css'
 
-export default function Matchinglist() {
+export default function MatchingList() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoLists') || '{"食料品": [], "日用品": []}');
     const [itemCategory, setItemCategory] = useState("食料品");
     const [itemList, setItemList] = useState(itemLists["食料品"]);
@@ -17,7 +17,7 @@ export default function Matchinglist() {
     });
     const [mode, setMode] = useState("matching");
 
-    function addtodoList(category, item) {
+    function addTodoList(category, item) {
         const newTodoList = structuredClone(todoList);
         const newTodoListSelected = structuredClone(todoListSelected);
         newTodoList[category].push(item);
@@ -74,7 +74,7 @@ export default function Matchinglist() {
     function todoListDiv(category) {
         const itemCategory = "item_" + category;
         return <>
-            <div className='todoListdiv'
+            <div className='todoListDiv'
                  style={{display: mode === "todoList" ? "block" : "none"}}
             >
                 <h2 className='todoListHeader'>
@@ -83,7 +83,7 @@ export default function Matchinglist() {
                 <p style={{display: todoList[category].length === 0 ? "block" : "none", textAlign: 'center'}}>
                     -- 未記入 --
                 </p>
-                <ul className='todoListul'>
+                <ul className='todoListUl'>
                     {
                         todoList[category].map((item, index) => (
                             <label key={index}>
@@ -104,7 +104,7 @@ export default function Matchinglist() {
                     <button
                         onClick={() => {
                             if (document.getElementById(itemCategory).value === '') return
-                            addtodoList(category, document.getElementById(itemCategory).value)
+                            addTodoList(category, document.getElementById(itemCategory).value)
                             document.getElementById(itemCategory).value = ''
                         }}
                         className="buttonGood"
@@ -137,7 +137,7 @@ export default function Matchinglist() {
                 <div className="matchingItem"
                      style={{display: mode === "matching" ? "block" : "none"}}
                 >
-                    <ul className='itemListul'>
+                    <ul className='itemListUl'>
                         {
                             itemList.map((item, index) => (
                                 <li key={index}>

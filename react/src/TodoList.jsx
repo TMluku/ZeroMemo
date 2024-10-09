@@ -15,7 +15,7 @@ export default function TodoList() {
     const [matchingIndex, setMatchingIndex] = useState(1);
     const [mode, setMode] = useState("matching");
 
-    function addtodoList(category, item) {
+    function addTodoList(category, item) {
         const newTodoList = structuredClone(todoList);
         const newTodoListSelected = structuredClone(todoListSelected);
         newTodoList[category].push(item);
@@ -43,7 +43,7 @@ export default function TodoList() {
 
     function selectMatchingItem(selected) {
         if (selected) {
-            addtodoList(itemCategory, matchingItem)
+            addTodoList(itemCategory, matchingItem)
         }
         setMatchingIndex((matchingIndex + 1) % itemList.length);
         setMatchingItem(itemList[matchingIndex])
@@ -63,7 +63,7 @@ export default function TodoList() {
     function todoListDiv(category) {
         const itemCategory = "item_" + category;
         return <>
-            <div className='todoListdiv'
+            <div className='todoListDiv'
                  style={{display: mode === "todoList" ? "block" : "none"}}
             >
                 <h2 className='todoListHeader'>
@@ -72,7 +72,7 @@ export default function TodoList() {
                 <p style={{display: todoList[category].length === 0 ? "block" : "none", textAlign: 'center'}}>
                     -- 未記入 --
                 </p>
-                <ul className='todoListul'>
+                <ul className='todoListUl'>
                     {
                         todoList[category].map((item, index) => (
                             <label key={index}>
@@ -93,7 +93,7 @@ export default function TodoList() {
                     <button
                         onClick={() => {
                             if (document.getElementById(itemCategory).value === '') return
-                            addtodoList(category, document.getElementById(itemCategory).value)
+                            addTodoList(category, document.getElementById(itemCategory).value)
                             document.getElementById(itemCategory).value = ''
                         }}
                         className="buttonGood"

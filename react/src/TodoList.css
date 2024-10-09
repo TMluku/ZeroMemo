@@ -9,7 +9,7 @@
   margin-bottom: 1rem;
 }
 
-.todoListul {
+.todoListUl {
   list-style-type: none;
   padding: 0;
   width: 100%;
@@ -43,7 +43,7 @@
   align-items: flex-start;
 }
 
-.todoListdiv {
+.todoListDiv {
   margin: 0;
   width: max-content;
   max-width: 45%;
@@ -52,7 +52,7 @@
   overflow: hidden;
 }
 
-.itemListul {
+.itemListUl {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -69,7 +69,7 @@ button.buttonWarning {
 }
 
 @media (prefers-color-scheme: light) {
-  .todoListul {
+  .todoListUl {
     background-color: #f9f9f9;
   }
 
@@ -78,7 +78,7 @@ button.buttonWarning {
     border: 1px solid #cdcdcd;
   }
 
-  .todoListdiv {
+  .todoListDiv {
     border: 1px solid #000000;
   }
 
