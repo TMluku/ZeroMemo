@@ -6,3 +6,9 @@
   width: max-content;
   text-align: left;
 }
+
+@media (prefers-color-scheme: light) {
+  .itemListul {
+    background-color: #f9f9f9;
+  }
+}
