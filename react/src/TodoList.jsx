@@ -2,7 +2,6 @@ import {useState} from 'react'
 import './TodoList.css'
 import Todos from "./Todos.jsx";
 import Matching from "./Matching.jsx";
-import * as PropTypes from "prop-types";
 import {ListMatching} from "./ListMatching.jsx";
 
 export default function TodoList() {
