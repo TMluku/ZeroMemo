@@ -1,157 +1,84 @@
 import {useState} from 'react'
 import './TodoList.css'
+import Todos from "./Todos.jsx";
 
 export default function TodoList() {
-    const localStorageTodoList = JSON.parse(localStorage.getItem('todoLists') || '{"食料品": [], "日用品": []}');
-    const [itemCategory, setItemCategory] = useState("食料品");
-    const [itemList, setItemList] = useState(itemLists["食料品"]);
+    const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
     const [todoList, setTodoList] = useState(localStorageTodoList);
-    const [todoListSelected, setTodoListSelected] = useState({
-        '食料品': Array(todoList['食料品'].length).fill(false),
-        '日用品': Array(todoList['日用品'].length).fill(false)
-    });
+    const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
 
-    const [matchingItem, setMatchingItem] = useState("牛乳");
-    const [matchingIndex, setMatchingIndex] = useState(1);
-    const [mode, setMode] = useState("matching");
-
-    function addTodoList(category, item) {
-        const newTodoList = structuredClone(todoList);
-        const newTodoListSelected = structuredClone(todoListSelected);
-        newTodoList[category].push(item);
-        newTodoListSelected[category].push(false);
+    function handleAddTodoList(item) {
+        item.id = nextTodoId;
+        const newTodoList = [...todoList, item];
         setTodoList(newTodoList);
-        setTodoListSelected(newTodoListSelected);
-        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
+        localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        setNextTodoId(nextTodoId + 1);
     }
 
-    function changeTodoListSelected(category, index) {
-        const newTodoListSelected = structuredClone(todoListSelected);
-        newTodoListSelected[category][index] = !newTodoListSelected[category][index];
-        setTodoListSelected(newTodoListSelected);
-    }
-
-    function deleteSelectedTodoList(category) {
-        const newTodoList = structuredClone(todoList);
-        const newTodoListSelected = structuredClone(todoListSelected);
-        newTodoList[category] = newTodoList[category].filter((_, index) => !newTodoListSelected[category][index]);
-        newTodoListSelected[category] = newTodoListSelected[category].filter(selected => !selected);
+    function handleChangeTodoList(changedItem) {
+        const newTodoList = todoList.map((item) => item.id === changedItem.id ? changedItem : item);
         setTodoList(newTodoList);
-        setTodoListSelected(newTodoListSelected);
-        localStorage.setItem('todoLists', JSON.stringify(newTodoList));
+        localStorage.setItem('todoList', JSON.stringify(newTodoList));
     }
 
-    function selectMatchingItem(selected) {
-        if (selected) {
-            addTodoList(itemCategory, matchingItem)
-        }
-        setMatchingIndex((matchingIndex + 1) % itemList.length);
-        setMatchingItem(itemList[matchingIndex])
-    }
 
-    function changeCategory() {
-        const newCategory = itemCategory === "食料品" ? "日用品" : "食料品";
-        setItemCategory(newCategory);
-        setItemList(itemLists[newCategory]);
-        setMatchingItem(itemLists[newCategory][matchingIndex]);
+    function handleDeleteTodoList(category) {
+        const newTodoList = todoList.filter((item) => !item.selected || item.category !== category);
+        setTodoList(newTodoList);
+        localStorage.setItem('todoList', JSON.stringify(newTodoList));
     }
-
-    function changeMode() {
-        setMode(mode === "matching" ? "todoList" : "matching")
-    }
-
-    function todoListDiv(category) {
-        const itemCategory = "item_" + category;
-        return <>
-            <div className='todoListDiv'
-                 style={{display: mode === "todoList" ? "block" : "none"}}
-            >
-                <h2 className='todoListHeader'>
-                    {category}
-                </h2>
-                <p style={{display: todoList[category].length === 0 ? "block" : "none", textAlign: 'center'}}>
-                    -- 未記入 --
-                </p>
-                <ul className='todoListUl'>
-                    {
-                        todoList[category].map((item, index) => (
-                            <label key={index}>
-                                <li className={`todoListLi ${todoListSelected[category][index] ? 'todoListLiSelected' : ''}`}>
-                                    <input
-                                        type='checkbox'
-                                        checked={todoListSelected[category][index]}
-                                        onChange={() => changeTodoListSelected(category, index)}
-                                    />
-                                    {item}
-                                </li>
-                            </label>
-                        ))
-                    }
-                </ul>
-                <div className="todoListButtonField">
-                    <input type='text' id={itemCategory} size={6}/>
-                    <button
-                        onClick={() => {
-                            if (document.getElementById(itemCategory).value === '') return
-                            addTodoList(category, document.getElementById(itemCategory).value)
-                            document.getElementById(itemCategory).value = ''
-                        }}
-                        className="buttonGood"
-                    >
-                        追加
-                    </button>
-                </div>
-                <div className="todoListButtonField">
-                    <button onClick={() => deleteSelectedTodoList(category)} className="buttonWarning">
-                        選んだ要素を削除
-                    </button>
-                </div>
-            </div>
-        </>
-    }
-
 
     return (
-        <>
-            <div className='TodoList'>
-                <div>
-                    <button onClick={changeMode}>
-                        モード切替 「{mode === "matching" ? "マッチング" : "リスト"}」
-                    </button>
-                </div>
-                <div hidden={mode !== "matching"}>
-                    <button onClick={changeCategory}>
-                        カテゴリ切替 「{itemCategory === "食料品" ? "食料品" : "日用品"}」
-                    </button>
-                </div>
-                <div className="matchingItem"
-                     style={{display: mode === "matching" ? "block" : "none"}}
-                >
-                    <img
-                        src={`./${matchingItem}.png`} alt={matchingItem} width={150}
-                        onError={(e) => {
-                            e.target.src = './150.png'
-                        }}
-                    />
+        <div className='TodoList'>
+            {/*<div>*/}
+            {/*    <button onClick={changeMode}>*/}
+            {/*        モード切替 「{mode === "matching" ? "マッチング" : "リスト"}」*/}
+            {/*    </button>*/}
+            {/*</div>*/}
+            {/*<div hidden={mode !== "matching"}>*/}
+            {/*    <button onClick={changeCategory}>*/}
+            {/*        カテゴリ切替 「{itemCategory === "食料品" ? "食料品" : "日用品"}」*/}
+            {/*    </button>*/}
+            {/*</div>*/}
+            {/*<div className="matchingItem"*/}
+            {/*     style={{display: mode === "matching" ? "block" : "none"}}*/}
+            {/*>*/}
+            {/*    <img*/}
+            {/*        src={`./${matchingItem}.png`} alt={matchingItem} width={150}*/}
+            {/*        onError={(e) => {*/}
+            {/*            e.target.src = './150.png'*/}
+            {/*        }}*/}
+            {/*    />*/}
 
-                    <h3>
-                        {matchingItem}
-                    </h3>
-                    <button onClick={() => selectMatchingItem(true)} className="buttonGood">
-                        欲しい
-                    </button>
-                    <button onClick={() => selectMatchingItem(false)} className="buttonWarning">
-                        いらない
-                    </button>
-                </div>
-                <div
-                    className='todoListColumn'
-                >
-                    {todoListDiv("食料品")}
-                    {todoListDiv("日用品")}
-                </div>
+            {/*    <h3>*/}
+            {/*        {matchingItem}*/}
+            {/*    </h3>*/}
+            {/*    <button onClick={() => selectMatchingItem(true)} className="buttonGood">*/}
+            {/*        欲しい*/}
+            {/*    </button>*/}
+            {/*    <button onClick={() => selectMatchingItem(false)} className="buttonWarning">*/}
+            {/*        いらない*/}
+            {/*    </button>*/}
+            {/*</div>*/}
+            <div
+                className='todoListColumn'
+            >
             </div>
-        </>
+            <Todos
+                category="食料品"
+                items={todoList}
+                onAddItem={handleAddTodoList}
+                onDeleteItems={handleDeleteTodoList}
+                onToggleListSelected={handleChangeTodoList}
+            />
+            <Todos
+                category="日用品"
+                items={todoList}
+                onAddItem={handleAddTodoList}
+                onDeleteItems={handleDeleteTodoList}
+                onToggleListSelected={handleChangeTodoList}
+            />
+        </div>
     )
 }
 
