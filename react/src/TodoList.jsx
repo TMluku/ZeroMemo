@@ -2,6 +2,8 @@ import {useState} from 'react'
 import './TodoList.css'
 import Todos from "./Todos.jsx";
 import Matching from "./Matching.jsx";
+import * as PropTypes from "prop-types";
+import {ListMatching} from "./ListMatching.jsx";
 
 export default function TodoList() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
@@ -31,13 +33,9 @@ export default function TodoList() {
 
     return (
         <div className='TodoList'>
-            {/*<div>*/}
-            {/*    <button onClick={changeMode}>*/}
-            {/*        モード切替 「{mode === "matching" ? "マッチング" : "リスト"}」*/}
-            {/*    </button>*/}
-            {/*</div>*/}
             <Matching onAddItem={handleAddTodoList}/>
-            <div className='todoListColumn' >
+            <ListMatching onAddItem={handleAddTodoList}/>
+            <div className='todoListColumn'>
                 <Todos
                     category="食料品"
                     items={todoList}
