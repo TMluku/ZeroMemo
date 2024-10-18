@@ -1,15 +1,14 @@
 import {useState} from "react";
 import TinderCard from "react-tinder-card";
-import reactLogo from './assets/react.svg';
 import * as PropTypes from "prop-types";
+import './SwipeCards.css';
+import milk from '../public/牛乳.png';
 
 function SwipeCards({onAddItem}) {
-    const [people] = useState([
-        {name: "1", url: reactLogo},
-        {name: "2", url: reactLogo},
-        {name: "3", url: reactLogo},
-        {name: "4", url: reactLogo},
-    ]);
+    const [people] = useState(Array
+        .from({length: 20}, (v, k) => k)
+        .map(k => ({name: (k + 1).toString(), url: milk}))
+    );
 
     const outOfFrame = (dir, name) => {
         console.log(name + ' left the screen! Direction: ' + dir)
@@ -19,16 +18,18 @@ function SwipeCards({onAddItem}) {
     }
 
     return (
-        <div style={styles.appContainer}>
-            <div className="cardContainer" style={styles.cardContainer}>
+        <div>
+            <div className="cardContainer">
                 {people.map((person) => (
                     <TinderCard
+                        className={'swipe'}
                         key={person.name}
                         onCardLeftScreen={(dir) => outOfFrame(dir, person.name)}
                         preventSwipe={['up', 'down']}
                     >
                         <div
-                            style={{...styles.card, backgroundImage: `url(${person.url})`}}
+                            style={{backgroundImage: `url(${person.url})`}}
+                            className={'card'}
                         >
                             <h3>{person.name}</h3>
                         </div>
@@ -40,60 +41,5 @@ function SwipeCards({onAddItem}) {
 }
 
 SwipeCards.propTypes = {onAddItem: PropTypes.func.isRequired};
-
-const styles = {
-    appContainer: {
-        display: "flex",
-        flexDirection:
-            "column",
-        alignItems:
-            "center",
-        height:
-            "100vh",
-    }
-    ,
-    cardContainer: {
-        display: "flex",
-        justifyContent:
-            "center",
-        position:
-            "relative",
-        marginBottom:
-            "20px",
-    }
-    ,
-    card: {
-        backgroundSize: "cover",
-        backgroundPosition:
-            "center",
-        width:
-            "300px",
-        height:
-            "400px",
-        borderRadius:
-            "20px",
-        display:
-            "flex",
-        justifyContent:
-            "center",
-        alignItems:
-            "center",
-        boxShadow:
-            "0 10px 20px rgba(0,0,0,0.2)",
-        color:
-            "#fff",
-        textShadow:
-            "0px 0px 10px rgba(0,0,0,0.5)",
-    }
-    ,
-    buttons: {
-        display: "flex",
-        justifyContent:
-            "center",
-        gap:
-            "10px",
-    }
-    ,
-};
 
 export default SwipeCards;
