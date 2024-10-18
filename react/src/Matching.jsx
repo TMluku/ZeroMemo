@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import {useState} from "react";
 import itemLists from "./assets/items.json";
+import CardSwipe from "./SwipeCards.jsx";
 
 export default function Matching({onAddItem}) {
     const [category, setCategory] = useState("食料品")
@@ -54,6 +55,9 @@ export default function Matching({onAddItem}) {
                     いらない
                 </button>
             </div>
+            <CardSwipe
+                onAddItem={onAddItem}
+            />
         </div>
     )
 }
