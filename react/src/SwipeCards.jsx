@@ -66,15 +66,16 @@ const necessary_items_name = [
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
+    const items_set = new Set(itemList.map(item => item.name));
     const grocery_items = grocery_items_name
-        .filter(name => !itemList.some(item => item.name === name))
+        .filter(name => !items_set.has(name))
         .map(name => ({
             category: '食料品',
             name: name,
             url: `./${name}.png`,
         }));
     const necessary_items = necessary_items_name
-        .filter(name => !itemList.some(item => item.name === name))
+        .filter(name => !items_set.has(name))
         .map(name => ({
             category: '日用品',
             name: name,
