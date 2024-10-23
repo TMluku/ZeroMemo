@@ -34,7 +34,6 @@ export default function SwipeCards({onAddItem, itemList}) {
             url: `./${name}.png`,
         }));
     const [cards] = useState(items);
-    const [left, setLeft] = useState(cards.length);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
     const currentIndexRef = React.useRef(currentIndex);
@@ -56,13 +55,12 @@ export default function SwipeCards({onAddItem, itemList}) {
 
     const swiped = (dir, nameToDelete, index) => {
         updateCurrentIndex(index - 1);
+        if (dir === 'right') {
+            onAddItem({id: 0, category: '食料品', name: nameToDelete, selected: false});
+        }
     }
 
     const outOfFrame = (dir, name, index) => {
-        if (dir === 'right') {
-            onAddItem({id: 0, category: '食料品', name: name, selected: false});
-        }
-        setLeft(left - 1)
         currentIndexRef.current >= index && childRefs[index].current.restoreCard();
     }
 
