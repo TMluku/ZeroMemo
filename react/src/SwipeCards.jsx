@@ -33,8 +33,14 @@ export default function SwipeCards({onAddItem, itemList}) {
             category: '食料品',
             name: name,
             url: `./${name}.png`,
-        }));
-    const [cards] = useState(items);
+        }))
+    ;
+
+    let shuffed_items = items
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+    const [cards] = useState(shuffed_items);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
     const currentIndexRef = React.useRef(currentIndex);
