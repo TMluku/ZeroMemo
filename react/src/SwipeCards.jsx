@@ -32,30 +32,34 @@ const items = item_names.map(name => ({
 }));
 
 function SwipeCards({onAddItem}) {
-    const [people] = useState(items);
+    const [cards] = useState(items);
+    const [left, setLeft] = useState(cards.length)
 
     const outOfFrame = (dir, name) => {
-        console.log(name + ' left the screen! Direction: ' + dir)
         if (dir === 'right') {
             onAddItem({id: 0, category: '食料品', name: name, selected: false});
         }
+        setLeft(left - 1)
     }
 
     return (
         <div>
+            <h2>
+                のこり{left}個
+            </h2>
             <div className="cardContainer">
-                {people.map((person, i) => (
+                {cards.map((card, i) => (
                     <TinderCard
                         className={'swipe'}
                         key={i}
-                        onCardLeftScreen={(dir) => outOfFrame(dir, person.name)}
+                        onCardLeftScreen={(dir) => outOfFrame(dir, card.name)}
                         preventSwipe={['up', 'down']}
                     >
                         <div
-                            style={{backgroundImage: `url(${person.url})`}}
+                            style={{backgroundImage: `url(${card.url})`}}
                             className={'card'}
                         >
-                            <h3>{person.name}</h3>
+                            <h3>{card.name}</h3>
                         </div>
                     </TinderCard>
                 ))}
