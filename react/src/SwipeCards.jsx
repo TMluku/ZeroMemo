@@ -96,8 +96,8 @@ export default function SwipeCards({onAddItem, itemList}) {
                     </TinderCard>
                 ))}
             </div>
-            <button onClick={() => swipe('left')}>左にスワイプ</button>
-            <button onClick={() => swipe('right')}>右にスワイプ</button>
+            <button onClick={() => swipe('left')}>Not yet</button>
+            <button onClick={() => swipe('right')}>Need!</button>
         </div>
     );
 }
