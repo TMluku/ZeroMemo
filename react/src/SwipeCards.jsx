@@ -24,22 +24,69 @@ const grocery_items_name = [
     "玉ねぎ",
     "豚肉",
     "鶏肉",
+    "みりん",
+    "もやし",
+    "グラノーラ",
+    "コーヒー",
+    "ハム,ベーコン,ソーセージ",
+    "バナナ",
+    "パスタ",
+    "プロテイン",
+    "マヨネーズ",
+    "ヨーグルト",
+    "ルー",
+    "味噌",
+    "料理酒",
+    "水",
+    "油（サラダ油、オリーブオイルなど）",
+    "米",
+    "納豆",
+    "肉",
+    "豆腐",
+    "醤油",
+    "野菜",
+]
+
+const necessary_items_name = [
+    "アルミホイル",
+    "キッチンペーパー",
+    "ゴミ袋",
+    "サランラップ",
+    "シャンプー",
+    "スポンジ",
+    "ティッシュペーパー",
+    "トイレットペーパー",
+    "フリーザーパック",
+    "ボディシート",
+    "ボディソープ",
+    "リンス",
+    "洗剤（衣類用）",
+    "洗剤（食器用）",
+    "電池",
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
-    const items = grocery_items_name
+    const grocery_items = grocery_items_name
         .filter(name => !itemList.some(item => item.name === name))
         .map(name => ({
             category: '食料品',
             name: name,
             url: `./${name}.png`,
-        }))
-    ;
+        }));
+    const necessary_items = necessary_items_name
+        .filter(name => !itemList.some(item => item.name === name))
+        .map(name => ({
+            category: '日用品',
+            name: name,
+            url: `./${name}.png`,
+        }));
+
+    const items = grocery_items.concat(necessary_items);
 
     let shuffed_items = items
-        .map(value => ({ value, sort: Math.random() }))
+        .map(value => ({value, sort: Math.random()}))
         .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value)
+        .map(({value}) => value)
     const [cards] = useState(shuffed_items);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
