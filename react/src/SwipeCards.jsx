@@ -3,7 +3,7 @@ import TinderCard from "react-tinder-card";
 import * as PropTypes from "prop-types";
 import './SwipeCards.css';
 
-const item_names = [
+const grocery_items_name = [
     "いちご",
     "きゅうり",
     "じゃがいも",
@@ -27,9 +27,10 @@ const item_names = [
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
-    const items = item_names
+    const items = grocery_items_name
         .filter(name => !itemList.some(item => item.name === name))
         .map(name => ({
+            category: '食料品',
             name: name,
             url: `./${name}.png`,
         }));
@@ -53,14 +54,14 @@ export default function SwipeCards({onAddItem, itemList}) {
 
     const canSwipe = currentIndex >= 0;
 
-    const swiped = (dir, nameToDelete, index) => {
+    const swiped = (dir, card, index) => {
         updateCurrentIndex(index - 1);
         if (dir === 'right') {
-            onAddItem({id: 0, category: '食料品', name: nameToDelete, selected: false});
+            onAddItem({id: 0, category: card.category, name: card.name, selected: false});
         }
     }
 
-    const outOfFrame = (dir, name, index) => {
+    const outOfFrame = (index) => {
         currentIndexRef.current >= index && childRefs[index].current.restoreCard();
     }
 
@@ -81,9 +82,9 @@ export default function SwipeCards({onAddItem, itemList}) {
                         ref={childRefs[i]}
                         className={'swipe'}
                         key={i}
-                        onCardLeftScreen={(dir) => outOfFrame(dir, card.name)}
+                        onCardLeftScreen={() => outOfFrame(i)}
                         preventSwipe={['up', 'down']}
-                        onSwipe={(dir) => swiped(dir, card.name, i)}
+                        onSwipe={(dir) => swiped(dir, card, i)}
                     >
                         <div
                             style={{backgroundImage: `url(${card.url})`}}
