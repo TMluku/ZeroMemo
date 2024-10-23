@@ -2,7 +2,6 @@ import {useState} from 'react'
 import './TodoList.css'
 import Todos from "./Todos.jsx";
 import Matching from "./Matching.jsx";
-import {ListMatching} from "./ListMatching.jsx";
 
 export default function TodoList() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
@@ -33,7 +32,6 @@ export default function TodoList() {
     return (
         <div className='TodoList'>
             <Matching onAddItem={handleAddTodoList}/>
-            <ListMatching onAddItem={handleAddTodoList}/>
             <div className='todoListColumn'>
                 <Todos
                     category="食料品"
