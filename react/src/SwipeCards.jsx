@@ -2,13 +2,37 @@ import {useState} from "react";
 import TinderCard from "react-tinder-card";
 import * as PropTypes from "prop-types";
 import './SwipeCards.css';
-import milk from '../public/牛乳.png';
+
+const item_names = [
+    "いちご",
+    "きゅうり",
+    "じゃがいも",
+    "にんじん",
+    "ほうれん草",
+    "みかん",
+    "キャベツ",
+    "トマト",
+    "バナナ",
+    "パン",
+    "ハム",
+    "ピーマン",
+    "りんご",
+    "レタス",
+    "卵",
+    "牛乳",
+    "牛肉",
+    "玉ねぎ",
+    "豚肉",
+    "鶏肉",
+]
+
+const items = item_names.map(name => ({
+    name: name,
+    url: `./${name}.png`,
+}));
 
 function SwipeCards({onAddItem}) {
-    const [people] = useState(Array
-        .from({length: 20}, (v, k) => k)
-        .map(() => ({name: "牛乳", url: milk}))
-    );
+    const [people] = useState(items);
 
     const outOfFrame = (dir, name) => {
         console.log(name + ' left the screen! Direction: ' + dir)
