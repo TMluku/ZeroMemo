@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import CardSwipe from "./SwipeCards.jsx";
 
-export default function Matching({onAddItem}) {
+export default function Matching({onAddItem, itemList}) {
     return (
         <div className={"matching"}>
             <h2>
@@ -9,6 +9,7 @@ export default function Matching({onAddItem}) {
             </h2>
             <CardSwipe
                 onAddItem={onAddItem}
+                itemList={itemList}
             />
         </div>
     )

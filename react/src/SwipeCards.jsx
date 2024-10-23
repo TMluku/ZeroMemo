@@ -26,12 +26,14 @@ const item_names = [
     "鶏肉",
 ]
 
-const items = item_names.map(name => ({
-    name: name,
-    url: `./${name}.png`,
-}));
 
-function SwipeCards({onAddItem}) {
+export default function SwipeCards({onAddItem, itemList}) {
+    const items = item_names
+        .filter(name => !itemList.some(item => item.name === name))
+        .map(name => ({
+            name: name,
+            url: `./${name}.png`,
+        }));
     const [cards] = useState(items);
     const [left, setLeft] = useState(cards.length)
 
@@ -69,5 +71,4 @@ function SwipeCards({onAddItem}) {
 }
 
 SwipeCards.propTypes = {onAddItem: PropTypes.func.isRequired};
-
-export default SwipeCards;
+SwipeCards.propTypes = {itemList: PropTypes.array.isRequired};
