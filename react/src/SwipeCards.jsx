@@ -7,7 +7,7 @@ import milk from '../public/牛乳.png';
 function SwipeCards({onAddItem}) {
     const [people] = useState(Array
         .from({length: 20}, (v, k) => k)
-        .map(k => ({name: (k + 1).toString(), url: milk}))
+        .map(() => ({name: "牛乳", url: milk}))
     );
 
     const outOfFrame = (dir, name) => {
@@ -20,10 +20,10 @@ function SwipeCards({onAddItem}) {
     return (
         <div>
             <div className="cardContainer">
-                {people.map((person) => (
+                {people.map((person, i) => (
                     <TinderCard
                         className={'swipe'}
-                        key={person.name}
+                        key={i}
                         onCardLeftScreen={(dir) => outOfFrame(dir, person.name)}
                         preventSwipe={['up', 'down']}
                     >
