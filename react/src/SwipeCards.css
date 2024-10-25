@@ -3,11 +3,11 @@
 }
 
 .cardContainer {
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
+  width: 60vw;
+  height: 60vw;
+  margin: 0 0;
   justify-content: center;
-  padding: 50px calc((100vw - 150px) / 2);
+  padding: 20px 20vw;
   overflow: hidden;
   position: relative;
 }
@@ -15,9 +15,8 @@
 .card {
   position: relative;
   background-color: #fff;
-  width: 150px;
-  max-width: 260px;
-  height: 150px;
+  width: 60vw;
+  height: 60vw;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.20);
   border-radius: 10px;
   background-size: cover;
@@ -39,3 +38,15 @@
   margin: 10px;
   color: #000;
 }
+
+.swipeCardButtons {
+  display: flex;
+  width: 80%;
+  justify-content: space-evenly;
+  margin: 20px auto;
+}
+
+.cardLeft {
+  margin-bottom: 0;
+}
+

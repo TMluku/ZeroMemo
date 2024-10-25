@@ -66,29 +66,39 @@ const necessary_items_name = [
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
-    const items_set = new Set(itemList.map(item => item.name));
-    const grocery_items = grocery_items_name
-        .filter(name => !items_set.has(name))
-        .map(name => ({
-            category: '食料品',
-            name: name,
-            url: `./${name}.png`,
-        }));
-    const necessary_items = necessary_items_name
-        .filter(name => !items_set.has(name))
-        .map(name => ({
-            category: '日用品',
-            name: name,
-            url: `./${name}.png`,
-        }));
+    const makeItems = () => {
+        const items_set = new Set(itemList.map(item => item.name));
+        const grocery_items = grocery_items_name
+            .filter(name => !items_set.has(name))
+            .map(name => ({
+                category: '食料品',
+                name: name,
+                url: `./${name}.png`,
+            }));
+        const necessary_items = necessary_items_name
+            .filter(name => !items_set.has(name))
+            .map(name => ({
+                category: '日用品',
+                name: name,
+                url: `./${name}.png`,
+            }));
 
-    const items = grocery_items.concat(necessary_items);
+        const items = grocery_items.concat(necessary_items);
 
-    let shuffed_items = items
-        .map(value => ({value, sort: Math.random()}))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({value}) => value)
-    const [cards] = useState(shuffed_items);
+        return items
+            .map(value => ({value, sort: Math.random()}))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({value}) => value).slice(0, 20)
+    }
+
+    const updateList = (categories) => {
+        const shuffled_items = makeItems(categories);
+        setCards(shuffled_items);
+        updateCurrentIndex(shuffled_items.length - 1);
+    }
+
+    const shuffled_items = makeItems();
+    const [cards, setCards] = useState(shuffled_items);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
     const currentIndexRef = React.useRef(currentIndex);
@@ -127,9 +137,9 @@ export default function SwipeCards({onAddItem, itemList}) {
 
     return (
         <div>
-            <h2>
+            <h4 className="cardLeft">
                 のこり{currentIndex + 1}枚
-            </h2>
+            </h4>
             <div className="cardContainer">
                 {cards.map((card, i) => (
                     <TinderCard
@@ -149,8 +159,19 @@ export default function SwipeCards({onAddItem, itemList}) {
                     </TinderCard>
                 ))}
             </div>
-            <button onClick={() => swipe('left')}>Not yet</button>
-            <button onClick={() => swipe('right')}>Need!</button>
+            <div className="swipeCardButtons">
+                <button
+                    onClick={() => swipe('left')}
+                >
+                    Not yet
+                </button>
+                <button
+                    onClick={() => swipe('right')}
+                    className="buttonGood"
+                >
+                    Need!
+                </button>
+            </div>
         </div>
     );
 }
