@@ -31,7 +31,10 @@ export default function TodoList() {
 
     return (
         <div className='TodoList'>
-            <Matching onAddItem={handleAddTodoList}/>
+            <Matching
+                onAddItem={handleAddTodoList}
+                itemList={todoList}
+            />
             <div className='todoListColumn'>
                 <Todos
                     category="食料品"
