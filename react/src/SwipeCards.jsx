@@ -29,7 +29,6 @@ const groceryItemsName = [
     "グラノーラ",
     "コーヒー",
     "ハム,ベーコン,ソーセージ",
-    "バナナ",
     "パスタ",
     "プロテイン",
     "マヨネーズ",
@@ -67,7 +66,7 @@ const necessaryItemsName = [
 
 export default function SwipeCards({onAddItem, itemList}) {
     const makeItems = (category) => {
-        const anyCategory = category === 'any';
+        const anyCategory = category === 'すべて';
         const itemsSet = new Set(itemList.map(item => item.name));
         const groceryItems = anyCategory || category === '食料品'
             ? groceryItemsName
@@ -105,7 +104,18 @@ export default function SwipeCards({onAddItem, itemList}) {
         })
     }
 
-    const shuffledItems = makeItems("any");
+    function updateTab(category) {
+        if (tabCategory === category) {
+            return;
+        }
+        setTabCategory(category);
+        updateList(category);
+    }
+
+    const tabsCategories = ["すべて", "食料品", "日用品"];
+    const [tabCategory, setTabCategory] = useState("すべて");
+
+    const shuffledItems = makeItems(tabCategory);
     const [cards, setCards] = useState(shuffledItems);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
@@ -139,16 +149,20 @@ export default function SwipeCards({onAddItem, itemList}) {
         }
     }
 
+
     return (
         <div>
-            <select
-                id={"category"}
-                onChange={() => updateList(document.getElementById("category").value)}
-            >
-                <option value="any">すべて</option>
-                <option value="食料品">食料品</option>
-                <option value="日用品">日用品</option>
-            </select>
+            <div className="cardCategoryTabs">
+                {tabsCategories.map((category, i) => (
+                    <div
+                        key={i}
+                        onClick={() => updateTab(category)}
+                        className={`cardCategoryTab ${tabCategory === category ? 'cardCategoryTabActive' : ''}`}
+                    >
+                        {category}
+                    </div>
+                ))}
+            </div>
             <h4 className="cardLeft">
                 のこり{currentIndex + 1}枚
             </h4>

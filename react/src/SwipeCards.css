@@ -17,7 +17,7 @@
   background-color: #fff;
   width: 60vw;
   height: 60vw;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.20);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.20);
   border-radius: 10px;
   background-size: cover;
   background-position: center;
@@ -48,5 +48,36 @@
 
 .cardLeft {
   margin-bottom: 0;
+}
+
+.cardCategoryTabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 0 0;
+}
+
+.cardCategoryTab {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #020202;
+  cursor: pointer;
+  border-bottom: 1px solid #777;
+}
+
+.cardCategoryTabActive {
+  background-color: #242424;
+  border-bottom: 1px solid #242424;
+}
+
+@media (prefers-color-scheme: light) {
+  .cardCategoryTab {
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #aaa;
+  }
+
+  .cardCategoryTabActive {
+    background-color: #ffffff;
+    border-bottom: 1px solid #fff;
+  }
 }
 
