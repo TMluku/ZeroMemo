@@ -3,7 +3,7 @@ import TinderCard from "react-tinder-card";
 import * as PropTypes from "prop-types";
 import './SwipeCards.css';
 
-const grocery_items_name = [
+const groceryItemsName = [
     "いちご",
     "きゅうり",
     "じゃがいも",
@@ -29,7 +29,6 @@ const grocery_items_name = [
     "グラノーラ",
     "コーヒー",
     "ハム,ベーコン,ソーセージ",
-    "バナナ",
     "パスタ",
     "プロテイン",
     "マヨネーズ",
@@ -47,7 +46,7 @@ const grocery_items_name = [
     "野菜",
 ]
 
-const necessary_items_name = [
+const necessaryItemsName = [
     "アルミホイル",
     "キッチンペーパー",
     "ゴミ袋",
@@ -66,29 +65,58 @@ const necessary_items_name = [
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
-    const items_set = new Set(itemList.map(item => item.name));
-    const grocery_items = grocery_items_name
-        .filter(name => !items_set.has(name))
-        .map(name => ({
-            category: '食料品',
-            name: name,
-            url: `./${name}.png`,
-        }));
-    const necessary_items = necessary_items_name
-        .filter(name => !items_set.has(name))
-        .map(name => ({
-            category: '日用品',
-            name: name,
-            url: `./${name}.png`,
-        }));
+    const makeItems = (category) => {
+        const anyCategory = category === 'すべて';
+        const itemsSet = new Set(itemList.map(item => item.name));
+        const groceryItems = anyCategory || category === '食料品'
+            ? groceryItemsName
+                .filter(name => !itemsSet.has(name))
+                .map(name => ({
+                    category: '食料品',
+                    name: name,
+                    url: `./${name}.png`,
+                }))
+            : [];
+        const necessaryItems = anyCategory || category === '日用品'
+            ? necessaryItemsName
+                .filter(name => !itemsSet.has(name))
+                .map(name => ({
+                    category: '日用品',
+                    name: name,
+                    url: `./${name}.png`,
+                }))
+            : [];
 
-    const items = grocery_items.concat(necessary_items);
+        const items = groceryItems.concat(necessaryItems);
 
-    let shuffed_items = items
-        .map(value => ({value, sort: Math.random()}))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({value}) => value)
-    const [cards] = useState(shuffed_items);
+        return items
+            .map(value => ({value, sort: Math.random()}))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({value}) => value).slice(0, 20)
+    }
+
+    const updateList = (category) => {
+        const shuffleItems = makeItems(category);
+        setCards(shuffleItems);
+        updateCurrentIndex(shuffleItems.length - 1);
+        childRefs.forEach((childRef) => {
+            childRef.current.restoreCard()
+        })
+    }
+
+    function updateTab(category) {
+        if (tabCategory === category) {
+            return;
+        }
+        setTabCategory(category);
+        updateList(category);
+    }
+
+    const tabsCategories = ["すべて", "食料品", "日用品"];
+    const [tabCategory, setTabCategory] = useState("すべて");
+
+    const shuffledItems = makeItems(tabCategory);
+    const [cards, setCards] = useState(shuffledItems);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
     const currentIndexRef = React.useRef(currentIndex);
@@ -115,28 +143,35 @@ export default function SwipeCards({onAddItem, itemList}) {
         }
     }
 
-    const outOfFrame = (index) => {
-        currentIndexRef.current >= index && childRefs[index].current.restoreCard();
-    }
-
     const swipe = async (dir) => {
         if (canSwipe && currentIndex < cards.length) {
             await childRefs[currentIndex].current.swipe(dir);
         }
     }
 
+
     return (
         <div>
-            <h2>
+            <div className="cardCategoryTabs">
+                {tabsCategories.map((category, i) => (
+                    <div
+                        key={i}
+                        onClick={() => updateTab(category)}
+                        className={`cardCategoryTab ${tabCategory === category ? 'cardCategoryTabActive' : ''}`}
+                    >
+                        {category}
+                    </div>
+                ))}
+            </div>
+            <h4 className="cardLeft">
                 のこり{currentIndex + 1}枚
-            </h2>
+            </h4>
             <div className="cardContainer">
                 {cards.map((card, i) => (
                     <TinderCard
                         ref={childRefs[i]}
                         className={'swipe'}
                         key={i}
-                        onCardLeftScreen={() => outOfFrame(i)}
                         preventSwipe={['up', 'down']}
                         onSwipe={(dir) => swiped(dir, card, i)}
                     >
@@ -149,8 +184,19 @@ export default function SwipeCards({onAddItem, itemList}) {
                     </TinderCard>
                 ))}
             </div>
-            <button onClick={() => swipe('left')}>Not yet</button>
-            <button onClick={() => swipe('right')}>Need!</button>
+            <div className="swipeCardButtons">
+                <button
+                    onClick={() => swipe('left')}
+                >
+                    Not yet
+                </button>
+                <button
+                    onClick={() => swipe('right')}
+                    className="buttonGood"
+                >
+                    Need!
+                </button>
+            </div>
         </div>
     );
 }

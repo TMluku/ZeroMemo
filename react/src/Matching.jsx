@@ -4,9 +4,6 @@ import CardSwipe from "./SwipeCards.jsx";
 export default function Matching({onAddItem, itemList}) {
     return (
         <div className={"matching"}>
-            <h2>
-                右にスワイプして追加
-            </h2>
             <CardSwipe
                 onAddItem={onAddItem}
                 itemList={itemList}
@@ -16,6 +13,7 @@ export default function Matching({onAddItem, itemList}) {
 }
 
 Matching.propTypes = {
-    onAddItem: PropTypes.func.isRequired
+    onAddItem: PropTypes.func.isRequired,
+    itemList: PropTypes.array.isRequired,
 }
 
