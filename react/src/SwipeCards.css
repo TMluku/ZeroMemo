@@ -65,6 +65,7 @@
 }
 
 .cardCategoryTabActive {
+  text-decoration: underline;
   background-color: #242424;
   border-bottom: 1px solid #242424;
 }
