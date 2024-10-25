@@ -66,22 +66,27 @@ const necessary_items_name = [
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
-    const makeItems = () => {
+    const makeItems = (category) => {
+        const anyCategory = category === 'any';
         const items_set = new Set(itemList.map(item => item.name));
-        const grocery_items = grocery_items_name
-            .filter(name => !items_set.has(name))
-            .map(name => ({
-                category: '食料品',
-                name: name,
-                url: `./${name}.png`,
-            }));
-        const necessary_items = necessary_items_name
-            .filter(name => !items_set.has(name))
-            .map(name => ({
-                category: '日用品',
-                name: name,
-                url: `./${name}.png`,
-            }));
+        const grocery_items = anyCategory || category === '食料品'
+            ? grocery_items_name
+                .filter(name => !items_set.has(name))
+                .map(name => ({
+                    category: '食料品',
+                    name: name,
+                    url: `./${name}.png`,
+                }))
+            : [];
+        const necessary_items = anyCategory || category === '日用品'
+            ? necessary_items_name
+                .filter(name => !items_set.has(name))
+                .map(name => ({
+                    category: '日用品',
+                    name: name,
+                    url: `./${name}.png`,
+                }))
+            : [];
 
         const items = grocery_items.concat(necessary_items);
 
@@ -91,13 +96,16 @@ export default function SwipeCards({onAddItem, itemList}) {
             .map(({value}) => value).slice(0, 20)
     }
 
-    const updateList = (categories) => {
-        const shuffled_items = makeItems(categories);
+    const updateList = (category) => {
+        const shuffled_items = makeItems(category);
         setCards(shuffled_items);
         updateCurrentIndex(shuffled_items.length - 1);
+        childRefs.forEach((childRef) => {
+            childRef.current.restoreCard()
+        })
     }
 
-    const shuffled_items = makeItems();
+    const shuffled_items = makeItems("any");
     const [cards, setCards] = useState(shuffled_items);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
@@ -125,10 +133,6 @@ export default function SwipeCards({onAddItem, itemList}) {
         }
     }
 
-    const outOfFrame = (index) => {
-        currentIndexRef.current >= index && childRefs[index].current.restoreCard();
-    }
-
     const swipe = async (dir) => {
         if (canSwipe && currentIndex < cards.length) {
             await childRefs[currentIndex].current.swipe(dir);
@@ -137,6 +141,14 @@ export default function SwipeCards({onAddItem, itemList}) {
 
     return (
         <div>
+            <select
+                id={"category"}
+                onChange={() => updateList(document.getElementById("category").value)}
+            >
+                <option value="any">すべて</option>
+                <option value="食料品">食料品</option>
+                <option value="日用品">日用品</option>
+            </select>
             <h4 className="cardLeft">
                 のこり{currentIndex + 1}枚
             </h4>
@@ -146,7 +158,6 @@ export default function SwipeCards({onAddItem, itemList}) {
                         ref={childRefs[i]}
                         className={'swipe'}
                         key={i}
-                        onCardLeftScreen={() => outOfFrame(i)}
                         preventSwipe={['up', 'down']}
                         onSwipe={(dir) => swiped(dir, card, i)}
                     >
