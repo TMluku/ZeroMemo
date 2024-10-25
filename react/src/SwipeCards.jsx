@@ -3,7 +3,7 @@ import TinderCard from "react-tinder-card";
 import * as PropTypes from "prop-types";
 import './SwipeCards.css';
 
-const grocery_items_name = [
+const groceryItemsName = [
     "いちご",
     "きゅうり",
     "じゃがいも",
@@ -47,7 +47,7 @@ const grocery_items_name = [
     "野菜",
 ]
 
-const necessary_items_name = [
+const necessaryItemsName = [
     "アルミホイル",
     "キッチンペーパー",
     "ゴミ袋",
@@ -68,19 +68,19 @@ const necessary_items_name = [
 export default function SwipeCards({onAddItem, itemList}) {
     const makeItems = (category) => {
         const anyCategory = category === 'any';
-        const items_set = new Set(itemList.map(item => item.name));
-        const grocery_items = anyCategory || category === '食料品'
-            ? grocery_items_name
-                .filter(name => !items_set.has(name))
+        const itemsSet = new Set(itemList.map(item => item.name));
+        const groceryItems = anyCategory || category === '食料品'
+            ? groceryItemsName
+                .filter(name => !itemsSet.has(name))
                 .map(name => ({
                     category: '食料品',
                     name: name,
                     url: `./${name}.png`,
                 }))
             : [];
-        const necessary_items = anyCategory || category === '日用品'
-            ? necessary_items_name
-                .filter(name => !items_set.has(name))
+        const necessaryItems = anyCategory || category === '日用品'
+            ? necessaryItemsName
+                .filter(name => !itemsSet.has(name))
                 .map(name => ({
                     category: '日用品',
                     name: name,
@@ -88,7 +88,7 @@ export default function SwipeCards({onAddItem, itemList}) {
                 }))
             : [];
 
-        const items = grocery_items.concat(necessary_items);
+        const items = groceryItems.concat(necessaryItems);
 
         return items
             .map(value => ({value, sort: Math.random()}))
@@ -97,16 +97,16 @@ export default function SwipeCards({onAddItem, itemList}) {
     }
 
     const updateList = (category) => {
-        const shuffled_items = makeItems(category);
-        setCards(shuffled_items);
-        updateCurrentIndex(shuffled_items.length - 1);
+        const shuffleItems = makeItems(category);
+        setCards(shuffleItems);
+        updateCurrentIndex(shuffleItems.length - 1);
         childRefs.forEach((childRef) => {
             childRef.current.restoreCard()
         })
     }
 
-    const shuffled_items = makeItems("any");
-    const [cards, setCards] = useState(shuffled_items);
+    const shuffledItems = makeItems("any");
+    const [cards, setCards] = useState(shuffledItems);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
     const currentIndexRef = React.useRef(currentIndex);
