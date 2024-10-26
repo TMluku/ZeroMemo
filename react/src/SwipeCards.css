@@ -4,19 +4,23 @@
 
 .cardContainer {
   width: 60vw;
+  max-width: 200px;
   height: 60vw;
+  max-height: 200px;
   margin: 0 0;
   justify-content: center;
-  padding: 20px 20vw;
+  padding: 20px calc((100vw - min(60vw, 200px)) / 2);
   overflow: hidden;
   position: relative;
 }
 
 .card {
   position: relative;
-  background-color: #fff;
   width: 60vw;
+  max-width: 200px;
   height: 60vw;
+  max-height: 200px;
+  background-color: #fff;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.20);
   border-radius: 10px;
   background-size: cover;
