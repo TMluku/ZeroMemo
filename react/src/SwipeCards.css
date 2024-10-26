@@ -9,7 +9,7 @@
   max-height: 200px;
   margin: 0 0;
   justify-content: center;
-  padding: 20px calc((100vw - min(60vw, 200px)) / 2);
+  padding: 20px calc((100% - min(60vw, 200px)) / 2);
   overflow: hidden;
   position: relative;
 }
