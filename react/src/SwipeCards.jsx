@@ -1,67 +1,67 @@
-import React, {useState} from "react";
-import TinderCard from "react-tinder-card";
-import * as PropTypes from "prop-types";
+import React, {useState} from 'react';
+import TinderCard from 'react-tinder-card';
+import * as PropTypes from 'prop-types';
 import './SwipeCards.css';
 
 const groceryItemsName = [
-    "いちご",
-    "きゅうり",
-    "じゃがいも",
-    "にんじん",
-    "ほうれん草",
-    "みかん",
-    "キャベツ",
-    "トマト",
-    "バナナ",
-    "パン",
-    "ハム",
-    "ピーマン",
-    "りんご",
-    "レタス",
-    "卵",
-    "牛乳",
-    "牛肉",
-    "玉ねぎ",
-    "豚肉",
-    "鶏肉",
-    "みりん",
-    "もやし",
-    "グラノーラ",
-    "コーヒー",
-    "ハム,ベーコン,ソーセージ",
-    "パスタ",
-    "プロテイン",
-    "マヨネーズ",
-    "ヨーグルト",
-    "ルー",
-    "味噌",
-    "料理酒",
-    "水",
-    "油（サラダ油、オリーブオイルなど）",
-    "米",
-    "納豆",
-    "肉",
-    "豆腐",
-    "醤油",
-    "野菜",
+    'いちご',
+    'きゅうり',
+    'じゃがいも',
+    'にんじん',
+    'ほうれん草',
+    'みかん',
+    'キャベツ',
+    'トマト',
+    'バナナ',
+    'パン',
+    'ハム',
+    'ピーマン',
+    'りんご',
+    'レタス',
+    '卵',
+    '牛乳',
+    '牛肉',
+    '玉ねぎ',
+    '豚肉',
+    '鶏肉',
+    'みりん',
+    'もやし',
+    'グラノーラ',
+    'コーヒー',
+    'ハム,ベーコン,ソーセージ',
+    'パスタ',
+    'プロテイン',
+    'マヨネーズ',
+    'ヨーグルト',
+    'ルー',
+    '味噌',
+    '料理酒',
+    '水',
+    '油（サラダ油、オリーブオイルなど）',
+    '米',
+    '納豆',
+    '肉',
+    '豆腐',
+    '醤油',
+    '野菜',
 ]
 
 const necessaryItemsName = [
-    "アルミホイル",
-    "キッチンペーパー",
-    "ゴミ袋",
-    "サランラップ",
-    "シャンプー",
-    "スポンジ",
-    "ティッシュペーパー",
-    "トイレットペーパー",
-    "フリーザーパック",
-    "ボディシート",
-    "ボディソープ",
-    "リンス",
-    "洗剤（衣類用）",
-    "洗剤（食器用）",
-    "電池",
+    'アルミホイル',
+    'キッチンペーパー',
+    'ゴミ袋',
+    'サランラップ',
+    'シャンプー',
+    'スポンジ',
+    'ティッシュペーパー',
+    'トイレットペーパー',
+    'フリーザーパック',
+    'ボディシート',
+    'ボディソープ',
+    'リンス',
+    '洗剤（衣類用）',
+    '洗剤（食器用）',
+    '電池',
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
@@ -112,8 +112,8 @@ export default function SwipeCards({onAddItem, itemList}) {
         updateList(category);
     }
 
-    const tabsCategories = ["すべて", "食料品", "日用品"];
-    const [tabCategory, setTabCategory] = useState("すべて");
+    const tabsCategories = ['すべて', '食料品', '日用品'];
+    const [tabCategory, setTabCategory] = useState('すべて');
 
     const shuffledItems = makeItems(tabCategory);
     const [cards, setCards] = useState(shuffledItems);
