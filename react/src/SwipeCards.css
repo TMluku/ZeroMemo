@@ -25,6 +25,7 @@
   border-radius: 10px;
   background-size: cover;
   background-position: center;
+  user-select: none;
 }
 
 .cardContent {
