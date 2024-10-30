@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 
 export default function Todos({category, items, onAddItem, onDeleteItems, onToggleListSelected}) {
@@ -8,7 +8,7 @@ export default function Todos({category, items, onAddItem, onDeleteItems, onTogg
             <h2 className='todoListHeader'>
                 {category}
             </h2>
-            <p style={{display: list.length === 0 ? "block" : "none", textAlign: 'center'}}>
+            <p style={{display: list.length === 0 ? 'block' : 'none', textAlign: 'center'}}>
                 -- 未記入 --
             </p>
             <ul className='todoListUl'>

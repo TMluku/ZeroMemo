@@ -1,8 +1,8 @@
-import * as PropTypes from "prop-types";
-import itemLists from "./assets/items.json";
+import * as PropTypes from 'prop-types';
+import itemLists from './assets/items.json';
 
 export function ListMatching({onAddItem}) {
-    const itemList = itemLists["itemList"]
+    const itemList = itemLists['itemList']
     return (
         <div>
             <h2>リストから選ぶ</h2>
