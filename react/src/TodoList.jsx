@@ -24,9 +24,11 @@ export default function TodoList() {
 
 
     function handleDeleteTodoList(category) {
-        const newTodoList = todoList.filter((item) => !item.selected || item.category !== category);
-        setTodoList(newTodoList);
-        localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        return (force) => {
+            const newTodoList = todoList.filter((item) => !(item.selected || force) || item.category !== category);
+            setTodoList(newTodoList);
+            localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        }
     }
 
     return (
@@ -40,14 +42,14 @@ export default function TodoList() {
                     category="食料品"
                     items={todoList}
                     onAddItem={handleAddTodoList}
-                    onDeleteItems={handleDeleteTodoList}
+                    onDeleteItems={handleDeleteTodoList('食料品')}
                     onToggleListSelected={handleChangeTodoList}
                 />
                 <Todos
                     category="日用品"
                     items={todoList}
                     onAddItem={handleAddTodoList}
-                    onDeleteItems={handleDeleteTodoList}
+                    onDeleteItems={handleDeleteTodoList('日用品')}
                     onToggleListSelected={handleChangeTodoList}
                 />
             </div>

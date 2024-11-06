@@ -54,10 +54,14 @@ export default function Todos({category, items, onAddItem, onDeleteItems, onTogg
                 </button>
             </div>
             <div className="todoListButtonField">
-                <button onClick={() => onDeleteItems(category)}>
+                <button onClick={() => onDeleteItems(false)}>
                     選んだ要素を削除
                 </button>
-                <button onClick={() => onDeleteItems(category)}>
+            </div>
+            <div className="todoListButtonField">
+                <button
+                    className={'buttonWarning'}
+                    onClick={() => onDeleteItems(true)}>
                     全ての要素を削除
                 </button>
             </div>
