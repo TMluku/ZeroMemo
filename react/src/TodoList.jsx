@@ -8,6 +8,7 @@ export default function TodoList() {
     const [todoList, setTodoList] = useState(localStorageTodoList);
     const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
     const [tab, setTab] = useState(0);
+    const [floatingIcon, setFloatingIcon] = useState(0);
 
     function handleAddTodoList(item) {
         item.id = nextTodoId;
@@ -15,6 +16,8 @@ export default function TodoList() {
         setTodoList(newTodoList);
         localStorage.setItem('todoList', JSON.stringify(newTodoList));
         setNextTodoId(nextTodoId + 1);
+        setFloatingIcon(1);
+        setTimeout(() => setFloatingIcon(0), 1000);
     }
 
     function handleChangeTodoList(changedItem) {
@@ -66,6 +69,14 @@ export default function TodoList() {
                     onClick={() => setTab(1)}
                 >
                     List
+                    <div
+                        className={
+                            'TabFloatingIcon'
+                            + (floatingIcon === 1 ? ' TabFloatingIconActive' : '')
+                        }
+                    >
+                        +1
+                    </div>
                 </div>
             </div>
         </>

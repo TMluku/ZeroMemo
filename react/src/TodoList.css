@@ -115,3 +115,25 @@ button.buttonWarning {
 .Tab:hover {
   background: #2a2a2a;
 }
+
+.TabFloatingIcon {
+  color: #000;
+  position: relative;
+  top: -50px;
+  height: 0;
+  font-size: 2rem;
+}
+
+.TabFloatingIconActive {
+  animation: icon-floating 1s alternate;
+}
+
+@keyframes icon-floating {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
