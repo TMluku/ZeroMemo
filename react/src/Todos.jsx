@@ -15,6 +15,7 @@ export default function Todos({category, items, onAddItem, onDeleteItems, onTogg
                 {
                     list
                         .filter((item) => item.category === category)
+                        .toReversed()
                         .map((item) => (
                             <label key={item.id}>
                                 <li className={`todoListLi ${item.selected ? 'selected' : ''}`}>
@@ -55,6 +56,9 @@ export default function Todos({category, items, onAddItem, onDeleteItems, onTogg
             <div className="todoListButtonField">
                 <button onClick={() => onDeleteItems(category)}>
                     選んだ要素を削除
+                </button>
+                <button onClick={() => onDeleteItems(category)}>
+                    全ての要素を削除
                 </button>
             </div>
         </div>
