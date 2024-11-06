@@ -1,5 +1,5 @@
 .TodoList {
-  margin: 0 auto;
+  margin: 0 auto 4rem auto;
   text-align: center;
 }
 
@@ -90,3 +90,28 @@ button.buttonWarning {
   }
 }
 
+/*
+下側に固定表示するタブバー
+*/
+.TabBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.Tab {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  padding: 1.0rem;
+  cursor: pointer;
+}
+
+.Tab:hover {
+  background: #2a2a2a;
+}

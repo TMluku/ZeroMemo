@@ -7,6 +7,7 @@ export default function TodoList() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
     const [todoList, setTodoList] = useState(localStorageTodoList);
     const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
+    const [tab, setTab] = useState(0);
 
     function handleAddTodoList(item) {
         item.id = nextTodoId;
@@ -32,20 +33,42 @@ export default function TodoList() {
     }
 
     return (
-        <div className='TodoList'>
-            <Matching
-                onAddItem={handleAddTodoList}
-                itemList={todoList}
-            />
-            <div className='todoListColumn'>
-                <Todos
-                    items={todoList}
-                    onAddItem={handleAddTodoList}
-                    onDeleteItems={handleDeleteTodoList}
-                    onToggleListSelected={handleChangeTodoList}
-                />
+        <>
+            <div className='TodoList'>
+                <div
+                    style={{display: tab === 0 ? 'block' : 'none'}}
+                >
+                    <Matching
+                        onAddItem={handleAddTodoList}
+                        itemList={todoList}
+                    />
+                </div>
+                <div
+                    style={{display: tab === 1 ? 'block' : 'none'}}
+                >
+                    <Todos
+                        items={todoList}
+                        onAddItem={handleAddTodoList}
+                        onDeleteItems={handleDeleteTodoList}
+                        onToggleListSelected={handleChangeTodoList}
+                    />
+                </div>
             </div>
-        </div>
+            <div className='TabBar'>
+                <div
+                    className='Tab'
+                    onClick={() => setTab(0)}
+                >
+                    Matching!
+                </div>
+                <div
+                    className='Tab'
+                    onClick={() => setTab(1)}
+                >
+                    List
+                </div>
+            </div>
+        </>
     )
 }
 
