@@ -7,6 +7,8 @@ export default function TodoList() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
     const [todoList, setTodoList] = useState(localStorageTodoList);
     const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
+    const [category, setCategory] = useState('食料品');
+    const tabsCategories = ['食料品', '日用品'];
 
     function handleAddTodoList(item) {
         item.id = nextTodoId;
@@ -38,18 +40,22 @@ export default function TodoList() {
                 itemList={todoList}
             />
             <div className='todoListColumn'>
+                <div className="cardCategoryTabs">
+                    {tabsCategories.map((cat, i) => (
+                        <div
+                            key={i}
+                            onClick={() => setCategory(cat)}
+                            className={`cardCategoryTab ${cat === category ? 'cardCategoryTabActive' : ''}`}
+                        >
+                            {cat}
+                        </div>
+                    ))}
+                </div>
                 <Todos
-                    category="食料品"
+                    category={category}
                     items={todoList}
                     onAddItem={handleAddTodoList}
-                    onDeleteItems={handleDeleteTodoList('食料品')}
-                    onToggleListSelected={handleChangeTodoList}
-                />
-                <Todos
-                    category="日用品"
-                    items={todoList}
-                    onAddItem={handleAddTodoList}
-                    onDeleteItems={handleDeleteTodoList('日用品')}
+                    onDeleteItems={handleDeleteTodoList(category)}
                     onToggleListSelected={handleChangeTodoList}
                 />
             </div>

@@ -18,7 +18,7 @@ export default function Todos({category, items, onAddItem, onDeleteItems, onTogg
                         .toReversed()
                         .map((item) => (
                             <label key={item.id}>
-                                <li className={`todoListLi ${item.selected ? 'selected' : ''}`}>
+                                <li className={`todoListLi ${item.selected ? 'todoListLiSelected' : ''}`}>
                                     <input
                                         type='checkbox'
                                         checked={item.selected}
