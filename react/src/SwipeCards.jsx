@@ -14,37 +14,59 @@ const groceryItemsName = [
     'トマト',
     'バナナ',
     'パン',
-    'ハム',
     'ピーマン',
     'りんご',
     'レタス',
     '卵',
     '牛乳',
-    '牛肉',
+    '肉',
     '玉ねぎ',
-    '豚肉',
-    '鶏肉',
-    'みりん',
     'もやし',
     'グラノーラ',
     'コーヒー',
     'ハム,ベーコン,ソーセージ',
     'パスタ',
     'プロテイン',
-    'マヨネーズ',
     'ヨーグルト',
-    'ルー',
-    '味噌',
-    '料理酒',
     '水',
-    '油（サラダ油、オリーブオイルなど）',
     '米',
     '納豆',
-    '肉',
     '豆腐',
+];
+
+const seasoningItemsName = [
+    'ルー',
+    '料理酒',
+    'みりん',
+    'マヨネーズ',
+    'しょうがチューブ',
+    'にんにくチューブ',
+    'オイスターソース',
+    'オリーブオイル',
+    'ケチャップ',
+    'コショウ',
+    'ドレッシング',
+    'ポン酢',
+    'サラダ油',
+    'ごま油',
+    'ラード',
+    'ラー油',
+    '味の素',
+    '和風だし',
+    '砂糖',
+    '塩',
+    '酢',
     '醤油',
-    '野菜',
-]
+    '味噌',
+    '鶏がらスープの素',
+];
+
+const condimentItemsName = [
+    'はちみつ',
+    'ジャム',
+    'バター',
+    'マーガリン',
+];
 
 const necessaryItemsName = [
     'アルミホイル',
@@ -62,6 +84,11 @@ const necessaryItemsName = [
     '洗剤（衣類用）',
     '洗剤（食器用）',
     '電池',
+    'リップクリーム',
+    '乳液',
+    '化粧水',
+    '洗顔フォーム',
+    '鎮痛剤',
 ]
 
 export default function SwipeCards({onAddItem, itemList}) {
@@ -70,6 +97,8 @@ export default function SwipeCards({onAddItem, itemList}) {
         const itemsSet = new Set(itemList.map(item => item.name));
         const groceryItems = anyCategory || category === '食料品'
             ? groceryItemsName
+                .concat(seasoningItemsName)
+                .concat(condimentItemsName)
                 .filter(name => !itemsSet.has(name))
                 .map(name => ({
                     category: '食料品',
