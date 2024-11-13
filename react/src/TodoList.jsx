@@ -9,6 +9,13 @@ export default function TodoList() {
     const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
     const [tab, setTab] = useState(0);
     const [floatingIcon, setFloatingIcon] = useState(0);
+    const localStorageRejectedDateList =
+        Object.fromEntries(
+            Object.entries(
+                JSON.parse(localStorage.getItem('rejectedDateList') || '{}')
+            ).map(([_, date]) => [_, new Date(date)])
+        );
+    const [rejectedDateList, setRejectedDateList] = useState(localStorageRejectedDateList);
 
     function handleAddTodoList(item) {
         item.id = nextTodoId;
@@ -18,6 +25,14 @@ export default function TodoList() {
         setNextTodoId(nextTodoId + 1);
         setFloatingIcon(1);
         setTimeout(() => setFloatingIcon(0), 1000);
+    }
+
+    function handleReject(item) {
+        const date = new Date();
+        const newRejectedList = {...rejectedDateList, [item]: date};
+        setRejectedDateList(newRejectedList);
+        localStorage.setItem('rejectedDateList', JSON.stringify(newRejectedList));
+        console.log('RejectedItems:', newRejectedList);
     }
 
     function handleChangeTodoList(changedItem) {
@@ -43,7 +58,9 @@ export default function TodoList() {
                 >
                     <Matching
                         onAddItem={handleAddTodoList}
+                        onRejectItem={handleReject}
                         itemList={todoList}
+                        rejectedDateList={rejectedDateList}
                     />
                 </div>
                 <div
