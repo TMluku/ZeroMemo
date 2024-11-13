@@ -4,7 +4,7 @@ import Todos from './Todos.jsx';
 import Matching from './Matching.jsx';
 
 export default function TodoList() {
-    const localStorageTodoList = JSON.parse(localStorage.getItem('todoList') || '[]');
+    const localStorageTodoList = JSON.parse(localStorage.getItem('todoListV2') || '[]');
     const [todoList, setTodoList] = useState(localStorageTodoList);
     const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
     const [tab, setTab] = useState(0);
@@ -21,7 +21,7 @@ export default function TodoList() {
         item.id = nextTodoId;
         const newTodoList = [...todoList, item];
         setTodoList(newTodoList);
-        localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
         setNextTodoId(nextTodoId + 1);
         setFloatingIcon(1);
         setTimeout(() => setFloatingIcon(0), 1000);
@@ -38,15 +38,16 @@ export default function TodoList() {
     function handleChangeTodoList(changedItem) {
         const newTodoList = todoList.map((item) => item.id === changedItem.id ? changedItem : item);
         setTodoList(newTodoList);
-        localStorage.setItem('todoList', JSON.stringify(newTodoList));
+        localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
     }
 
 
     function handleDeleteTodoList(category) {
         return (force) => {
-            const newTodoList = todoList.filter((item) => !(item.selected || force) || item.category !== category);
+            console.log('DeleteItems:', todoList);
+            const newTodoList = todoList.filter((item) => !(item.selected || force) || !item.categories.includes(category));
             setTodoList(newTodoList);
-            localStorage.setItem('todoList', JSON.stringify(newTodoList));
+            localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
         }
     }
 

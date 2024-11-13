@@ -4,9 +4,9 @@ import {useState} from 'react';
 
 export default function Todos({items, onAddItem, onDeleteItems, onToggleListSelected}) {
     const [category, setCategory] = useState('食料品');
-    const tabsCategories = ['食料品', '日用品'];
+    const tabsCategories = ['食料品', '調味料', '日用品'];
     const deleteItems = onDeleteItems(category);
-    const list = items.filter((item) => item.category === category)
+    const list = items.filter((item) => item.categories.includes(category));
     return (
         <>
             <div className="cardCategoryTabs">
@@ -30,7 +30,6 @@ export default function Todos({items, onAddItem, onDeleteItems, onToggleListSele
                 <ul className='todoListUl'>
                     {
                         list
-                            .filter((item) => item.category === category)
                             .toReversed()
                             .map((item) => (
                                 <label key={item.id}>
