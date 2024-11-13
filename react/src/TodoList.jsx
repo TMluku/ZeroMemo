@@ -32,7 +32,6 @@ export default function TodoList() {
         const newRejectedList = {...rejectedDateList, [item]: date};
         setRejectedDateList(newRejectedList);
         localStorage.setItem('rejectedDateList', JSON.stringify(newRejectedList));
-        console.log('RejectedItems:', newRejectedList);
     }
 
     function handleChangeTodoList(changedItem) {
@@ -44,7 +43,6 @@ export default function TodoList() {
 
     function handleDeleteTodoList(category) {
         return (force) => {
-            console.log('DeleteItems:', todoList);
             const newTodoList = todoList.filter((item) => !(item.selected || force) || !item.categories.includes(category));
             setTodoList(newTodoList);
             localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
