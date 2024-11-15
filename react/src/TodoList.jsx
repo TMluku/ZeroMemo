@@ -17,14 +17,17 @@ export default function TodoList() {
         );
     const [rejectedDateList, setRejectedDateList] = useState(localStorageRejectedDateList);
 
-    function handleAddTodoList(item) {
+    function handleAddTodoList(item, notification) {
         item.id = nextTodoId;
         const newTodoList = [...todoList, item];
         setTodoList(newTodoList);
         localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
         setNextTodoId(nextTodoId + 1);
-        setFloatingIcon(1);
-        setTimeout(() => setFloatingIcon(0), 1000);
+
+        if (notification) {
+            setFloatingIcon(1);
+            setTimeout(() => setFloatingIcon(0), 1000);
+        }
     }
 
     function handleReject(item) {
@@ -56,7 +59,7 @@ export default function TodoList() {
                     style={{display: tab === 0 ? 'block' : 'none'}}
                 >
                     <Matching
-                        onAddItem={handleAddTodoList}
+                        onAddItem={(item) => handleAddTodoList(item, true)}
                         onRejectItem={handleReject}
                         itemList={todoList}
                         rejectedDateList={rejectedDateList}
@@ -67,7 +70,7 @@ export default function TodoList() {
                 >
                     <Todos
                         items={todoList}
-                        onAddItem={handleAddTodoList}
+                        onAddItem={(item) => handleAddTodoList(item, false)}
                         onDeleteItems={handleDeleteTodoList}
                         onToggleListSelected={handleChangeTodoList}
                     />
