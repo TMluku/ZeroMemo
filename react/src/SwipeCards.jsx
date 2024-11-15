@@ -97,7 +97,7 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
         const itemsSet = new Set(itemList.map(item => item.name));
         const date = new Date();
         const filterFunc = (item) => {
-            return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > 1000 * 60 * 60);
+            return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > 1000 * 60);
         }
         const groceryItems = anyCategory || category === '食料品' ? groceryItemsName
             .filter(filterFunc)
@@ -148,8 +148,8 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
         updateList(category);
     }
 
-    const tabsCategories = ['すべて', '食料品', '調味料', '日用品'];
-    const [tabCategory, setTabCategory] = useState('すべて');
+    const tabsCategories = ['食料品', '調味料', '日用品'];
+    const [tabCategory, setTabCategory] = useState(tabsCategories[0]);
 
     const shuffledItems = makeItems(tabCategory);
     const [cards, setCards] = useState(shuffledItems);
