@@ -56,7 +56,7 @@ export default function Todos({items, onAddItem, onDeleteItems, onToggleListSele
                             if (document.getElementById(category).value === '') return
                             const newItem = {
                                 id: 0,
-                                category: category,
+                                categories: [category],
                                 name: document.getElementById(category).value,
                                 selected: false,
                             }
