@@ -24,7 +24,7 @@ export default function TodoList() {
         localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
         setNextTodoId(nextTodoId + 1);
 
-        if (notification) {
+        if (notification && floatingIcon === 0) {
             setFloatingIcon(1);
             setTimeout(() => setFloatingIcon(0), 1000);
         }
