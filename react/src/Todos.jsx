@@ -24,13 +24,9 @@ export default function Todos({items, onAddItem, onDeleteItems, onToggleListSele
                 <h2 className='todoListHeader'>
                     {category}
                 </h2>
-                <p style={{display: list.length === 0 ? 'block' : 'none', textAlign: 'center'}}>
-                    -- 未記入 --
-                </p>
                 <ul className='todoListUl'>
                     {
                         list
-                            .toReversed()
                             .map((item) => (
                                 <label key={item.id}>
                                     <li className={`todoListLi ${item.selected ? 'todoListLiSelected' : ''}`}>
@@ -48,26 +44,27 @@ export default function Todos({items, onAddItem, onDeleteItems, onToggleListSele
                                 </label>
                             ))
                     }
+                    <label key='new'>
+                        <li className='todoListLi'>
+                            <input type='checkbox' disabled/>
+                            <input
+                                type='text'
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && e.target.value !== '') {
+                                        const newItem = {
+                                            id: 0,
+                                            categories: [category],
+                                            name: e.target.value,
+                                            selected: false,
+                                        }
+                                        onAddItem(newItem)
+                                        e.target.value = ''
+                                    }
+                                }}
+                            />
+                        </li>
+                    </label>
                 </ul>
-                <div className="todoListButtonField">
-                    <input type='text' id={category} size={6}/>
-                    <button
-                        onClick={() => {
-                            if (document.getElementById(category).value === '') return
-                            const newItem = {
-                                id: 0,
-                                categories: [category],
-                                name: document.getElementById(category).value,
-                                selected: false,
-                            }
-                            onAddItem(newItem)
-                            document.getElementById(category).value = ''
-                        }}
-                        className="buttonGood"
-                    >
-                        Add
-                    </button>
-                </div>
                 <div className="todoListButtonField">
                     <button
                         disabled={list.filter((item) => item.selected).length === 0}
