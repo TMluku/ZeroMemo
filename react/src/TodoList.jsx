@@ -78,13 +78,13 @@ export default function TodoList() {
             </div>
             <div className='TabBar'>
                 <div
-                    className='Tab'
+                    className={'Tab ' + (tab === 0 ? 'TabSelected' : '')}
                     onClick={() => setTab(0)}
                 >
                     Matching!
                 </div>
                 <div
-                    className='Tab'
+                    className={'Tab ' + (tab === 1 ? 'TabSelected' : '')}
                     onClick={() => setTab(1)}
                 >
                     List
