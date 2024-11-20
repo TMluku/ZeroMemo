@@ -185,49 +185,53 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
     }
 
 
-    return (<div>
-        <div className="cardCategoryTabs">
-            {tabsCategories.map((category, i) => (<div
-                key={i}
-                onClick={() => updateTab(category)}
-                className={`cardCategoryTab ${tabCategory === category ? 'cardCategoryTabActive' : ''}`}
-            >
-                {category}
-            </div>))}
-        </div>
-        <h4 className="cardLeft">
-            のこり{currentIndex + 1}枚
-        </h4>
-        <div className="cardContainer">
-            {cards.map((card, i) => (<TinderCard
-                ref={childRefs[i]}
-                className={'swipe'}
-                key={i}
-                preventSwipe={['up', 'down']}
-                onSwipe={(dir) => swiped(dir, card, i)}
-            >
-                <div
-                    style={{backgroundImage: `url(${card.url})`}}
-                    className={'card'}
+    return (
+        <>
+            <div className="cardCategoryTabs">
+                {tabsCategories.map((category, i) => (<div
+                    key={i}
+                    onClick={() => updateTab(category)}
+                    className={`cardCategoryTab ${tabCategory === category ? 'cardCategoryTabActive' : ''}`}
                 >
-                    <h3>{card.name}</h3>
+                    {category}
+                </div>))}
+            </div>
+            <div className="matching">
+                <h4 className="cardLeft">
+                    のこり{currentIndex + 1}枚
+                </h4>
+                <div className="cardContainer">
+                    {cards.map((card, i) => (<TinderCard
+                        ref={childRefs[i]}
+                        className={'swipe'}
+                        key={i}
+                        preventSwipe={['up', 'down']}
+                        onSwipe={(dir) => swiped(dir, card, i)}
+                    >
+                        <div
+                            style={{backgroundImage: `url(${card.url})`}}
+                            className={'card'}
+                        >
+                            <h3>{card.name}</h3>
+                        </div>
+                    </TinderCard>))}
                 </div>
-            </TinderCard>))}
-        </div>
-        <div className="swipeCardButtons">
-            <button
-                onClick={() => swipe('left')}
-            >
-                Not yet
-            </button>
-            <button
-                onClick={() => swipe('right')}
-                className="buttonGood"
-            >
-                Need!
-            </button>
-        </div>
-    </div>);
+                <div className="swipeCardButtons">
+                    <button
+                        onClick={() => swipe('left')}
+                    >
+                        Not yet
+                    </button>
+                    <button
+                        onClick={() => swipe('right')}
+                        className="buttonGood"
+                    >
+                        Need!
+                    </button>
+                </div>
+            </div>
+        </>
+    );
 }
 
 SwipeCards.propTypes = {

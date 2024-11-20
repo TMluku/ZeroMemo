@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import './TodoList.css'
 import Todos from './Todos.jsx';
-import Matching from './Matching.jsx';
+import SwipeCards from './SwipeCards.jsx';
 
 export default function TodoList() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoListV2') || '[]');
@@ -30,8 +30,7 @@ export default function TodoList() {
         }
     }
 
-    function handleReject(item) {
-        const date = new Date();
+    function handleReject(item, date) {
         const newRejectedList = {...rejectedDateList, [item]: date};
         setRejectedDateList(newRejectedList);
         localStorage.setItem('rejectedDateList', JSON.stringify(newRejectedList));
@@ -54,27 +53,27 @@ export default function TodoList() {
 
     return (
         <>
-            <div className='TodoList'>
-                <div
-                    style={{display: tab === 0 ? 'block' : 'none'}}
-                >
-                    <Matching
-                        onAddItem={(item) => handleAddTodoList(item, true)}
-                        onRejectItem={handleReject}
-                        itemList={todoList}
-                        rejectedDateList={rejectedDateList}
-                    />
-                </div>
-                <div
-                    style={{display: tab === 1 ? 'block' : 'none'}}
-                >
-                    <Todos
-                        items={todoList}
-                        onAddItem={(item) => handleAddTodoList(item, false)}
-                        onDeleteItems={handleDeleteTodoList}
-                        onToggleListSelected={handleChangeTodoList}
-                    />
-                </div>
+            <div
+                className='TodoList'
+                style={{display: tab === 0 ? 'block' : 'none'}}
+            >
+                <SwipeCards
+                    onAddItem={(item) => handleAddTodoList(item, true)}
+                    onRejectItem={handleReject}
+                    itemList={todoList}
+                    rejectedDateList={rejectedDateList}
+                />
+            </div>
+            <div
+                className='TodoList'
+                style={{display: tab === 1 ? 'block' : 'none'}}
+            >
+                <Todos
+                    items={todoList}
+                    onAddItem={(item) => handleAddTodoList(item, false)}
+                    onDeleteItems={handleDeleteTodoList}
+                    onToggleListSelected={handleChangeTodoList}
+                />
             </div>
             <div className='TabBar'>
                 <div
