@@ -1,10 +1,8 @@
 import './App.css'
-import TodoList from './TodoList.jsx';
+import Home from './Home.jsx';
 
 const App = () => (
-    <>
-        <TodoList/>
-    </>
+    <Home/>
 );
 
 export default App
