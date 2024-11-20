@@ -1,104 +1,94 @@
-import {useState} from 'react'
-import './TodoList.css'
-import Todos from './Todos.jsx';
-import Matching from './Matching.jsx';
-
-export default function TodoList() {
-    const localStorageTodoList = JSON.parse(localStorage.getItem('todoListV2') || '[]');
-    const [todoList, setTodoList] = useState(localStorageTodoList);
-    const [nextTodoId, setNextTodoId] = useState(todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1);
-    const [tab, setTab] = useState(0);
-    const [floatingIcon, setFloatingIcon] = useState(0);
-    const localStorageRejectedDateList =
-        Object.fromEntries(
-            Object.entries(
-                JSON.parse(localStorage.getItem('rejectedDateList') || '{}')
-            ).map(([_, date]) => [_, new Date(date)])
-        );
-    const [rejectedDateList, setRejectedDateList] = useState(localStorageRejectedDateList);
-
-    function handleAddTodoList(item, notification) {
-        item.id = nextTodoId;
-        const newTodoList = [...todoList, item];
-        setTodoList(newTodoList);
-        localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
-        setNextTodoId(nextTodoId + 1);
-
-        if (notification && floatingIcon === 0) {
-            setFloatingIcon(1);
-            setTimeout(() => setFloatingIcon(0), 1000);
-        }
-    }
-
-    function handleReject(item) {
-        const date = new Date();
-        const newRejectedList = {...rejectedDateList, [item]: date};
-        setRejectedDateList(newRejectedList);
-        localStorage.setItem('rejectedDateList', JSON.stringify(newRejectedList));
-    }
-
-    function handleChangeTodoList(changedItem) {
-        const newTodoList = todoList.map((item) => item.id === changedItem.id ? changedItem : item);
-        setTodoList(newTodoList);
-        localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
-    }
+import PropTypes from 'prop-types';
+import {useState} from 'react';
 
 
-    function handleDeleteTodoList(category) {
-        return (force) => {
-            const newTodoList = todoList.filter((item) => !(item.selected || force) || !item.categories.includes(category));
-            setTodoList(newTodoList);
-            localStorage.setItem('todoListV2', JSON.stringify(newTodoList));
-        }
-    }
-
+export default function TodoList({items, onAddItem, onDeleteItems, onToggleListSelected}) {
+    const [category, setCategory] = useState('食料品');
+    const tabsCategories = ['食料品', '調味料', '日用品'];
+    const deleteItems = onDeleteItems(category);
+    const list = items.filter((item) => item.categories.includes(category));
     return (
         <>
-            <div className='TodoList'>
-                <div
-                    style={{display: tab === 0 ? 'block' : 'none'}}
-                >
-                    <Matching
-                        onAddItem={(item) => handleAddTodoList(item, true)}
-                        onRejectItem={handleReject}
-                        itemList={todoList}
-                        rejectedDateList={rejectedDateList}
-                    />
-                </div>
-                <div
-                    style={{display: tab === 1 ? 'block' : 'none'}}
-                >
-                    <Todos
-                        items={todoList}
-                        onAddItem={(item) => handleAddTodoList(item, false)}
-                        onDeleteItems={handleDeleteTodoList}
-                        onToggleListSelected={handleChangeTodoList}
-                    />
-                </div>
-            </div>
-            <div className='TabBar'>
-                <div
-                    className={'Tab ' + (tab === 0 ? 'TabSelected' : '')}
-                    onClick={() => setTab(0)}
-                >
-                    Matching!
-                </div>
-                <div
-                    className={'Tab ' + (tab === 1 ? 'TabSelected' : '')}
-                    onClick={() => setTab(1)}
-                >
-                    List
+            <div className="cardCategoryTabs">
+                {tabsCategories.map((cat, i) => (
                     <div
-                        className={
-                            'TabFloatingIcon'
-                            + (floatingIcon === 1 ? ' TabFloatingIconActive' : '')
-                        }
+                        key={i}
+                        onClick={() => setCategory(cat)}
+                        className={`cardCategoryTab ${cat === category ? 'cardCategoryTabActive' : ''}`}
                     >
-                        +1
+                        {cat}
                     </div>
+                ))}
+            </div>
+            <div className='todoListDiv'>
+                <h2 className='todoListHeader'>
+                    {category}
+                </h2>
+                <ul className='todoListUl'>
+                    {
+                        list
+                            .map((item) => (
+                                <label key={item.id}>
+                                    <li className={`todoListLi ${item.selected ? 'todoListLiSelected' : ''}`}>
+                                        <input
+                                            type='checkbox'
+                                            checked={item.selected}
+                                            onChange={() => {
+                                                const newItem = structuredClone(item);
+                                                newItem.selected = !item.selected;
+                                                onToggleListSelected(newItem)
+                                            }}
+                                        />
+                                        {item.name}
+                                    </li>
+                                </label>
+                            ))
+                    }
+                    <label key='new'>
+                        <li className='todoListLi'>
+                            <input type='checkbox' disabled/>
+                            <input
+                                type='text'
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && e.target.value !== '') {
+                                        const newItem = {
+                                            id: 0,
+                                            categories: [category],
+                                            name: e.target.value,
+                                            selected: false,
+                                        }
+                                        onAddItem(newItem)
+                                        e.target.value = ''
+                                    }
+                                }}
+                            />
+                        </li>
+                    </label>
+                </ul>
+                <div className="todoListButtonField">
+                    <button
+                        disabled={list.filter((item) => item.selected).length === 0}
+                        onClick={() => deleteItems(false)}
+                    >
+                        Done!
+                    </button>
+                </div>
+                <div className="todoListButtonField">
+                    <button
+                        className={'buttonWarning'}
+                        onClick={() => deleteItems(true)}>
+                        All Done!
+                    </button>
                 </div>
             </div>
         </>
-    )
+    );
 }
+
+TodoList.propTypes = {
+    items: PropTypes.array.isRequired,
+    onAddItem: PropTypes.func.isRequired,
+    onDeleteItems: PropTypes.func.isRequired,
+    onToggleListSelected: PropTypes.func.isRequired,
+};
 
