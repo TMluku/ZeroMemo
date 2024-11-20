@@ -91,6 +91,11 @@ const necessaryItemsName = [
     '鎮痛剤',
 ]
 
+const itemNameToItem = (name, categories) => {
+    const url = `./${name}.png`;
+    return {categories, name, url};
+}
+
 export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedDateList}) {
     const makeItems = (category) => {
         const anyCategory = category === 'すべて';
@@ -101,24 +106,16 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
         }
         const groceryItems = anyCategory || category === '食料品' ? groceryItemsName
             .filter(filterFunc)
-            .map(name => ({
-                categories: ['食料品'], name: name, url: `./${name}.png`,
-            })) : [];
+            .map(name => itemNameToItem(name, ['食料品'])) : [];
         const necessaryItems = anyCategory || category === '日用品' ? necessaryItemsName
             .filter(filterFunc)
-            .map(name => ({
-                categories: ['日用品'], name: name, url: `./${name}.png`,
-            })) : [];
+            .map(name => itemNameToItem(name, ['日用品'])) : [];
         const seasoningItems = anyCategory || category === '調味料' ? seasoningItemsName
             .filter(filterFunc)
-            .map(name => ({
-                categories: ['調味料'], name: name, url: `./${name}.png`,
-            })) : [];
+            .map(name => itemNameToItem(name, ['調味料'])) : [];
         const condimentItems = anyCategory || category === '調味料' || category === '食料品' ? condimentItemsName
             .filter(filterFunc)
-            .map(name => ({
-                categories: ['調味料', '食料品'], name: name, url: `./${name}.png`,
-            })) : [];
+            .map(name => itemNameToItem(name, ['調味料', '食料品'])) : [];
 
         const items = [...groceryItems, ...necessaryItems, ...seasoningItems, ...condimentItems];
 
@@ -174,7 +171,7 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
             onAddItem({id: 0, categories: card.categories, name: card.name, selected: false});
         }
         if (dir === 'left') {
-            onRejectItem(card.name);
+            onRejectItem(card.name, new Date());
         }
     }
 
