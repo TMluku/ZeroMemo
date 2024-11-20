@@ -2,6 +2,8 @@ import {useState} from 'react'
 import './TodoList.css'
 import TodoList from './TodoList.jsx';
 import SwipeCards from './SwipeCards.jsx';
+import './Modal.css';
+import walkthrough from './assets/walkthrough.gif';
 
 export default function Home() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoListV2') || '[]');
@@ -16,6 +18,7 @@ export default function Home() {
             ).map(([_, date]) => [_, new Date(date)])
         );
     const [rejectedDateList, setRejectedDateList] = useState(localStorageRejectedDateList);
+    const [modal, setModal] = useState((localStorage.getItem('modal') || 'true') === 'true');
 
     function handleAddTodoList(item, notification) {
         item.id = nextTodoId;
@@ -63,6 +66,12 @@ export default function Home() {
                     itemList={todoList}
                     rejectedDateList={rejectedDateList}
                 />
+                <button
+                    className='ModalButton'
+                    onClick={() => setModal(true)}
+                >
+                    Show Demo
+                </button>
             </div>
             <div
                 className='TodoList'
@@ -95,6 +104,34 @@ export default function Home() {
                     >
                         +1
                     </div>
+                </div>
+            </div>
+            <div className={'Modal ' + (modal ? 'ModalActive' : '')}>
+                <div className='ModalContent'>
+                    <div className='ModalClose' onClick={() => {
+                        setModal(false)
+                        localStorage.setItem('modal', 'false')
+                    }}>
+                        ×
+                    </div>
+                    <h2>Demo</h2>
+                    <div className='walkthroughVideo'>
+                        <img
+                            src={walkthrough}
+                            alt={'walkthrough'}
+                        />
+                    </div>
+                    <p>
+                        右で追加、左でスキップ
+                    </p>
+                    <button
+                        onClick={() => {
+                            setModal(false)
+                            localStorage.setItem('modal', 'false')
+                        }}
+                    >
+                        Ok!
+                    </button>
                 </div>
             </div>
         </>
