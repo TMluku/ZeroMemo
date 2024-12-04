@@ -76,6 +76,11 @@
   box-shadow: none;
 }
 
+.cardCategoryTabNumber {
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+
 @media (prefers-color-scheme: light) {
   .cardCategoryTab {
     background-color: #f0f0f0;
@@ -85,6 +90,10 @@
   .cardCategoryTabActive {
     background-color: #ffffff;
     box-shadow: none;
+  }
+
+  .cardCategoryTabNumber {
+    color: #666666;
   }
 }
 

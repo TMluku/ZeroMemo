@@ -121,6 +121,17 @@ button.buttonWarning {
   background: #3a3a3a;
 }
 
+.TabBadge {
+  background: #f44336;
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
 .TabFloatingIcon {
   color: #fff;
   position: relative;
@@ -149,6 +160,11 @@ button.buttonWarning {
 
   .TabFloatingIcon {
     color: #000;
+  }
+
+  .TabBadge {
+    background: #f44336;
+    color: #fff;
   }
 }
 
