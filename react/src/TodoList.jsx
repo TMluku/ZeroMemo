@@ -19,6 +19,9 @@ export default function TodoList({items, onAddItem, onDeleteItems, onToggleListS
                         className={`cardCategoryTab ${cat === category ? 'cardCategoryTabActive' : ''}`}
                     >
                         {cat}
+                        <span className={'cardCategoryTabNumber'}>
+                            {' (' + items.filter((item) => item.categories.includes(cat)).length + ')'}
+                        </span>
                     </div>
                 ))}
             </div>

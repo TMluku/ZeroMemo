@@ -98,6 +98,12 @@ export default function Home() {
                 >
                     メモ
                     <div
+                        className={'TabBadge'}
+                        style={{display: todoList.length === 0 ? 'none' : 'block'}}
+                    >
+                        {todoList.length}
+                    </div>
+                    <div
                         className={
                             'TabFloatingIcon'
                             + (floatingIcon === 1 ? ' TabFloatingIconActive' : '')
