@@ -3,7 +3,7 @@ import './TodoList.css'
 import TodoList from './TodoList.jsx';
 import SwipeCards from './SwipeCards.jsx';
 import './Modal.css';
-import walkthrough from './assets/walkthrough.gif';
+import demo from './assets/demo.gif';
 
 export default function Home() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoListV2') || '[]');
@@ -117,20 +117,18 @@ export default function Home() {
                     <h2>Demo</h2>
                     <div className='walkthroughVideo'>
                         <img
-                            src={walkthrough}
+                            src={demo}
                             alt={'walkthrough'}
+                            height={300}
                         />
                     </div>
-                    <p>
-                        右で追加、左でスキップ
-                    </p>
                     <button
                         onClick={() => {
                             setModal(false)
                             localStorage.setItem('modal', 'false')
                         }}
                     >
-                        Ok!
+                        OK!
                     </button>
                 </div>
             </div>
