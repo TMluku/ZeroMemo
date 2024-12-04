@@ -97,13 +97,17 @@ const itemNameToItem = (name, categories) => {
 }
 
 export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedDateList}) {
-    const makeItems = (category) => {
+    const makeItems = (category, revival) => {
         const anyCategory = category === 'すべて';
         const itemsSet = new Set(itemList.map(item => item.name));
         const date = new Date();
-        const filterFunc = (item) => {
-            return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > 1000 * 60);
-        }
+        const filterFunc = revival ?
+            (item) => {
+                return !itemsSet.has(item);
+            } :
+            (item) => {
+                return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > 1000 * 60);
+            }
         const groceryItems = anyCategory || category === '食料品' ? groceryItemsName
             .filter(filterFunc)
             .map(name => itemNameToItem(name, ['食料品'])) : [];
@@ -128,8 +132,8 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
             .slice(0, itemLength);
     }
 
-    const updateList = (category) => {
-        const shuffleItems = makeItems(category);
+    const updateList = (category, revival) => {
+        const shuffleItems = makeItems(category, revival);
         setCards(shuffleItems);
         updateCurrentIndex(shuffleItems.length - 1);
         childRefs.forEach((childRef) => {
@@ -138,9 +142,6 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
     }
 
     function updateTab(category) {
-        if (tabCategory === category) {
-            return;
-        }
         setTabCategory(category);
         updateList(category);
     }
@@ -148,7 +149,7 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
     const tabsCategories = ['食料品', '調味料', '日用品'];
     const [tabCategory, setTabCategory] = useState(tabsCategories[0]);
 
-    const shuffledItems = makeItems(tabCategory);
+    const shuffledItems = makeItems(tabCategory, false);
     const [cards, setCards] = useState(shuffledItems);
 
     const [currentIndex, setCurrentIndex] = useState(cards.length - 1);
@@ -198,6 +199,14 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
                     のこり{currentIndex + 1}枚
                 </h4>
                 <div className="cardContainer">
+                    <button
+                        className="reloadCardButton"
+                        onClick={() => {
+                            updateList(tabCategory, true)
+                        }}
+                    >
+                        ↻
+                    </button>
                     {cards.map((card, i) => (<TinderCard
                         ref={childRefs[i]}
                         className={'swipe'}

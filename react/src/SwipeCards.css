@@ -52,6 +52,15 @@
   margin: 20px auto;
 }
 
+.reloadCardButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
+  padding: 1rem;
+}
+
 .cardLeft {
   margin-bottom: 0;
 }
