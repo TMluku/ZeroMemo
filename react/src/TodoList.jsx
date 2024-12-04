@@ -4,6 +4,8 @@ import {useState} from 'react';
 
 export default function TodoList({items, onAddItem, onDeleteItems, onToggleListSelected}) {
     const [category, setCategory] = useState('食料品');
+    const [allDoneConfirm, setAllDoneConfirm] = useState(false);
+    const [allDoneTimeOut, setAllDoneTimeOut] = useState(undefined);
     const tabsCategories = ['食料品', '調味料', '日用品'];
     const deleteItems = onDeleteItems(category);
     const list = items.filter((item) => item.categories.includes(category));
@@ -76,8 +78,22 @@ export default function TodoList({items, onAddItem, onDeleteItems, onToggleListS
                 <div className="todoListButtonField">
                     <button
                         className={'buttonWarning'}
-                        onClick={() => deleteItems(true)}>
-                        All Done!
+                        onClick={() => {
+                            if (allDoneConfirm) {
+                                deleteItems(true)
+                                clearTimeout(allDoneTimeOut)
+                                setAllDoneConfirm(false)
+                                setTimeout(undefined)
+                            } else {
+                                setAllDoneConfirm(true)
+                                const timeOut = setTimeout(() => {
+                                    setAllDoneConfirm(false)
+                                }, 3000)
+                                setAllDoneTimeOut(timeOut)
+                            }
+                        }}
+                    >
+                        {allDoneConfirm ? 'Are you sure?' : 'All Done!'}
                     </button>
                 </div>
             </div>
