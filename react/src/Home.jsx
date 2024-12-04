@@ -3,6 +3,7 @@ import './TodoList.css'
 import TodoList from './TodoList.jsx';
 import SwipeCards from './SwipeCards.jsx';
 import './Modal.css';
+import './Home.css';
 import demo from './assets/demo.gif';
 
 export default function Home() {
@@ -70,7 +71,7 @@ export default function Home() {
                     className='ModalButton'
                     onClick={() => setModal(true)}
                 >
-                    Show Demo
+                    デモ動画を見る
                 </button>
             </div>
             <div
@@ -89,13 +90,13 @@ export default function Home() {
                     className={'Tab ' + (tab === 0 ? 'TabSelected' : '')}
                     onClick={() => setTab(0)}
                 >
-                    Matching!
+                    探す
                 </div>
                 <div
                     className={'Tab ' + (tab === 1 ? 'TabSelected' : '')}
                     onClick={() => setTab(1)}
                 >
-                    List
+                    メモ
                     <div
                         className={
                             'TabFloatingIcon'
@@ -114,8 +115,8 @@ export default function Home() {
                     }}>
                         ×
                     </div>
-                    <h2>Demo</h2>
-                    <div className='walkthroughVideo'>
+                    <h2>デモンストレーション</h2>
+                    <div className='modalWalkthroughVideo'>
                         <img
                             src={demo}
                             alt={'walkthrough'}
@@ -128,7 +129,7 @@ export default function Home() {
                             localStorage.setItem('modal', 'false')
                         }}
                     >
-                        OK!
+                        了解
                     </button>
                 </div>
             </div>
