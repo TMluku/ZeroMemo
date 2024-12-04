@@ -217,13 +217,13 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
                     <button
                         onClick={() => swipe('left')}
                     >
-                        Not yet
+                        いらない
                     </button>
                     <button
                         onClick={() => swipe('right')}
                         className="buttonGood"
                     >
-                        Need!
+                        いる！
                     </button>
                 </div>
             </div>
