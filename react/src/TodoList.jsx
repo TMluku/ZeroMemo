@@ -72,7 +72,7 @@ export default function TodoList({items, onAddItem, onDeleteItems, onToggleListS
                         disabled={list.filter((item) => item.selected).length === 0}
                         onClick={() => deleteItems(false)}
                     >
-                        Done!
+                        削除
                     </button>
                 </div>
                 <div className="todoListButtonField">
@@ -93,7 +93,7 @@ export default function TodoList({items, onAddItem, onDeleteItems, onToggleListS
                             }
                         }}
                     >
-                        {allDoneConfirm ? 'Are you sure?' : 'All Done!'}
+                        {allDoneConfirm ? 'もう一度押下して全削除' : '全削除'}
                     </button>
                 </div>
             </div>
