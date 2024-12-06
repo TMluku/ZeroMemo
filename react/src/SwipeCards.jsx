@@ -96,7 +96,19 @@ const itemNameToItem = (name, categories) => {
     return {categories, name, url};
 }
 
-export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedDateList}) {
+export default function SwipeCards({
+                                       onAddItem,
+                                       onRejectItem,
+                                       onAddUserPrefers,
+                                       itemList,
+                                       userPrefers,
+                                       rejectedDateList
+                                   }) {
+
+    const getUserPrefers = (name) => {
+        return userPrefers[name] || 0;
+    }
+
     const makeItems = (category, revival) => {
         const anyCategory = category === 'すべて';
         const itemsSet = new Set(itemList.map(item => item.name));
@@ -126,8 +138,13 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
         const itemLength = category === 'すべて' ? 20 : items.length;
 
         return items
-            .map(value => ({value, sort: Math.random()}))
-            .sort((a, b) => a.sort - b.sort)
+            .map(value => ({value, prefer: getUserPrefers(value.name), sort: Math.random()}))
+            .sort((a, b) => {
+                if (a.prefer !== b.prefer) {
+                    return a.prefer - b.prefer;
+                }
+                return a.sort - b.sort
+            })
             .map(({value}) => value)
             .slice(0, itemLength);
     }
@@ -169,6 +186,10 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
     const swiped = (dir, card, index) => {
         updateCurrentIndex(index - 1);
         if (dir === 'right') {
+            const score =
+                card.categories.includes('調味料') ||
+                card.categories.includes('日用品') ? -1 : 1;
+            onAddUserPrefers(card.name, score);
             onAddItem({id: 0, categories: card.categories, name: card.name, selected: false});
         }
         if (dir === 'left') {
@@ -246,7 +267,7 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
                         onClick={undoSwipe}
                         className="buttonUndo"
                     >
-                        元に戻す
+                        一つ戻す
                     </button>
                 </div>
             </div>
@@ -257,6 +278,8 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
 SwipeCards.propTypes = {
     onAddItem: PropTypes.func.isRequired,
     onRejectItem: PropTypes.func.isRequired,
+    onAddUserPrefers: PropTypes.func.isRequired,
     itemList: PropTypes.array.isRequired,
+    userPrefers: PropTypes.object.isRequired,
     rejectedDateList: PropTypes.object.isRequired,
 }
