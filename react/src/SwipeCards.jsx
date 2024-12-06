@@ -182,6 +182,12 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
         }
     }
 
+    function undoSwipe() {
+        if (currentIndexRef.current < cards.length - 1) {
+            updateCurrentIndex(currentIndexRef.current + 1);
+            childRefs[currentIndexRef.current].current.restoreCard();
+        }
+    }
 
     return (
         <>
@@ -233,6 +239,14 @@ export default function SwipeCards({onAddItem, onRejectItem, itemList, rejectedD
                         className="buttonGood"
                     >
                         いる！
+                    </button>
+                </div>
+                <div className="swipeCardButtons">
+                    <button
+                        onClick={undoSwipe}
+                        className="buttonUndo"
+                    >
+                        元に戻す
                     </button>
                 </div>
             </div>
