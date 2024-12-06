@@ -18,6 +18,7 @@ export default function Home() {
                 JSON.parse(localStorage.getItem('rejectedDateList') || '{}')
             ).map(([_, date]) => [_, new Date(date)])
         );
+    const [userPrefers, setUserPrefers] = useState(JSON.parse(localStorage.getItem('userPrefer') || '{}'));
     const [rejectedDateList, setRejectedDateList] = useState(localStorageRejectedDateList);
     const [modal, setModal] = useState((localStorage.getItem('modal') || 'true') === 'true');
 
@@ -55,6 +56,14 @@ export default function Home() {
         }
     }
 
+    function handleAddUserPrefers(item, diff) {
+        console.log(userPrefers);
+        const score = userPrefers[item] || 0;
+        const newUserPrefers = {...userPrefers, [item]: score + diff};
+        setUserPrefers(newUserPrefers);
+        localStorage.setItem('userPrefer', JSON.stringify(newUserPrefers));
+    }
+
     return (<>
         <div
             className='TodoList'
@@ -63,7 +72,9 @@ export default function Home() {
             <SwipeCards
                 onAddItem={(item) => handleAddTodoList(item, true)}
                 onRejectItem={handleReject}
+                onAddUserPrefers={handleAddUserPrefers}
                 itemList={todoList}
+                userPrefers={userPrefers}
                 rejectedDateList={rejectedDateList}
             />
             <button
