@@ -59,7 +59,7 @@ export default function Home() {
     function handleAddUserPrefers(item, diff) {
         console.log(userPrefers);
         const score = userPrefers[item] || 0;
-        const newUserPrefers = {...userPrefers, [item]: score + diff};
+        const newUserPrefers = {...userPrefers, [item]: diff(score)};
         setUserPrefers(newUserPrefers);
         localStorage.setItem('userPrefer', JSON.stringify(newUserPrefers));
     }
@@ -76,6 +76,7 @@ export default function Home() {
                 itemList={todoList}
                 userPrefers={userPrefers}
                 rejectedDateList={rejectedDateList}
+                timeout={0}
             />
             <button
                 className='ModalButton'
