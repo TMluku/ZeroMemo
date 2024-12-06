@@ -100,6 +100,7 @@ export default function SwipeCards({
                                        onAddItem,
                                        onRejectItem,
                                        onAddUserPrefers,
+                                       timeout = 1000 * 60,
                                        itemList,
                                        userPrefers,
                                        rejectedDateList
@@ -118,7 +119,7 @@ export default function SwipeCards({
                 return !itemsSet.has(item);
             } :
             (item) => {
-                return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > 1000 * 60);
+                return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > timeout);
             }
         const groceryItems = anyCategory || category === '食料品' ? groceryItemsName
             .filter(filterFunc)
@@ -189,10 +190,11 @@ export default function SwipeCards({
             const score =
                 card.categories.includes('調味料') ||
                 card.categories.includes('日用品') ? -1 : 1;
-            onAddUserPrefers(card.name, score);
+            onAddUserPrefers(card.name, (s) => s + score);
             onAddItem({id: 0, categories: card.categories, name: card.name, selected: false});
         }
         if (dir === 'left') {
+            onAddUserPrefers(card.name, (s) => s * 1);
             onRejectItem(card.name, new Date());
         }
     }
@@ -245,7 +247,7 @@ export default function SwipeCards({
                             style={{backgroundImage: `url(${card.url})`}}
                             className={'card'}
                         >
-                            <h3>{card.name}</h3>
+                            <h3>{card.name} : {Math.floor(getUserPrefers(card.name))}</h3>
                         </div>
                     </TinderCard>))}
                 </div>
@@ -279,6 +281,7 @@ SwipeCards.propTypes = {
     onAddItem: PropTypes.func.isRequired,
     onRejectItem: PropTypes.func.isRequired,
     onAddUserPrefers: PropTypes.func.isRequired,
+    timeout: PropTypes.number.isRequired,
     itemList: PropTypes.array.isRequired,
     userPrefers: PropTypes.object.isRequired,
     rejectedDateList: PropTypes.object.isRequired,
