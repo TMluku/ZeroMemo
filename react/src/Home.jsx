@@ -4,7 +4,7 @@ import TodoList from './TodoList.jsx';
 import SwipeCards from './SwipeCards.jsx';
 import './Modal.css';
 import './Home.css';
-import demo from './assets/demo.gif';
+import demo from './assets/walkthrough.mp4';
 
 export default function Home() {
     const localStorageTodoList = JSON.parse(localStorage.getItem('todoListV2') || '[]');
@@ -55,91 +55,87 @@ export default function Home() {
         }
     }
 
-    return (
-        <>
-            <div
-                className='TodoList'
-                style={{display: tab === 0 ? 'block' : 'none'}}
+    return (<>
+        <div
+            className='TodoList'
+            style={{display: tab === 0 ? 'block' : 'none'}}
+        >
+            <SwipeCards
+                onAddItem={(item) => handleAddTodoList(item, true)}
+                onRejectItem={handleReject}
+                itemList={todoList}
+                rejectedDateList={rejectedDateList}
+            />
+            <button
+                className='ModalButton'
+                onClick={() => setModal(true)}
             >
-                <SwipeCards
-                    onAddItem={(item) => handleAddTodoList(item, true)}
-                    onRejectItem={handleReject}
-                    itemList={todoList}
-                    rejectedDateList={rejectedDateList}
-                />
+                デモ動画を見る
+            </button>
+        </div>
+        <div
+            className='TodoList'
+            style={{display: tab === 1 ? 'block' : 'none'}}
+        >
+            <TodoList
+                items={todoList}
+                onAddItem={(item) => handleAddTodoList(item, false)}
+                onDeleteItems={handleDeleteTodoList}
+                onToggleListSelected={handleChangeTodoList}
+            />
+        </div>
+        <div className='TabBar'>
+            <div
+                className={'Tab ' + (tab === 0 ? 'TabSelected' : '')}
+                onClick={() => setTab(0)}
+            >
+                探す
+            </div>
+            <div
+                className={'Tab ' + (tab === 1 ? 'TabSelected' : '')}
+                onClick={() => setTab(1)}
+            >
+                メモ
+                <div
+                    className={'TabBadge'}
+                    style={{display: todoList.length === 0 ? 'none' : 'block'}}
+                >
+                    {todoList.length}
+                </div>
+                <div
+                    className={'TabFloatingIcon' + (floatingIcon === 1 ? ' TabFloatingIconActive' : '')}
+                >
+                    +1
+                </div>
+            </div>
+        </div>
+        <div className={'Modal ' + (modal ? 'ModalActive' : '')}>
+            <div className='ModalContent'>
+                <div className='ModalClose' onClick={() => {
+                    setModal(false)
+                    localStorage.setItem('modal', 'false')
+                }}>
+                    ×
+                </div>
+                <h2>デモンストレーション</h2>
+                <div className='modalWalkthroughVideo'>
+                    {modal ? <video
+                        src={demo}
+                        autoPlay
+                        loop
+                        height={300}
+                    /> : <></>}
+                </div>
                 <button
-                    className='ModalButton'
-                    onClick={() => setModal(true)}
-                >
-                    デモ動画を見る
-                </button>
-            </div>
-            <div
-                className='TodoList'
-                style={{display: tab === 1 ? 'block' : 'none'}}
-            >
-                <TodoList
-                    items={todoList}
-                    onAddItem={(item) => handleAddTodoList(item, false)}
-                    onDeleteItems={handleDeleteTodoList}
-                    onToggleListSelected={handleChangeTodoList}
-                />
-            </div>
-            <div className='TabBar'>
-                <div
-                    className={'Tab ' + (tab === 0 ? 'TabSelected' : '')}
-                    onClick={() => setTab(0)}
-                >
-                    探す
-                </div>
-                <div
-                    className={'Tab ' + (tab === 1 ? 'TabSelected' : '')}
-                    onClick={() => setTab(1)}
-                >
-                    メモ
-                    <div
-                        className={'TabBadge'}
-                        style={{display: todoList.length === 0 ? 'none' : 'block'}}
-                    >
-                        {todoList.length}
-                    </div>
-                    <div
-                        className={
-                            'TabFloatingIcon'
-                            + (floatingIcon === 1 ? ' TabFloatingIconActive' : '')
-                        }
-                    >
-                        +1
-                    </div>
-                </div>
-            </div>
-            <div className={'Modal ' + (modal ? 'ModalActive' : '')}>
-                <div className='ModalContent'>
-                    <div className='ModalClose' onClick={() => {
+                    onClick={() => {
                         setModal(false)
                         localStorage.setItem('modal', 'false')
-                    }}>
-                        ×
-                    </div>
-                    <h2>デモンストレーション</h2>
-                    <div className='modalWalkthroughVideo'>
-                        <img
-                            src={demo}
-                            alt={'walkthrough'}
-                            height={300}
-                        />
-                    </div>
-                    <button
-                        onClick={() => {
-                            setModal(false)
-                            localStorage.setItem('modal', 'false')
-                        }}
-                    >
-                        了解
-                    </button>
-                </div>
+                    }}
+                >
+                    了解
+                </button>
             </div>
-        </>
-    )
+        </div>
+    </>)
 }
 
