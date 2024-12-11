@@ -116,10 +116,10 @@ export default function SwipeCards({
         const date = new Date();
         const filterFunc = revival ?
             (item) => {
-                return !itemsSet.has(item);
+                return !itemsSet.has(item) && getUserPrefers(item) > -100;
             } :
             (item) => {
-                return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > timeout);
+                return !itemsSet.has(item) && (!rejectedDateList[item] || date.getTime() - rejectedDateList[item].getTime() > timeout) && getUserPrefers(item) > -100;
             }
         const groceryItems = anyCategory || category === '食料品' ? groceryItemsName
             .filter(filterFunc)
