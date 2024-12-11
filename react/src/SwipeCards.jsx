@@ -197,6 +197,9 @@ export default function SwipeCards({
             onAddUserPrefers(card.name, (s) => s * 1);
             onRejectItem(card.name, new Date());
         }
+        if (dir === 'down') {
+            onAddUserPrefers(card.name, () => -999999);
+        }
     }
 
     const swipe = async (dir) => {
@@ -242,6 +245,7 @@ export default function SwipeCards({
                         key={i}
                         preventSwipe={['up', 'down']}
                         onSwipe={(dir) => swiped(dir, card, i)}
+                        // onCardLeftScreen={(dir) => swiped(dir, card, i)}
                     >
                         <div
                             style={{backgroundImage: `url(${card.url})`}}
@@ -262,6 +266,16 @@ export default function SwipeCards({
                         className="buttonGood"
                     >
                         いる！
+                    </button>
+                </div>
+                <div className="swipeCardButtons">
+                    <button
+                        onClick={() => {
+                            confirm('スーパーいらないモードを実行しますか？') && swipe('down');
+                        }}
+                        className="buttonWarning"
+                    >
+                        超いらない
                     </button>
                 </div>
                 <div className="swipeCardButtons">
