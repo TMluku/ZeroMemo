@@ -257,33 +257,18 @@ export default function SwipeCards({
                 </div>
                 <div className="swipeCardButtons">
                     <button
-                        onClick={() => swipe('left')}
-                    >
-                        いらない
-                    </button>
-                    <button
-                        onClick={() => swipe('right')}
-                        className="buttonGood"
-                    >
-                        いる！
-                    </button>
-                </div>
-                <div className="swipeCardButtons">
-                    <button
-                        onClick={() => {
-                            confirm('スーパーいらないモードを実行しますか？') && swipe('down');
-                        }}
-                        className="buttonWarning"
-                    >
-                        超いらない
-                    </button>
-                </div>
-                <div className="swipeCardButtons">
-                    <button
                         onClick={undoSwipe}
                         className="buttonUndo"
                     >
-                        一つ戻す
+                        一つ戻す ↩️
+                    </button>
+                    <button
+                        onClick={() => {
+                            confirm('このカードをゴミ箱に移しますか？\nゴミ箱にあるカードは表示されなくなります。\nゴミ箱のカードはいつでももどすことができます。') && swipe('down');
+                        }}
+                        className="buttonWarning"
+                    >
+                        ゴミ箱へ 🚮
                     </button>
                 </div>
             </div>

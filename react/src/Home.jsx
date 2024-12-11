@@ -20,7 +20,8 @@ export default function Home() {
         );
     const [userPrefers, setUserPrefers] = useState(JSON.parse(localStorage.getItem('userPrefer') || '{}'));
     const [rejectedDateList, setRejectedDateList] = useState(localStorageRejectedDateList);
-    const [modal, setModal] = useState((localStorage.getItem('modal') || 'true') === 'true');
+    const [demoModal, setDemoModal] = useState((localStorage.getItem('demoModal') || 'true') === 'true');
+    const [trashModal, setTrashModal] = useState(false);
 
     function handleAddTodoList(item, notification) {
         item.id = nextTodoId;
@@ -56,8 +57,7 @@ export default function Home() {
         }
     }
 
-    function handleAddUserPrefers(item, diff) {
-        console.log(userPrefers);
+    function handleModifyOrAddUserPrefers(item, diff) {
         const score = userPrefers[item] || 0;
         const newUserPrefers = {...userPrefers, [item]: diff(score)};
         setUserPrefers(newUserPrefers);
@@ -72,7 +72,7 @@ export default function Home() {
             <SwipeCards
                 onAddItem={(item) => handleAddTodoList(item, true)}
                 onRejectItem={handleReject}
-                onAddUserPrefers={handleAddUserPrefers}
+                onAddUserPrefers={handleModifyOrAddUserPrefers}
                 itemList={todoList}
                 userPrefers={userPrefers}
                 rejectedDateList={rejectedDateList}
@@ -115,17 +115,24 @@ export default function Home() {
                 </div>
             </div>
         </div>
-        <div className={'Modal ' + (modal ? 'ModalActive' : '')}>
+
+        <button
+            onClick={() => setTrashModal(true)}
+        >
+            ゴミ箱 🗑️
+        </button>
+
+        <div className={'Modal ' + (demoModal ? 'ModalActive' : '')}>
             <div className='ModalContent'>
                 <div className='ModalClose' onClick={() => {
-                    setModal(false)
-                    localStorage.setItem('modal', 'false')
+                    setDemoModal(false)
+                    localStorage.setItem('demoModal', 'false')
                 }}>
                     ×
                 </div>
                 <h2>デモンストレーション</h2>
                 <div className='modalWalkthroughVideo'>
-                    {modal ? <video
+                    {demoModal ? <video
                         src={demo}
                         autoPlay
                         loop
@@ -134,11 +141,55 @@ export default function Home() {
                 </div>
                 <button
                     onClick={() => {
-                        setModal(false)
-                        localStorage.setItem('modal', 'false')
+                        setDemoModal(false)
+                        localStorage.setItem('demoModal', 'false')
                     }}
                 >
                     了解
+                </button>
+            </div>
+        </div>
+
+        <div className={'Modal ' + (trashModal ? 'ModalActive' : '')}>
+            <div className='ModalContent'>
+                <div className='ModalClose' onClick={() => {
+                    setTrashModal(false)
+                }}>
+                    ×
+                </div>
+                <h2>ゴミ箱</h2>
+                <div className='TrashList'>
+                    <ul className='TrashListUL'>
+                        {
+                            Object.entries(userPrefers)
+                            .filter(([, score]) => score < -100)
+                            .map(([item,]) => (
+                                <li
+                                    className={'TrashListLI'}
+                                    key={item}>
+                                    <div className={'TodoListItemName'}>
+                                        {item}
+                                    </div>
+                                    <div className={'TodoListItemButton'}>
+                                        <button
+                                            className={'TrashListButton'}
+                                            onClick={() =>
+                                                handleModifyOrAddUserPrefers(item, () => 0)
+                                            }
+                                        >もどす
+                                        </button>
+                                    </div>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+                <button
+                    onClick={() => {
+                        setTrashModal(false)
+                    }}
+                >
+                    完了
                 </button>
             </div>
         </div>
