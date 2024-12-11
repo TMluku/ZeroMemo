@@ -78,12 +78,6 @@ export default function Home() {
                 rejectedDateList={rejectedDateList}
                 timeout={0}
             />
-            <button
-                className='ModalButton'
-                onClick={() => setModal(true)}
-            >
-                デモ動画を見る
-            </button>
         </div>
         <div
             className='TodoList'
