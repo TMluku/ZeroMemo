@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TinderCard from 'react-tinder-card';
 import * as PropTypes from 'prop-types';
 import './SwipeCards.css';
@@ -32,6 +32,7 @@ const groceryItemsName = [
     '米',
     '納豆',
     '豆腐',
+    'ツナ缶',
 ];
 
 const seasoningItemsName = [
@@ -59,6 +60,7 @@ const seasoningItemsName = [
     '醤油',
     '味噌',
     '鶏がらスープの素',
+    '片栗粉',
 ];
 
 const condimentItemsName = [
@@ -89,6 +91,11 @@ const necessaryItemsName = [
     '化粧水',
     '洗顔フォーム',
     '鎮痛剤',
+    'トイレ洗浄',
+    'マスク',
+    '殺虫剤',
+    '消臭剤',
+    '衣類用漂白剤',
 ]
 
 const itemNameToItem = (name, categories) => {

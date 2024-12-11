@@ -118,6 +118,7 @@ export default function Home() {
 
         <button
             onClick={() => setTrashModal(true)}
+            style={{display: tab === 0 ? '' : 'none'}}
         >
             ゴミ箱 🗑️
         </button>

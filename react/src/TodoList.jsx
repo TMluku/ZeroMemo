@@ -75,7 +75,7 @@ export default function TodoList({items, onAddItem, onDeleteItems, onToggleListS
                         disabled={list.filter((item) => item.selected).length === 0}
                         onClick={() => deleteItems(false)}
                     >
-                        削除
+                        削除 ✅
                     </button>
                 </div>
                 <div className="todoListButtonField">
