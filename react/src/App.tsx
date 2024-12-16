@@ -1,8 +1,8 @@
 import './App.css'
-import Home from './Home.jsx';
+import Home from './Home.js';
 
 const App = () => (
-    <Home/>
+  <Home/>
 );
 
 export default App
