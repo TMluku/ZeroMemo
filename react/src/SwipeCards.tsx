@@ -256,7 +256,7 @@ export default function SwipeCards({
             // onCardLeftScreen={(dir) => swiped(dir, card, i)}
           >
             <div
-              style={{backgroundImage: `url(${card.url})`}}
+              style={{backgroundImage: `url(data:image/png;base64,${card.imgBase64})`}}
               className={'card'}
             >
               <h3>{card.name}</h3>
