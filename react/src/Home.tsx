@@ -4,6 +4,7 @@ import TodoList from './TodoList.js';
 import SwipeCards from './SwipeCards.js';
 import './Modal.css';
 import './Home.css';
+import base64_images from './assets/images_base64.json';
 
 export class Item {
   id: number;
