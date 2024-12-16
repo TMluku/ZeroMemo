@@ -66,7 +66,7 @@ export default function Home() {
 
     return (<>
         <div
-            className='TodoList'
+            className="TodoList"
             style={{display: tab === 0 ? 'block' : 'none'}}
         >
             <SwipeCards
@@ -80,7 +80,7 @@ export default function Home() {
             />
         </div>
         <div
-            className='TodoList'
+            className="TodoList"
             style={{display: tab === 1 ? 'block' : 'none'}}
         >
             <TodoList
@@ -90,7 +90,7 @@ export default function Home() {
                 onToggleListSelected={handleChangeTodoList}
             />
         </div>
-        <div className='TabBar'>
+        <div className="TabBar">
             <div
                 className={'Tab ' + (tab === 0 ? 'TabSelected' : '')}
                 onClick={() => setTab(0)}
@@ -124,19 +124,19 @@ export default function Home() {
         </button>
 
         <div className={'Modal ' + (demoModal ? 'ModalActive' : '')}>
-            <div className='ModalContent'>
-                <div className='ModalClose' onClick={() => {
+            <div className="ModalContent">
+                <div className="ModalClose" onClick={() => {
                     setDemoModal(false)
                     localStorage.setItem('demoModal', 'false')
                 }}>
                     ×
                 </div>
                 <h2>デモンストレーション</h2>
-                <div className='modalWalkthroughVideo'>
+                <div className="modalWalkthroughVideo">
                     {demoModal ? <video
                         src={demo}
                         autoPlay
-                        loop
+                        muted
                         height={300}
                     /> : <></>}
                 </div>
@@ -152,36 +152,36 @@ export default function Home() {
         </div>
 
         <div className={'Modal ' + (trashModal ? 'ModalActive' : '')}>
-            <div className='ModalContent'>
-                <div className='ModalClose' onClick={() => {
+            <div className="ModalContent">
+                <div className="ModalClose" onClick={() => {
                     setTrashModal(false)
                 }}>
                     ×
                 </div>
                 <h2>ゴミ箱</h2>
-                <div className='TrashList'>
-                    <ul className='TrashListUL'>
+                <div className="TrashList">
+                    <ul className="TrashListUL">
                         {
                             Object.entries(userPrefers)
-                            .filter(([, score]) => score < -100)
-                            .map(([item,]) => (
-                                <li
-                                    className={'TrashListLI'}
-                                    key={item}>
-                                    <div className={'TodoListItemName'}>
-                                        {item}
-                                    </div>
-                                    <div className={'TodoListItemButton'}>
-                                        <button
-                                            className={'TrashListButton'}
-                                            onClick={() =>
-                                                handleModifyOrAddUserPrefers(item, () => 0)
-                                            }
-                                        >もどす
-                                        </button>
-                                    </div>
-                                </li>
-                            ))
+                                .filter(([, score]) => score < -100)
+                                .map(([item,]) => (
+                                    <li
+                                        className={'TrashListLI'}
+                                        key={item}>
+                                        <div className={'TodoListItemName'}>
+                                            {item}
+                                        </div>
+                                        <div className={'TodoListItemButton'}>
+                                            <button
+                                                className={'TrashListButton'}
+                                                onClick={() =>
+                                                    handleModifyOrAddUserPrefers(item, () => 0)
+                                                }
+                                            >もどす
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))
                         }
                     </ul>
                 </div>
