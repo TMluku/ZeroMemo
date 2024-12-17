@@ -106,6 +106,7 @@ button.buttonWarning {
 }
 
 .Tab {
+  position: relative;
   width: 100%;
   color: #fff;
   text-align: center;
