@@ -1,10 +1,10 @@
-import {Component} from 'react'
+import {Component, CSSProperties} from 'react'
 import './TodoList.css'
 import TodoList from './TodoList.js';
 import SwipeCards from './SwipeCards.js';
 import './Modal.css';
 import './Home.css';
-import base64_images from './assets/images_base64.json';
+import card_list from './assets/cardList.json';
 
 export class Item {
   id: number;
@@ -23,16 +23,22 @@ export class Item {
 export class Card {
   name: string;
   imgBase64: string;
+  url: string;
   categories: string[];
 
-  constructor(name: string, categories: string[]) {
+  constructor(name: string, url: string, imgBase64: string, categories: string[]) {
     this.name = name;
-    this.imgBase64 = base64_images[name];
+    this.url = url;
+    this.imgBase64 = imgBase64;
     this.categories = categories;
   }
 
-  static fromItem = (name: string, categories: string[]) => {
-    return new Card(name, categories);
+  toBackgroundStyle(): CSSProperties {
+    if (this.imgBase64 === '') {
+      return {backgroundImage: `url(${this.url})`};
+    } else {
+      return {backgroundImage: `url(data:image/png;base64,${this.imgBase64})`};
+    }
   }
 }
 
@@ -53,18 +59,6 @@ interface HomeState {
 }
 
 export default class Home extends Component<object, HomeState> {
-
-  state: HomeState = {
-    todoList: [],
-    nextTodoId: 0,
-    tab: 0,
-    floatingIcon: 0,
-    rejectedDateList: {},
-    userPrefers: {},
-    cardList: [],
-    demoModal: false,
-    trashModal: false,
-  }
 
   handleAddItem = (item: Item) => {
     item.id = this.state.nextTodoId;
@@ -114,11 +108,20 @@ export default class Home extends Component<object, HomeState> {
 
     const todoList: Item[] = JSON.parse(localStorage.getItem('todoListV2') || '[]');
     const nextTodoId = todoList.map((item) => item.id).reduce((a, b) => Math.max(a, b), 0) + 1;
-    const rejectedDateList = JSON.parse(localStorage.getItem('rejectedDateList') || '{}') as {
-      [key: string]: Date
+    const rejectedDateListRaw = JSON.parse(localStorage.getItem('rejectedDateList') || '{}') as {
+      [key: string]: string
     }
+    const rejectedDateList: { [key: string]: Date } = Object.fromEntries(
+      Object.entries(rejectedDateListRaw).map(([key, value]) => [key, new Date(value)])
+    );
     const userPrefers = JSON.parse(localStorage.getItem('userPrefer') || '{}');
-    const cardList = JSON.parse(localStorage.getItem('cardList') || '[]');
+    const cardList = JSON.parse(localStorage.getItem('cardList') || '[]')
+      .map((card: Card) => new Card(card.name, card.url, card.imgBase64, card.categories));
+    if (cardList.length === 0) {
+      const cards = card_list as { name: string, categories: string[] }[];
+      cardList.push(...cards.map((card) => new Card(card.name, `./${card.name}.png`, '', card.categories)));
+      localStorage.setItem('cardList', JSON.stringify(cardList));
+    }
     const demoModal = (localStorage.getItem('demoModal') || 'true') === 'true';
 
     this.state = {
@@ -152,6 +155,7 @@ export default class Home extends Component<object, HomeState> {
             this.handleAddItem(item)
             this.handleItemNotification()
           }}
+          cardList={this.state.cardList}
           onRejectItem={this.handleReject}
           onAddUserPrefers={this.handleModifyOrAddUserPrefers}
           itemList={this.state.todoList}
