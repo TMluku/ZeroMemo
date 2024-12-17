@@ -147,13 +147,22 @@ export default function SwipeCards({
           >
             ↻
           </button>
+          <div className="cardContainerLeftArrow">
+            <p onClick={() => swipe('left')}>
+              <span style={{fontSize: '2em'}}>≪</span> <br/> いらない
+            </p>
+          </div>
+          <div className="cardContainerRightArrow">
+            <p onClick={() => swipe('right')}>
+              <span style={{fontSize: '2em'}}>≫</span> <br/> いる
+            </p>
+          </div>
           {cards.map((card, i) => (<TinderCard
             ref={childRefs[i]}
             className={'swipe'}
             key={i}
             preventSwipe={['up', 'down']}
             onSwipe={(dir) => swiped(dir, card, i)}
-            // onCardLeftScreen={(dir) => swiped(dir, card, i)}
           >
             <div
               style={card.toBackgroundStyle()}

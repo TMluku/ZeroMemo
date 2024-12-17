@@ -147,7 +147,7 @@ export default class Home extends Component<object, HomeState> {
   render() {
     return (<>
       <div
-        className="TodoList"
+        className="Matching"
         style={{display: this.state.tab === 0 ? 'block' : 'none'}}
       >
         <SwipeCards
