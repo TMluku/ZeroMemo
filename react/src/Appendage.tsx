@@ -75,7 +75,17 @@ export default function Appendage({onAppendCard, cardList}: AppendageProps) {
         if (name === "" || categorySelected.every(c => !c)) {
           return;
         }
+        if (cardList.some(c => c.name === name)) {
+          return;
+        }
         onAppendCard?.(new Card(name, "", imgBase64, categoryList.filter((_, i) => categorySelected[i])));
+        setName("");
+        setCategorySelected(new Array(categoryList.length).fill(false));
+        setImgBase64("");
+
+        const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+        const ctx = canvas.getContext("2d");
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
       }}
       >
         追加
