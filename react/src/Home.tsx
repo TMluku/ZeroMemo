@@ -5,6 +5,7 @@ import SwipeCards from './SwipeCards.js';
 import './Modal.css';
 import './Home.css';
 import card_list from './assets/cardList.json';
+import Appendage from "./Appendage.tsx";
 
 export class Item {
   id: number;
@@ -37,7 +38,7 @@ export class Card {
     if (this.imgBase64 === '') {
       return {backgroundImage: `url(${this.url})`};
     } else {
-      return {backgroundImage: `url(data:image/png;base64,${this.imgBase64})`};
+      return {backgroundImage: `url(${this.imgBase64})`};
     }
   }
 }
@@ -101,6 +102,12 @@ export default class Home extends Component<object, HomeState> {
     const userPrefers = {...this.state.userPrefers, [item]: diff(score)};
     this.setState({userPrefers});
     localStorage.setItem('userPrefer', JSON.stringify(userPrefers));
+  }
+
+  handleAppendCard = (card: Card) => {
+    const cardList = [...this.state.cardList, card];
+    this.setState({cardList});
+    localStorage.setItem('cardList', JSON.stringify(cardList));
   }
 
   constructor(props: object) {
@@ -175,6 +182,14 @@ export default class Home extends Component<object, HomeState> {
           onToggleListSelected={this.handleChangeItem}
         />
       </div>
+      <div
+        className="Appendage"
+        style={{display: this.state.tab === 2 ? 'block' : 'none'}}
+      >
+        <Appendage
+          onAppendCard={this.handleAppendCard}
+        />
+      </div>
 
       <div className="TabBar">
         <div
@@ -199,6 +214,12 @@ export default class Home extends Component<object, HomeState> {
           >
             +1
           </div>
+        </div>
+        <div
+          className={'Tab ' + (this.state.tab === 2 ? 'TabSelected' : '')}
+          onClick={() => this.setState({tab: 2})}
+        >
+          カード追加
         </div>
       </div>
 
