@@ -1,0 +1,26 @@
+
+div.AppendageCardPreview {
+  margin: auto;
+  height: 150px;
+  width: 150px;
+  border: #ffffff 1px solid;
+}
+
+@media (prefers-color-scheme: light) {
+  div.AppendageCardPreview {
+    border-color: #020202;
+  }
+}
+
+div.AppendageCard {
+  animation: AppendedCard 0.5s ease-in-out;
+}
+
+@keyframes AppendedCard {
+  0% {
+    transform: translateX(-1000px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

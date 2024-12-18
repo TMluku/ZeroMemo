@@ -134,7 +134,6 @@ export default function SwipeCards({
           {category}
         </div>))}
       </div>
-      <h2>探す</h2>
       <div className="matching">
         <h4 className="cardLeft">
           のこり{currentIndex + 1}枚

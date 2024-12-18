@@ -32,11 +32,7 @@ export default function TodoList({items, onAddItem, onDeleteItemsByCategory, onT
           </div>
         ))}
       </div>
-      <h2>メモ</h2>
       <div className='todoListDiv'>
-        <h3 className='todoListHeader'>
-          {category}
-        </h3>
         <ul className='todoListUl'>
           {
             list

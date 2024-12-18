@@ -1,13 +1,15 @@
 import {useState} from "react";
 import {Card} from "./Home.tsx";
+import './Appendage.css';
 
 const categoryList = ['食料品', '調味料', '日用品'];
 
 interface AppendageProps {
   onAppendCard: (card: Card) => void
+  cardList: Card[]
 }
 
-export default function Appendage({onAppendCard}: AppendageProps) {
+export default function Appendage({onAppendCard, cardList}: AppendageProps) {
   const [name, setName] = useState("")
   const [categorySelected, setCategorySelected] = useState(new Array(categoryList.length).fill(false));
   // image
@@ -15,7 +17,6 @@ export default function Appendage({onAppendCard}: AppendageProps) {
 
   return (
     <div>
-      <h2>カード追加</h2>
       <input
         type="text"
         placeholder="商品名"
@@ -24,7 +25,7 @@ export default function Appendage({onAppendCard}: AppendageProps) {
       />
       <div>
         {categoryList.map((category, i) => (
-          <div key={i}>
+          <span key={i}>
             <input
               id={category}
               type="checkbox"
@@ -36,7 +37,7 @@ export default function Appendage({onAppendCard}: AppendageProps) {
               }}
             />
             <label htmlFor={category}>{category}</label>
-          </div>
+          </span>
         ))}
       </div>
       <div>
@@ -65,8 +66,10 @@ export default function Appendage({onAppendCard}: AppendageProps) {
             }
           }}
         />
-        <canvas id="canvas">
-        </canvas>
+        <div className={'AppendageCardPreview'}>
+          <canvas id="canvas">
+          </canvas>
+        </div>
       </div>
       <button onClick={() => {
         if (name === "" || categorySelected.every(c => !c)) {
@@ -77,6 +80,30 @@ export default function Appendage({onAppendCard}: AppendageProps) {
       >
         追加
       </button>
+
+      <div style={{overflowY: "scroll", height: "30vh"}}>
+        {new Array(cardList.length).fill(0)
+          .map((_, i) => cardList[cardList.length - i - 1])
+          .map((card, i) => (
+            <div
+              className={'AppendageCard'}
+              key={i}
+            >
+              <h3>
+                {card.name + " "}
+                <span style={{fontSize: "0.6em"}}>
+                  {card.categories.join(", ")}
+                </span>
+              </h3>
+              <div>
+                <img
+                  height={50}
+                  src={card.imgBase64 || card.url} alt={card.name}
+                />
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

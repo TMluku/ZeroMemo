@@ -188,6 +188,7 @@ export default class Home extends Component<object, HomeState> {
       >
         <Appendage
           onAppendCard={this.handleAppendCard}
+          cardList={this.state.cardList}
         />
       </div>
 
