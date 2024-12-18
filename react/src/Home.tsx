@@ -6,6 +6,7 @@ import './Modal.css';
 import './Home.css';
 import card_list from './assets/cardList.json';
 import Appendage from "./Appendage.tsx";
+import demo from './assets/walkthrough.mp4';
 
 export class Item {
   id: number;
@@ -242,7 +243,7 @@ export default class Home extends Component<object, HomeState> {
           <h2>デモンストレーション</h2>
           <div className="modalWalkthroughVideo">
             {this.state.demoModal ? <video
-              src={'./assets/walkthrough.mp4'}
+              src={demo}
               autoPlay
               muted
               height={300}
