@@ -3,3 +3,33 @@ div.History {
     margin-bottom: 4rem;
     max-height: calc(100vh - 4rem);
 }
+
+.HistoryCalendar {
+    width: 100%;
+}
+
+.HistoryCalendarTable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+td.HistoryCalendarDateNoItem {
+    color: #ccc;
+}
+
+td.HistoryCalendarDateSelected {
+    background-color: #f0f0f0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .HistoryCalendarTable {
+        border-color: #333;
+    }
+    td.HistoryCalendarDateSelected {
+        background-color: #1a1a1a;
+    }
+    td.HistoryCalendarDateNoItem {
+        color: #666;
+    }
+}
