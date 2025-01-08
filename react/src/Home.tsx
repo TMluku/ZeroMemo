@@ -169,7 +169,7 @@ export default class Home extends Component<object, HomeState> {
           itemList={this.state.todoList}
           userPrefers={this.state.userPrefers}
           rejectedDateList={this.state.rejectedDateList}
-          timeout={0}
+          timeout={60*60*1000}
         />
       </div>
       <div
