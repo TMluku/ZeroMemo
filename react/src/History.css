@@ -1,0 +1,5 @@
+div.History {
+    overflow-y: scroll;
+    margin-bottom: 4rem;
+    max-height: calc(100vh - 4rem);
+}
