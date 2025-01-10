@@ -12,31 +12,20 @@ div.AppendageCardPreview {
   }
 }
 
-div.AppendageCard {
-  animation: AppendedCard 0.5s ease-in-out;
-}
-
-@keyframes AppendedCard {
-  0% {
-    transform: translateX(-1000px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.container {
-  height: 100vh;
+.cardsContainer {
+  height: calc(100vh - 9rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto; /* 縦スクロールを有効にする */
   padding: 10px;
+  margin-bottom: 2rem;
 }
 
 .cardGrid {
   display: grid;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   width: 100%;

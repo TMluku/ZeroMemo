@@ -78,7 +78,7 @@ export default function Appendage({ onAppendCard, cardList }: AppendageProps) {
       </div>
 
       {/* カードの表示部分 */}
-      <div className="container">
+      <div className="cardsContainer">
         <div className="cardGrid">
           {/* ＋ボタンのカード */}
           <div className="AppendageCard plusCard" onClick={openModal}>
