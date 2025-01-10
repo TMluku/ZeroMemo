@@ -1,6 +1,6 @@
 import {HistoryItem, Item} from "./Home.tsx";
 import './History.css'
-import {cloneElement, useState} from "react";
+import {useState} from "react";
 
 interface HistoryProps {
   historyItems: HistoryItem[],

@@ -10,17 +10,17 @@ import demo from './assets/walkthrough.mp4';
 import History from "./History.tsx";
 
 export class Item {
-  id: number;
-  name: string;
-  categories: string[];
-  selected: boolean;
+    id: number;
+    name: string;
+    categories: string[];
+    selected: boolean;
 
-  constructor(id: number, name: string, categories: string[], selected: boolean) {
-    this.id = id;
-    this.name = name;
-    this.categories = categories;
-    this.selected = selected;
-  }
+    constructor(id: number, name: string, categories: string[], selected: boolean) {
+        this.id = id;
+        this.name = name;
+        this.categories = categories;
+        this.selected = selected;
+    }
 }
 
 export class Card {
@@ -28,12 +28,14 @@ export class Card {
   imgBase64: string;
   url: string;
   categories: string[];
+  invisible: boolean;
 
   constructor(name: string, url: string, imgBase64: string, categories: string[]) {
     this.name = name;
     this.url = url;
     this.imgBase64 = imgBase64;
     this.categories = categories;
+    this.invisible = false;
   }
 
   toBackgroundStyle(): CSSProperties {
@@ -129,6 +131,12 @@ export default class Home extends Component<object, HomeState> {
     localStorage.setItem('cardList', JSON.stringify(cardList));
   }
 
+  handleEditCard = (card: Card) => {
+    const cardList = this.state.cardList.map((c) => c.name === card.name ? card : c);
+    this.setState({cardList});
+    localStorage.setItem('cardList', JSON.stringify(cardList));
+  }
+
   handleAppendHistories = (histories: HistoryItem[]) => {
     const historyList = [...this.state.historyList, ...histories];
     this.setState({historyList});
@@ -161,12 +169,6 @@ export default class Home extends Component<object, HomeState> {
           new Date(historyItem.date)
         )
       );
-    // mock of historyList
-    // 2024-12-25 -- 2025-01-05
-    // const historyList = Array.from({length: 24}, (_, i) => {
-    //     const date = new Date(2024, 11, 25 + i / 2);
-    //     return new HistoryItem(new Item(i, `item${i}`, ['category'], false), date);
-    // });
     const demoModal = (localStorage.getItem('demoModal') || 'true') === 'true';
 
     this.state = {
@@ -209,9 +211,10 @@ export default class Home extends Component<object, HomeState> {
           itemList={this.state.todoList}
           userPrefers={this.state.userPrefers}
           rejectedDateList={this.state.rejectedDateList}
-          timeout={0}
+          timeout={1000 * 60 * 60}
         />
       </div>
+
       <div
         className="TodoList"
         style={{display: this.state.tab === 1 ? 'block' : 'none'}}
@@ -224,24 +227,23 @@ export default class Home extends Component<object, HomeState> {
           onAppendHistories={this.handleAppendHistories}
         />
       </div>
+
       <div
         className="Appendage"
         style={{display: this.state.tab === 2 ? 'block' : 'none'}}
       >
         <Appendage
           onAppendCard={this.handleAppendCard}
+          onEditCard={this.handleEditCard}
           cardList={this.state.cardList}
         />
       </div>
+
       <div
         className="History"
         style={{display: this.state.tab === 3 ? 'block' : 'none'}}
       >
         <History
-          onAddItem={(item) => {
-            this.handleAddItem(item)
-            this.handleItemNotification()
-          }}
           historyItems={this.state.historyList}
         />
       </div>
@@ -274,7 +276,7 @@ export default class Home extends Component<object, HomeState> {
           className={'Tab ' + (this.state.tab === 2 ? 'TabSelected' : '')}
           onClick={() => this.setState({tab: 2})}
         >
-          追加
+          カード
         </div>
         <div
           className={'Tab ' + (this.state.tab === 3 ? 'TabSelected' : '')}
@@ -283,13 +285,6 @@ export default class Home extends Component<object, HomeState> {
           履歴
         </div>
       </div>
-
-      <button
-        onClick={() => this.setState({trashModal: true})}
-        style={{display: this.state.tab === 0 ? '' : 'none'}}
-      >
-        ゴミ箱 🗑️
-      </button>
 
       <div className={'Modal ' + (this.state.demoModal ? 'ModalActive' : '')}>
         <div className="ModalContent">
@@ -315,50 +310,6 @@ export default class Home extends Component<object, HomeState> {
             }}
           >
             了解
-          </button>
-        </div>
-      </div>
-
-      <div className={'Modal ' + (this.state.trashModal ? 'ModalActive' : '')}>
-        <div className="ModalContent">
-          <div className="ModalClose" onClick={() => {
-            this.setState({trashModal: false})
-          }}>
-            ×
-          </div>
-          <h2>ゴミ箱</h2>
-          <div className="TrashList">
-            <ul className="TrashListUL">
-              {
-                Object.entries(this.state.userPrefers)
-                  .filter(([, score]) => score < -100)
-                  .map(([item,]) => (
-                    <li
-                      className={'TrashListLI'}
-                      key={item}>
-                      <div className={'TodoListItemName'}>
-                        {item}
-                      </div>
-                      <div className={'TodoListItemButton'}>
-                        <button
-                          className={'TrashListButton'}
-                          onClick={() =>
-                            this.handleModifyOrAddUserPrefers(item, () => 0)
-                          }
-                        >もどす
-                        </button>
-                      </div>
-                    </li>
-                  ))
-              }
-            </ul>
-          </div>
-          <button
-            onClick={() => {
-              this.setState({trashModal: false})
-            }}
-          >
-            完了
           </button>
         </div>
       </div>

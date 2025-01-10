@@ -12,15 +12,106 @@ div.AppendageCardPreview {
   }
 }
 
-div.AppendageCard {
-  animation: AppendedCard 0.5s ease-in-out;
+.cardsContainer {
+  height: calc(100vh - 9rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto; /* 縦スクロールを有効にする */
+  padding: 10px;
+  margin-bottom: 2rem;
 }
 
-@keyframes AppendedCard {
-  0% {
-    transform: translateX(-1000px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+.cardGrid {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 800px; /* 最大幅を設定 */
+}
+
+.AppendageCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  width: 150px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.AppendageCardInvisible {
+  opacity: 0.5;
+}
+
+.plusCard {
+  font-size: 2rem;
+  font-weight: bold;
+  border: 2px dashed #aaa;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.cardImage {
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+}
+
+.cardTitle {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.cardCategories {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.AppendageCardPreview canvas {
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.AppendageToggleVisibility {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.8rem;
+  display: inline-block;
+  background-color: #3333;
 }
