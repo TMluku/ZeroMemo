@@ -7,6 +7,7 @@ import './Home.css';
 import card_list from './assets/cardList.json';
 import Appendage from "./Appendage.tsx";
 import demo from './assets/walkthrough.mp4';
+import History from "./History.tsx";
 
 export class Item {
   id: number;
@@ -46,6 +47,16 @@ export class Card {
   }
 }
 
+export class HistoryItem {
+  item: Item;
+  date: Date;
+
+  constructor(item: Item, date: Date) {
+    this.item = item;
+    this.date = date;
+  }
+}
+
 interface HomeState {
   todoList: Item[];
   nextTodoId: number;
@@ -58,6 +69,7 @@ interface HomeState {
     [key: string]: number
   };
   cardList: Card[];
+  historyList: HistoryItem[];
   demoModal: boolean;
   trashModal: boolean;
 }
@@ -94,6 +106,12 @@ export default class Home extends Component<object, HomeState> {
     localStorage.setItem('todoListV2', JSON.stringify(todoList));
   };
 
+  handleDeleteItems = (ids: number[]) => {
+    const todoList = this.state.todoList.filter((item) => !ids.includes(item.id));
+    this.setState({todoList});
+    localStorage.setItem('todoListV2', JSON.stringify(todoList));
+  }
+
   handleDeleteItemsByCategory = (category: string, all: boolean) => {
     const todoList = this.state.todoList.filter((item) => !(item.selected || all) || !item.categories.includes(category));
     this.setState({todoList});
@@ -119,6 +137,12 @@ export default class Home extends Component<object, HomeState> {
     localStorage.setItem('cardList', JSON.stringify(cardList));
   }
 
+  handleAppendHistories = (histories: HistoryItem[]) => {
+    const historyList = [...this.state.historyList, ...histories];
+    this.setState({historyList});
+    localStorage.setItem('historyList', JSON.stringify(historyList));
+  }
+
   constructor(props: object) {
     super(props);
 
@@ -138,6 +162,13 @@ export default class Home extends Component<object, HomeState> {
       cardList.push(...cards.map((card) => new Card(card.name, `./${card.name}.png`, '', card.categories)));
       localStorage.setItem('cardList', JSON.stringify(cardList));
     }
+    const historyList = JSON.parse(localStorage.getItem('historyList') || '[]')
+      .map((historyItem: { item: Item, date: string }) =>
+        new HistoryItem(
+          new Item(historyItem.item.id, historyItem.item.name, historyItem.item.categories, historyItem.item.selected),
+          new Date(historyItem.date)
+        )
+      );
     const demoModal = (localStorage.getItem('demoModal') || 'true') === 'true';
 
     this.state = {
@@ -148,6 +179,7 @@ export default class Home extends Component<object, HomeState> {
       rejectedDateList,
       userPrefers,
       cardList,
+      historyList,
       demoModal,
       trashModal: false,
     };
@@ -156,6 +188,7 @@ export default class Home extends Component<object, HomeState> {
     this.handleItemNotification.bind(this);
     this.handleReject.bind(this);
     this.handleChangeItem.bind(this);
+    this.handleDeleteItems.bind(this);
     this.handleDeleteItemsByCategory.bind(this);
     this.handleModifyOrAddUserPrefers.bind(this);
   }
@@ -170,6 +203,7 @@ export default class Home extends Component<object, HomeState> {
           onAddItem={(item: Item) => {
             this.handleAddItem(item)
             this.handleItemNotification()
+            this.handleAppendHistories([new HistoryItem(item, new Date())])
           }}
           cardList={this.state.cardList}
           onRejectItem={this.handleReject}
@@ -177,9 +211,10 @@ export default class Home extends Component<object, HomeState> {
           itemList={this.state.todoList}
           userPrefers={this.state.userPrefers}
           rejectedDateList={this.state.rejectedDateList}
-          timeout={60*60*1000}
+          timeout={1000 * 60 * 60}
         />
       </div>
+
       <div
         className="TodoList"
         style={{display: this.state.tab === 1 ? 'block' : 'none'}}
@@ -187,10 +222,12 @@ export default class Home extends Component<object, HomeState> {
         <TodoList
           items={this.state.todoList}
           onAddItem={(item) => this.handleAddItem(item)}
-          onDeleteItemsByCategory={this.handleDeleteItemsByCategory}
+          onDeleteItems={this.handleDeleteItems}
           onToggleListSelected={this.handleChangeItem}
+          onAppendHistories={this.handleAppendHistories}
         />
       </div>
+
       <div
         className="Appendage"
         style={{display: this.state.tab === 2 ? 'block' : 'none'}}
@@ -199,6 +236,15 @@ export default class Home extends Component<object, HomeState> {
           onAppendCard={this.handleAppendCard}
           onEditCard={this.handleEditCard}
           cardList={this.state.cardList}
+        />
+      </div>
+
+      <div
+        className="History"
+        style={{display: this.state.tab === 3 ? 'block' : 'none'}}
+      >
+        <History
+          historyItems={this.state.historyList}
         />
       </div>
 
@@ -230,7 +276,13 @@ export default class Home extends Component<object, HomeState> {
           className={'Tab ' + (this.state.tab === 2 ? 'TabSelected' : '')}
           onClick={() => this.setState({tab: 2})}
         >
-          カード追加
+          カード
+        </div>
+        <div
+          className={'Tab ' + (this.state.tab === 3 ? 'TabSelected' : '')}
+          onClick={() => this.setState({tab: 3})}
+        >
+          履歴
         </div>
       </div>
 
