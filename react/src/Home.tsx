@@ -10,17 +10,17 @@ import demo from './assets/walkthrough.mp4';
 import History from "./History.tsx";
 
 export class Item {
-  id: number;
-  name: string;
-  categories: string[];
-  selected: boolean;
+    id: number;
+    name: string;
+    categories: string[];
+    selected: boolean;
 
-  constructor(id: number, name: string, categories: string[], selected: boolean) {
-    this.id = id;
-    this.name = name;
-    this.categories = categories;
-    this.selected = selected;
-  }
+    constructor(id: number, name: string, categories: string[], selected: boolean) {
+        this.id = id;
+        this.name = name;
+        this.categories = categories;
+        this.selected = selected;
+    }
 }
 
 export class Card {
@@ -30,12 +30,12 @@ export class Card {
   categories: string[];
   invisible: boolean;
 
-  constructor(name: string, url: string, imgBase64: string, categories: string[]) {
+  constructor(name: string, url: string, imgBase64: string, categories: string[], visible: boolean = false) {
     this.name = name;
     this.url = url;
     this.imgBase64 = imgBase64;
     this.categories = categories;
-    this.invisible = false;
+    this.invisible = visible;
   }
 
   toBackgroundStyle(): CSSProperties {
@@ -156,7 +156,7 @@ export default class Home extends Component<object, HomeState> {
     );
     const userPrefers = JSON.parse(localStorage.getItem('userPrefer') || '{}');
     const cardList = JSON.parse(localStorage.getItem('cardList') || '[]')
-      .map((card: Card) => new Card(card.name, card.url, card.imgBase64, card.categories));
+      .map((card: Card) => new Card(card.name, card.url, card.imgBase64, card.categories, card.invisible));
     if (cardList.length === 0) {
       const cards = card_list as { name: string, categories: string[] }[];
       cardList.push(...cards.map((card) => new Card(card.name, `./${card.name}.png`, '', card.categories)));
@@ -224,7 +224,6 @@ export default class Home extends Component<object, HomeState> {
           onAddItem={(item) => this.handleAddItem(item)}
           onDeleteItems={this.handleDeleteItems}
           onToggleListSelected={this.handleChangeItem}
-          onAppendHistories={this.handleAppendHistories}
         />
       </div>
 
@@ -245,6 +244,11 @@ export default class Home extends Component<object, HomeState> {
       >
         <History
           historyItems={this.state.historyList}
+          onAddItem={(item) => {
+            this.handleAddItem(item)
+            this.handleItemNotification()
+            this.handleAppendHistories([new HistoryItem(item, new Date())])
+          }}
         />
       </div>
 

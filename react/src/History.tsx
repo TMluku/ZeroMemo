@@ -1,12 +1,13 @@
-import {HistoryItem} from "./Home.tsx";
+import {HistoryItem, Item} from "./Home.tsx";
 import './History.css'
 import {useState} from "react";
 
 interface HistoryProps {
   historyItems: HistoryItem[],
+  onAddItem: (item: Item) => void
 }
 
-export default function History({historyItems,}: HistoryProps) {
+export default function History({historyItems, onAddItem}: HistoryProps) {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [year, setYear] = useState(parseInt(selectedDate.split('-')[0]));
   const [month, setMonth] = useState(parseInt(selectedDate.split('-')[1]));
@@ -59,7 +60,17 @@ export default function History({historyItems,}: HistoryProps) {
           <ul>
             {itemsGroupByDate[date].map((historyItem, i) => (
               <li key={i}>
-                <p>{historyItem.item.name}</p>
+                <p>{historyItem.item.name}
+                  <button
+                    onClick={() => {
+                      const item = structuredClone(historyItem.item);
+                      item.selected = false;
+                      onAddItem(item);
+                    }}
+                  >
+                    メモに追加
+                  </button>
+                </p>
               </li>
             ))}
           </ul>
