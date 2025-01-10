@@ -33,10 +33,10 @@ div.AppendageCardPreview {
 }
 
 .AppendageCard {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 150px;
   width: 150px;
   border: 1px solid #ccc;
@@ -45,6 +45,10 @@ div.AppendageCardPreview {
   padding: 10px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.AppendageCardInvisible {
+  opacity: 0.5;
 }
 
 .plusCard {
@@ -56,12 +60,15 @@ div.AppendageCardPreview {
 }
 
 .cardImage {
-  max-height: 100px;
-  max-width: 100px;
+  height: 100px;
+  width: 100px;
   object-fit: contain;
 }
 
 .cardTitle {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
   font-size: 1rem;
   margin-bottom: 10px;
 }
@@ -96,4 +103,15 @@ div.AppendageCardPreview {
 .AppendageCardPreview canvas {
   border: 1px solid #ccc;
   margin-top: 10px;
+}
+
+.AppendageToggleVisibility {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.8rem;
+  display: inline-block;
+  background-color: #3333;
 }

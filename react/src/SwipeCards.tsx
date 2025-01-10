@@ -42,7 +42,7 @@ export default function SwipeCards({
         return !itemsSet.has(card.name)
           && card.categories.includes(category)
           && (rejectedDateList[card.name] === undefined || date.getTime() - rejectedDateList[card.name].getTime() > timeout)
-          && getUserPrefers(card.name) > -100;
+          && !card.invisible;
       }
 
     const cards = cardList.filter(card => card.categories.includes(category) && filterFunc(card));

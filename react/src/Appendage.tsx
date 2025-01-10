@@ -1,15 +1,20 @@
-import { useState } from "react";
-import { Card } from "./Home.tsx";
+import {useState} from "react";
+import {Card} from "./Home.tsx";
 import "./Appendage.css";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 
 interface AppendageProps {
-  onAppendCard: (card: Card) => void;
-  cardList: Card[];
+  onAppendCard: (card: Card) => void,
+  onEditCard: (card: Card) => void
+  cardList: Card[],
 }
 
-export default function Appendage({ onAppendCard, cardList }: AppendageProps) {
+export default function Appendage({
+                                    onAppendCard,
+                                    onEditCard,
+                                    cardList
+                                  }: AppendageProps) {
   const [name, setName] = useState("");
   const [categorySelected, setCategorySelected] = useState(
     new Array(categoryList.length).fill(false)
@@ -42,7 +47,7 @@ export default function Appendage({ onAppendCard, cardList }: AppendageProps) {
       alert("同じ名前のカードは追加できません。");
       return;
     }
-    onAppendCard?.(
+    onAppendCard(
       new Card(
         name,
         "",
@@ -59,6 +64,12 @@ export default function Appendage({ onAppendCard, cardList }: AppendageProps) {
   const filteredCards = cardList.filter((card) =>
     card.categories.includes(tabCategory)
   );
+
+  // ツールチップの表示
+  const showTooltip = (id: number) => {
+    setTooltip(id)
+  };
+
 
   return (
     <>
@@ -90,15 +101,33 @@ export default function Appendage({ onAppendCard, cardList }: AppendageProps) {
             .slice()
             .reverse()
             .map((card, i) => (
-              <div className="AppendageCard" key={i}>
-                <h3 className="cardTitle">
-                  {card.name}
-                </h3>
+              <div
+                className={
+                  'AppendageCard'
+                  + (card.invisible ? ' AppendageCardInvisible' : '')
+                }
+                key={i}
+                onClick={() => {
+                  const newCard = structuredClone(card);
+                  newCard.invisible = !newCard.invisible;
+                  onEditCard(newCard);
+                }}
+              >
                 <img
                   className="cardImage"
                   src={card.imgBase64 || card.url}
                   alt={card.name}
                 />
+                <h3 className="cardTitle">
+                  {card.name}
+                </h3>
+                <div
+                  className="AppendageToggleVisibility"
+                >
+                  <p>
+                    {card.invisible ? "表示" : "非表示"}
+                  </p>
+                </div>
               </div>
             ))}
         </div>

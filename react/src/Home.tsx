@@ -27,12 +27,14 @@ export class Card {
   imgBase64: string;
   url: string;
   categories: string[];
+  invisible: boolean;
 
   constructor(name: string, url: string, imgBase64: string, categories: string[]) {
     this.name = name;
     this.url = url;
     this.imgBase64 = imgBase64;
     this.categories = categories;
+    this.invisible = false;
   }
 
   toBackgroundStyle(): CSSProperties {
@@ -107,6 +109,12 @@ export default class Home extends Component<object, HomeState> {
 
   handleAppendCard = (card: Card) => {
     const cardList = [...this.state.cardList, card];
+    this.setState({cardList});
+    localStorage.setItem('cardList', JSON.stringify(cardList));
+  }
+
+  handleEditCard = (card: Card) => {
+    const cardList = this.state.cardList.map((c) => c.name === card.name ? card : c);
     this.setState({cardList});
     localStorage.setItem('cardList', JSON.stringify(cardList));
   }
@@ -189,6 +197,7 @@ export default class Home extends Component<object, HomeState> {
       >
         <Appendage
           onAppendCard={this.handleAppendCard}
+          onEditCard={this.handleEditCard}
           cardList={this.state.cardList}
         />
       </div>
