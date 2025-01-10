@@ -234,13 +234,6 @@ export default class Home extends Component<object, HomeState> {
         </div>
       </div>
 
-      <button
-        onClick={() => this.setState({trashModal: true})}
-        style={{display: this.state.tab === 0 ? '' : 'none'}}
-      >
-        ゴミ箱 🗑️
-      </button>
-
       <div className={'Modal ' + (this.state.demoModal ? 'ModalActive' : '')}>
         <div className="ModalContent">
           <div className="ModalClose" onClick={() => {
@@ -265,50 +258,6 @@ export default class Home extends Component<object, HomeState> {
             }}
           >
             了解
-          </button>
-        </div>
-      </div>
-
-      <div className={'Modal ' + (this.state.trashModal ? 'ModalActive' : '')}>
-        <div className="ModalContent">
-          <div className="ModalClose" onClick={() => {
-            this.setState({trashModal: false})
-          }}>
-            ×
-          </div>
-          <h2>ゴミ箱</h2>
-          <div className="TrashList">
-            <ul className="TrashListUL">
-              {
-                Object.entries(this.state.userPrefers)
-                  .filter(([, score]) => score < -100)
-                  .map(([item,]) => (
-                    <li
-                      className={'TrashListLI'}
-                      key={item}>
-                      <div className={'TodoListItemName'}>
-                        {item}
-                      </div>
-                      <div className={'TodoListItemButton'}>
-                        <button
-                          className={'TrashListButton'}
-                          onClick={() =>
-                            this.handleModifyOrAddUserPrefers(item, () => 0)
-                          }
-                        >もどす
-                        </button>
-                      </div>
-                    </li>
-                  ))
-              }
-            </ul>
-          </div>
-          <button
-            onClick={() => {
-              this.setState({trashModal: false})
-            }}
-          >
-            完了
           </button>
         </div>
       </div>

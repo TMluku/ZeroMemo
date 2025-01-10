@@ -179,16 +179,6 @@ export default function SwipeCards({
           >
             一つ戻す ↩️
           </button>
-          <button
-            onClick={() => {
-              if (confirm('このカードをゴミ箱に移しますか？\nゴミ箱にあるカードは表示されなくなります。\nゴミ箱のカードはいつでももどすことができます。')) {
-                swipe('down');
-              }
-            }}
-            className="buttonWarning"
-          >
-            ゴミ箱へ 🚮
-          </button>
         </div>
       </div>
     </>
