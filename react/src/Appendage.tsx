@@ -84,6 +84,13 @@ export default function Appendage({
 
       {/* カードの表示部分 */}
       <div className="cardsContainer">
+        <p>
+          非表示にしたカードはメモ時に出てこなくなります。
+        </p>
+        <p>
+          {tabCategory}のカード数: {filteredCards.length}
+          （うち非表示: {filteredCards.filter((c) => c.invisible).length}）
+        </p>
         <div className="cardGrid">
           {/* ＋ボタンのカード */}
           <div className="AppendageCard plusCard" onClick={openModal}>
