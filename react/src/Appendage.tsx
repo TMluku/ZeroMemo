@@ -65,12 +65,6 @@ export default function Appendage({
     card.categories.includes(tabCategory)
   );
 
-  // ツールチップの表示
-  const showTooltip = (id: number) => {
-    setTooltip(id)
-  };
-
-
   return (
     <>
       {/* カテゴリのタブ */}
