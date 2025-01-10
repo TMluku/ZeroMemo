@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import {HistoryItem, Item} from "./Home";
+import {Item} from "./Home";
 
 
 interface TodoListProps {
     items: Item[],
     onAddItem: (item: Item) => void,
     onToggleListSelected: (item: Item) => void,
-    onAppendHistories: (histories: HistoryItem[]) => void,
     onDeleteItems: (ids: number[]) => void
 }
 
@@ -14,7 +13,6 @@ export default function TodoList({
                                      items,
                                      onAddItem,
                                      onToggleListSelected,
-                                     onAppendHistories,
                                      onDeleteItems,
                                  }: TodoListProps) {
     const [category, setCategory] = useState('食料品');
@@ -22,8 +20,6 @@ export default function TodoList({
     const [allDoneTimeOut, setAllDoneTimeOut] = useState<number | undefined>(undefined);
     const tabsCategories = ['食料品', '調味料', '日用品'];
     const deleteItems = (items: Item[]) => {
-        const histories = items.map((item) => new HistoryItem(item, new Date()));
-        onAppendHistories(histories);
         const ids = items.map((item) => item.id);
         onDeleteItems(ids);
     }

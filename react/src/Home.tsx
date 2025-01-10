@@ -201,6 +201,7 @@ export default class Home extends Component<object, HomeState> {
                     onAddItem={(item: Item) => {
                         this.handleAddItem(item)
                         this.handleItemNotification()
+                        this.handleAppendHistories([new HistoryItem(item, new Date())])
                     }}
                     cardList={this.state.cardList}
                     onRejectItem={this.handleReject}
