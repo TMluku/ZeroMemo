@@ -238,6 +238,10 @@ export default class Home extends Component<object, HomeState> {
                 style={{display: this.state.tab === 3 ? 'block' : 'none'}}
             >
                 <History
+                    onAddItem={(item) => {
+                        this.handleAddItem(item)
+                        this.handleItemNotification()
+                    }}
                     historyItems={this.state.historyList}
                 />
             </div>
