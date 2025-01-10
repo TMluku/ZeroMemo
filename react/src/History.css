@@ -1,38 +1,40 @@
 div.History {
-    overflow-y: scroll;
-    margin-bottom: 4rem;
-    max-height: calc(100vh - 4rem);
+  overflow-y: scroll;
+  margin-bottom: 4rem;
+  max-height: calc(100vh - 4rem);
 }
 
 .HistoryCalendar {
-    width: 100%;
+  width: 100%;
 }
 
 .HistoryCalendarTable {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 td.HistoryCalendarDate {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 td.HistoryCalendarDateNoItem {
-    color: #ccc;
+  color: #ccc;
 }
 
 td.HistoryCalendarDateSelected {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 @media (prefers-color-scheme: dark) {
-    td.HistoryCalendarDate {
-        border-color: #666;
-    }
-    td.HistoryCalendarDateSelected {
-        background-color: #1a1a1a;
-    }
-    td.HistoryCalendarDateNoItem {
-        color: #666;
-    }
+  td.HistoryCalendarDate {
+    border-color: #666;
+  }
+
+  td.HistoryCalendarDateSelected {
+    background-color: #1a1a1a;
+  }
+
+  td.HistoryCalendarDateNoItem {
+    color: #666;
+  }
 }
