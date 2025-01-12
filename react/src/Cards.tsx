@@ -2,6 +2,7 @@ import {useState} from "react";
 import {Card} from "./Home.tsx";
 import "./Cards.css";
 import "./Modal.css";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 
@@ -125,9 +126,10 @@ export default function Cards({
                 <div
                   className="CardsCardVisibilityToggle"
                 >
-                  <p>
-                    {card.invisible ? "表示" : "非表示"}
-                  </p>
+                  {card.invisible ?
+                    <VisibilityOff color="disabled" fontSize="small" /> :
+                    <Visibility color="disabled" fontSize="small" />
+                  }
                 </div>
               </div>
             ))}
@@ -189,7 +191,7 @@ export default function Cards({
                   }}
                 />
                 <div className="AppendageCardPreview">
-                  <canvas id="canvas" />
+                  <canvas id="canvas"/>
                 </div>
               </div>
               <button onClick={addCard}>追加</button>
