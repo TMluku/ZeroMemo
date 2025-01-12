@@ -1,18 +1,15 @@
 import {Component} from 'react'
 import './TodoList.css'
-import TodoList from './TodoList.js';
-import SwipeCards from './SwipeCards.js';
 import './Modal.css';
 import './Home.css';
 import card_list from './assets/cardList.json';
-import Cards from "./Cards.tsx";
 import demo from './assets/walkthrough.mp4';
-import History from "./History.tsx";
 import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
 import {HistoryItem} from "./models/HistoryItem.tsx";
 import Modal from "./Modal.tsx";
 import {TabBar} from "./TabBar.tsx";
+import Content from "./Content.tsx";
 
 interface HomeState {
   todoList: Item[];
@@ -151,59 +148,31 @@ export default class Home extends Component<object, HomeState> {
   }
 
   render() {
-    const contents = {
-      "swipe":
-        <SwipeCards
-          onAddItem={(item: Item) => {
-            this.handleAddItem(item)
-            this.handleItemNotification()
-            this.handleAppendHistories([new HistoryItem(item, new Date())])
-          }}
-          cardList={this.state.cardList}
-          onRejectItem={this.handleReject}
-          onAddUserPrefers={this.handleModifyOrAddUserPrefers}
-          itemList={this.state.todoList}
-          userPrefers={this.state.userPrefers}
-          rejectedDateList={this.state.rejectedDateList}
-          timeout={1000 * 60 * 60}
-        />,
-      "todo":
-        <TodoList
-          items={this.state.todoList}
-          onAddItem={(item) => this.handleAddItem(item)}
-          onDeleteItems={this.handleDeleteItems}
-          onToggleListSelected={this.handleChangeItem}
-        />,
-      "cards":
-        <Cards
-          onAppendCard={this.handleAppendCard}
-          onEditCard={this.handleEditCard}
-          cardList={this.state.cardList}
-        />,
-      "history":
-        <History
-          historyItems={this.state.historyList}
-          onAddItem={(item) => {
-            this.handleAddItem(item)
-            this.handleItemNotification()
-            this.handleAppendHistories([new HistoryItem(item, new Date())])
-          }}
-        />,
-    }
     return (<>
       <main id="Home">
-
-        <section className="MainContent">
-          {contents[this.state.tab]}
-        </section>
-
+        <Content
+          tab={this.state.tab}
+          todoList={this.state.todoList}
+          cardList={this.state.cardList}
+          historyList={this.state.historyList}
+          userPrefers={this.state.userPrefers}
+          rejectedDateList={this.state.rejectedDateList}
+          onAddItem={this.handleAddItem}
+          onRejectItem={this.handleReject}
+          onAddUserPrefers={this.handleModifyOrAddUserPrefers}
+          onDeleteItems={this.handleDeleteItems}
+          onToggleListSelected={this.handleChangeItem}
+          onAppendCard={this.handleAppendCard}
+          onEditCard={this.handleEditCard}
+          onAppendHistories={this.handleAppendHistories}
+          onItemNotification={this.handleItemNotification}
+        />
         <TabBar
           tab={this.state.tab}
           setTab={(tab) => this.setState({tab})}
           todoListLength={this.state.todoList.length}
           floatingIcon={this.state.floatingIcon}
         />
-
       </main>
 
       <Modal
