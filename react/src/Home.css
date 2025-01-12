@@ -14,10 +14,10 @@
 }
 
 .MainContent {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   overflow: auto;
-  height: calc(100% - 2rem);
-  max-height: calc(100% - 2rem);
 }
 
 .ContentTabsBar {

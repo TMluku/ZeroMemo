@@ -70,13 +70,13 @@ export default function Cards({
   return (
     <>
       {/* カテゴリのタブ */}
-      <div className="cardCategoryTabs">
+      <div className="CategoryTabsBar">
         {categoryList.map((category, i) => (
           <div
             key={i}
             onClick={() => updateTab(category)}
-            className={`cardCategoryTab ${
-              tabCategory === category ? "cardCategoryTabActive" : ""
+            className={`CategoryTab ${
+              tabCategory === category ? "CategoryTabActive" : ""
             }`}
           >
             {category}
@@ -84,8 +84,7 @@ export default function Cards({
         ))}
       </div>
 
-      {/* カードの表示部分 */}
-      <div className="CardsContainer">
+      <div className="CardsTitle">
         <p>
           非表示にしたカードはメモ時に出てこなくなります。
         </p>
@@ -93,6 +92,10 @@ export default function Cards({
           {tabCategory}のカード数: {filteredCards.length}
           （うち非表示: {filteredCards.filter((c) => c.invisible).length}）
         </p>
+      </div>
+
+      {/* カードの表示部分 */}
+      <div className="CardsContainer">
         <div className="CardsGrid">
           {/* ＋ボタンのカード */}
           <div className="CardsCard CardsCardPlus" onClick={openModal}>
@@ -127,8 +130,8 @@ export default function Cards({
                   className="CardsCardVisibilityToggle"
                 >
                   {card.invisible ?
-                    <VisibilityOff color="disabled" fontSize="small" /> :
-                    <Visibility color="disabled" fontSize="small" />
+                    <VisibilityOff color="disabled" fontSize="small"/> :
+                    <Visibility color="disabled" fontSize="small"/>
                   }
                 </div>
               </div>

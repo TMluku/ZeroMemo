@@ -13,14 +13,12 @@ div.AppendageCardPreview {
 }
 
 .CardsContainer {
-  height: calc(100vh - 9rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto; /* 縦スクロールを有効にする */
   padding: 10px;
-  margin-bottom: 2rem;
 }
 
 .CardsGrid {

@@ -27,27 +27,27 @@ export default function TodoList({
     const list = items.filter((item) => item.categories.includes(category));
     return (
         <>
-            <div className="cardCategoryTabs">
+            <div className="CategoryTabsBar">
                 {tabsCategories.map((cat, i) => (
                     <div
                         key={i}
                         onClick={() => setCategory(cat)}
-                        className={`cardCategoryTab ${cat === category ? 'cardCategoryTabActive' : ''}`}
+                        className={`CategoryTab ${cat === category ? 'CategoryTabActive' : ''}`}
                     >
                         {cat}
-                        <span className={'cardCategoryTabNumber'}>
+                        <span className={'CategoryTabNumber'}>
                             {' (' + items.filter((item) => item.categories.includes(cat)).length + ')'}
                         </span>
                     </div>
                 ))}
             </div>
-            <div className='todoListDiv'>
-                <ul className='todoListUl'>
+            <div className='TodoListDiv'>
+                <ul className='TodoListUl'>
                     {
                         list
                             .map((item) => (
                                 <label key={item.id}>
-                                    <li className={`todoListLi ${item.selected ? 'todoListLiSelected' : ''}`}>
+                                    <li className={`TodoListLi ${item.selected ? 'TodoListLiSelected' : ''}`}>
                                         <input
                                             type='checkbox'
                                             checked={item.selected}
@@ -63,7 +63,7 @@ export default function TodoList({
                             ))
                     }
                     <label key='new'>
-                        <li className='todoListLi'>
+                        <li className='TodoListLi'>
                             <input type='checkbox' disabled/>
                             <input
                                 type='text'
@@ -83,7 +83,7 @@ export default function TodoList({
                         </li>
                     </label>
                 </ul>
-                <div className="todoListButtonField">
+                <div className="TodoListButtonField">
                     <button
                         disabled={list.filter((item) => item.selected).length === 0}
                         onClick={() => {
@@ -93,7 +93,7 @@ export default function TodoList({
                         削除 ✅
                     </button>
                 </div>
-                <div className="todoListButtonField">
+                <div className="TodoListButtonField">
                     <button
                         className={'buttonWarning'}
                         onClick={() => {

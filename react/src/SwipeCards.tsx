@@ -121,11 +121,11 @@ export default function SwipeCards({
 
   return (
     <>
-      <div className="cardCategoryTabs">
+      <div className="CategoryTabsBar">
         {tabsCategories.map((category, i) => (<div
           key={i}
           onClick={() => updateTab(category)}
-          className={`cardCategoryTab ${tabCategory === category ? 'cardCategoryTabActive' : ''}`}
+          className={`CategoryTab ${tabCategory === category ? 'CategoryTabActive' : ''}`}
         >
           {category}
         </div>))}
