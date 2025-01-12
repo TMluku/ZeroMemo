@@ -15,7 +15,7 @@ import {HistoryItem} from "./models/HistoryItem.tsx";
 interface HomeState {
   todoList: Item[];
   nextTodoId: number;
-  tab: number;
+  tab: "swipe" | "todo" | "cards" | "history";
   floatingIcon: number;
   rejectedDateList: {
     [key: string]: Date
@@ -129,7 +129,7 @@ export default class Home extends Component<object, HomeState> {
     this.state = {
       todoList,
       nextTodoId,
-      tab: 0,
+      tab: "swipe",
       floatingIcon: 0,
       rejectedDateList,
       userPrefers,
@@ -149,11 +149,8 @@ export default class Home extends Component<object, HomeState> {
   }
 
   render() {
-    return (<>
-      <div
-        className="Matching"
-        style={{display: this.state.tab === 0 ? 'block' : 'none'}}
-      >
+    const contents = {
+      "swipe":
         <SwipeCards
           onAddItem={(item: Item) => {
             this.handleAddItem(item)
@@ -167,36 +164,21 @@ export default class Home extends Component<object, HomeState> {
           userPrefers={this.state.userPrefers}
           rejectedDateList={this.state.rejectedDateList}
           timeout={1000 * 60 * 60}
-        />
-      </div>
-
-      <div
-        className="TodoList"
-        style={{display: this.state.tab === 1 ? 'block' : 'none'}}
-      >
+        />,
+      "todo":
         <TodoList
           items={this.state.todoList}
           onAddItem={(item) => this.handleAddItem(item)}
           onDeleteItems={this.handleDeleteItems}
           onToggleListSelected={this.handleChangeItem}
-        />
-      </div>
-
-      <div
-        className="Appendage"
-        style={{display: this.state.tab === 2 ? 'block' : 'none'}}
-      >
+        />,
+      "cards":
         <Cards
           onAppendCard={this.handleAppendCard}
           onEditCard={this.handleEditCard}
           cardList={this.state.cardList}
-        />
-      </div>
-
-      <div
-        className="History"
-        style={{display: this.state.tab === 3 ? 'block' : 'none'}}
-      >
+        />,
+      "history":
         <History
           historyItems={this.state.historyList}
           onAddItem={(item) => {
@@ -204,46 +186,52 @@ export default class Home extends Component<object, HomeState> {
             this.handleItemNotification()
             this.handleAppendHistories([new HistoryItem(item, new Date())])
           }}
-        />
-      </div>
+        />,
+    }
+    return (<>
+      <main id="Home">
+        <section className="MainContent">
+          {contents[this.state.tab]}
+        </section>
 
-      <div className="TabBar">
-        <div
-          className={'Tab ' + (this.state.tab === 0 ? 'TabSelected' : '')}
-          onClick={() => this.setState({tab: 0})}
-        >
-          探す
-        </div>
-        <div
-          className={'Tab ' + (this.state.tab === 1 ? 'TabSelected' : '')}
-          onClick={() => this.setState({tab: 1})}
-        >
-          メモ
+        <div className="ContentTabsBar">
           <div
-            className={'TabBadge'}
-            style={{display: this.state.todoList.length === 0 ? 'none' : 'block'}}
+            className={'Tab ' + (this.state.tab === "swipe" ? 'TabSelected' : '')}
+            onClick={() => this.setState({tab: "swipe"})}
           >
-            {this.state.todoList.length}
+            探す
           </div>
           <div
-            className={'TabFloatingIcon' + (this.state.floatingIcon === 1 ? ' TabFloatingIconActive' : '')}
+            className={'Tab ' + (this.state.tab === "todo" ? 'TabSelected' : '')}
+            onClick={() => this.setState({tab: "todo"})}
           >
-            +1
+            メモ
+            <div
+              className={'TabBadge'}
+              style={{display: this.state.todoList.length === 0 ? 'none' : 'block'}}
+            >
+              {this.state.todoList.length}
+            </div>
+            <div
+              className={'TabFloatingIcon' + (this.state.floatingIcon === 1 ? ' TabFloatingIconActive' : '')}
+            >
+              +1
+            </div>
+          </div>
+          <div
+            className={'Tab ' + (this.state.tab === "cards" ? 'TabSelected' : '')}
+            onClick={() => this.setState({tab: "cards"})}
+          >
+            カード
+          </div>
+          <div
+            className={'Tab ' + (this.state.tab === "history" ? 'TabSelected' : '')}
+            onClick={() => this.setState({tab: "history"})}
+          >
+            履歴
           </div>
         </div>
-        <div
-          className={'Tab ' + (this.state.tab === 2 ? 'TabSelected' : '')}
-          onClick={() => this.setState({tab: 2})}
-        >
-          カード
-        </div>
-        <div
-          className={'Tab ' + (this.state.tab === 3 ? 'TabSelected' : '')}
-          onClick={() => this.setState({tab: 3})}
-        >
-          履歴
-        </div>
-      </div>
+      </main>
 
       {(this.state.demoModal &&
           <div className="Modal">

@@ -1,0 +1,26 @@
+#Home {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #282c34;
+  color: white;
+}
+
+@media (prefers-color-scheme: light) {
+  #Home {
+    background-color: #ffffff;
+    color: #213547;
+  }
+}
+
+.MainContent {
+  flex: 1 1 auto;
+  overflow: auto;
+  height: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
+}
+
+.ContentTabsBar {
+  display: flex;
+  flex: 0 0 2rem;
+}
