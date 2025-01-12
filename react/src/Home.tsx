@@ -5,7 +5,7 @@ import SwipeCards from './SwipeCards.js';
 import './Modal.css';
 import './Home.css';
 import card_list from './assets/cardList.json';
-import Appendage from "./Appendage.tsx";
+import Cards from "./Cards.tsx";
 import demo from './assets/walkthrough.mp4';
 import History from "./History.tsx";
 
@@ -231,7 +231,7 @@ export default class Home extends Component<object, HomeState> {
         className="Appendage"
         style={{display: this.state.tab === 2 ? 'block' : 'none'}}
       >
-        <Appendage
+        <Cards
           onAppendCard={this.handleAppendCard}
           onEditCard={this.handleEditCard}
           cardList={this.state.cardList}

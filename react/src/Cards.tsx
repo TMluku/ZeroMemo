@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Card} from "./Home.tsx";
-import "./Appendage.css";
+import "./Cards.css";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 
@@ -10,7 +10,7 @@ interface AppendageProps {
   cardList: Card[],
 }
 
-export default function Appendage({
+export default function Cards({
                                     onAppendCard,
                                     onEditCard,
                                     cardList
