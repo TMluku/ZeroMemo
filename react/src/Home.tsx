@@ -12,6 +12,7 @@ import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
 import {HistoryItem} from "./models/HistoryItem.tsx";
 import Modal from "./Modal.tsx";
+import {TabBar} from "./TabBar.tsx";
 
 interface HomeState {
   todoList: Item[];
@@ -191,47 +192,18 @@ export default class Home extends Component<object, HomeState> {
     }
     return (<>
       <main id="Home">
+
         <section className="MainContent">
           {contents[this.state.tab]}
         </section>
 
-        <div className="ContentTabsBar">
-          <div
-            className={'Tab ' + (this.state.tab === "swipe" ? 'TabSelected' : '')}
-            onClick={() => this.setState({tab: "swipe"})}
-          >
-            探す
-          </div>
-          <div
-            className={'Tab ' + (this.state.tab === "todo" ? 'TabSelected' : '')}
-            onClick={() => this.setState({tab: "todo"})}
-          >
-            メモ
-            <div
-              className={'TabBadge'}
-              style={{display: this.state.todoList.length === 0 ? 'none' : 'block'}}
-            >
-              {this.state.todoList.length}
-            </div>
-            <div
-              className={'TabFloatingIcon' + (this.state.floatingIcon === 1 ? ' TabFloatingIconActive' : '')}
-            >
-              +1
-            </div>
-          </div>
-          <div
-            className={'Tab ' + (this.state.tab === "cards" ? 'TabSelected' : '')}
-            onClick={() => this.setState({tab: "cards"})}
-          >
-            カード
-          </div>
-          <div
-            className={'Tab ' + (this.state.tab === "history" ? 'TabSelected' : '')}
-            onClick={() => this.setState({tab: "history"})}
-          >
-            履歴
-          </div>
-        </div>
+        <TabBar
+          tab={this.state.tab}
+          setTab={(tab) => this.setState({tab})}
+          todoListLength={this.state.todoList.length}
+          floatingIcon={this.state.floatingIcon}
+        />
+
       </main>
 
       <Modal
@@ -262,4 +234,3 @@ export default class Home extends Component<object, HomeState> {
     </>)
   }
 }
-

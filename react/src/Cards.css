@@ -1,5 +1,5 @@
 
-div.AppendageCardPreview {
+.AppendageCardPreview {
   margin: auto;
   height: 150px;
   width: 150px;
@@ -86,7 +86,6 @@ div.AppendageCardPreview {
   padding: 0.5rem;
   font-size: 0.8rem;
   display: inline-block;
-  /*background-color: #3333;*/
   color: #1a1a1a;
   border-radius: 0 0 0 8px;
 }

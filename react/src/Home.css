@@ -19,8 +19,3 @@
   flex: 1 1 auto;
   overflow: auto;
 }
-
-.ContentTabsBar {
-  display: flex;
-  flex: 0 0 2rem;
-}
