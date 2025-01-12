@@ -3,6 +3,7 @@ import "./Cards.css";
 import "./Modal.css";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {Card} from "./models/Card.tsx";
+import Modal from "./Modal.tsx";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 
@@ -13,10 +14,10 @@ interface AppendageProps {
 }
 
 export default function Cards({
-                                    onAppendCard,
-                                    onEditCard,
-                                    cardList
-                                  }: AppendageProps) {
+                                onAppendCard,
+                                onEditCard,
+                                cardList
+                              }: AppendageProps) {
   const [name, setName] = useState("");
   const [categorySelected, setCategorySelected] = useState(
     new Array(categoryList.length).fill(false)
@@ -139,19 +140,20 @@ export default function Cards({
         </div>
 
         {/* モーダル */}
-        {isModalOpen && (
-          <div className="Modal">
-            <div className="ModalContent">
-              <h2>カードを追加</h2>
-              <input
-                type="text"
-                placeholder="商品名"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <div>
-                {categoryList.map((category, i) => (
-                  <span key={i}>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        >
+          <h2>カードを追加</h2>
+          <input
+            type="text"
+            placeholder="商品名"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <div>
+            {categoryList.map((category, i) => (
+              <span key={i}>
                     <input
                       id={category}
                       type="checkbox"
@@ -164,43 +166,41 @@ export default function Cards({
                     />
                     <label htmlFor={category}>{category}</label>
                   </span>
-                ))}
-              </div>
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) {
-                      return;
-                    }
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
+            ))}
+          </div>
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) {
+                  return;
+                }
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
 
-                    const canvas = document.getElementById(
-                      "canvas"
-                    ) as HTMLCanvasElement;
-                    const ctx = canvas.getContext("2d");
-                    const img = new Image();
-                    img.src = URL.createObjectURL(file);
-                    img.onload = () => {
-                      canvas.width = 150;
-                      canvas.height = 150;
-                      ctx?.drawImage(img, 0, 0, 150, 150);
-                      setImgBase64(canvas.toDataURL("image/png"));
-                    };
-                  }}
-                />
-                <div className="AppendageCardPreview">
-                  <canvas id="canvas"/>
-                </div>
-              </div>
-              <button onClick={addCard}>追加</button>
-              <button onClick={closeModal}>キャンセル</button>
+                const canvas = document.getElementById(
+                  "canvas"
+                ) as HTMLCanvasElement;
+                const ctx = canvas.getContext("2d");
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                img.onload = () => {
+                  canvas.width = 150;
+                  canvas.height = 150;
+                  ctx?.drawImage(img, 0, 0, 150, 150);
+                  setImgBase64(canvas.toDataURL("image/png"));
+                };
+              }}
+            />
+            <div className="AppendageCardPreview">
+              <canvas id="canvas"/>
             </div>
           </div>
-        )}
+          <button onClick={addCard}>追加</button>
+          <button onClick={closeModal}>キャンセル</button>
+        </Modal>
       </div>
     </>
   );

@@ -11,6 +11,7 @@ import History from "./History.tsx";
 import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
 import {HistoryItem} from "./models/HistoryItem.tsx";
+import Modal from "./Modal.tsx";
 
 interface HomeState {
   todoList: Item[];
@@ -233,35 +234,31 @@ export default class Home extends Component<object, HomeState> {
         </div>
       </main>
 
-      {(this.state.demoModal &&
-          <div className="Modal">
-              <div className="ModalContent">
-                  <div className="ModalClose" onClick={() => {
-                    this.setState({demoModal: false})
-                    localStorage.setItem('demoModal', 'false')
-                  }}>
-                      ×
-                  </div>
-                  <h2>デモンストレーション</h2>
-                  <div className="modalWalkthroughVideo">
-                    {this.state.demoModal ? <video
-                      src={demo}
-                      autoPlay
-                      muted
-                      height={300}
-                    /> : <></>}
-                  </div>
-                  <button
-                      onClick={() => {
-                        this.setState({demoModal: false})
-                        localStorage.setItem('demoModal', 'false')
-                      }}
-                  >
-                      了解
-                  </button>
-              </div>
-          </div>
-      )}
+      <Modal
+        isOpen={this.state.demoModal}
+        onClose={() => {
+          this.setState({demoModal: false})
+          localStorage.setItem('demoModal', 'false')
+        }}
+      >
+        <h2>デモンストレーション</h2>
+        <div className="modalWalkthroughVideo">
+          <video
+            src={demo}
+            autoPlay
+            muted
+            height={300}
+          />
+        </div>
+        <button
+          onClick={() => {
+            this.setState({demoModal: false})
+            localStorage.setItem('demoModal', 'false')
+          }}
+        >
+          了解
+        </button>
+      </Modal>
     </>)
   }
 }
