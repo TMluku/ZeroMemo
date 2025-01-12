@@ -32,18 +32,13 @@ export default function SwipeCards({
   const makeCardList = (category: string, revival: boolean) => {
     const itemsSet = new Set(itemList.map(item => item.name));
     const date = new Date();
-    const filterFunc = revival ?
+    const filterFunc =
       (card: Card) => {
         return !itemsSet.has(card.name)
           && card.categories.includes(category)
-          && getUserPrefers(card.name) > -100;
-      } :
-      (card: Card) => {
-        return !itemsSet.has(card.name)
-          && card.categories.includes(category)
-          && (rejectedDateList[card.name] === undefined || date.getTime() - rejectedDateList[card.name].getTime() > timeout)
+          && (revival || (rejectedDateList[card.name] === undefined || date.getTime() - rejectedDateList[card.name].getTime() > timeout))
           && !card.invisible;
-      }
+      };
 
     const cards = cardList.filter(card => card.categories.includes(category) && filterFunc(card));
 
