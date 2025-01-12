@@ -10,17 +10,17 @@ import demo from './assets/walkthrough.mp4';
 import History from "./History.tsx";
 
 export class Item {
-    id: number;
-    name: string;
-    categories: string[];
-    selected: boolean;
+  id: number;
+  name: string;
+  categories: string[];
+  selected: boolean;
 
-    constructor(id: number, name: string, categories: string[], selected: boolean) {
-        this.id = id;
-        this.name = name;
-        this.categories = categories;
-        this.selected = selected;
-    }
+  constructor(id: number, name: string, categories: string[], selected: boolean) {
+    this.id = id;
+    this.name = name;
+    this.categories = categories;
+    this.selected = selected;
+  }
 }
 
 export class Card {
@@ -290,33 +290,35 @@ export default class Home extends Component<object, HomeState> {
         </div>
       </div>
 
-      <div className={'Modal ' + (this.state.demoModal ? 'ModalActive' : '')}>
-        <div className="ModalContent">
-          <div className="ModalClose" onClick={() => {
-            this.setState({demoModal: false})
-            localStorage.setItem('demoModal', 'false')
-          }}>
-            ×
+      {(this.state.demoModal &&
+          <div className="Modal">
+              <div className="ModalContent">
+                  <div className="ModalClose" onClick={() => {
+                    this.setState({demoModal: false})
+                    localStorage.setItem('demoModal', 'false')
+                  }}>
+                      ×
+                  </div>
+                  <h2>デモンストレーション</h2>
+                  <div className="modalWalkthroughVideo">
+                    {this.state.demoModal ? <video
+                      src={demo}
+                      autoPlay
+                      muted
+                      height={300}
+                    /> : <></>}
+                  </div>
+                  <button
+                      onClick={() => {
+                        this.setState({demoModal: false})
+                        localStorage.setItem('demoModal', 'false')
+                      }}
+                  >
+                      了解
+                  </button>
+              </div>
           </div>
-          <h2>デモンストレーション</h2>
-          <div className="modalWalkthroughVideo">
-            {this.state.demoModal ? <video
-              src={demo}
-              autoPlay
-              muted
-              height={300}
-            /> : <></>}
-          </div>
-          <button
-            onClick={() => {
-              this.setState({demoModal: false})
-              localStorage.setItem('demoModal', 'false')
-            }}
-          >
-            了解
-          </button>
-        </div>
-      </div>
+      )}
     </>)
   }
 }
