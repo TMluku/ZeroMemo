@@ -173,7 +173,6 @@ export default function Cards({
                       return;
                     }
                     const reader = new FileReader();
-                    reader.onload = () => setImgBase64(reader.result as string);
                     reader.readAsDataURL(file);
 
                     const canvas = document.getElementById(
