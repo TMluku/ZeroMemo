@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Item} from "./Home";
+
+import {Item} from "./models/Item.tsx";
 
 
 interface TodoListProps {

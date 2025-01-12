@@ -1,4 +1,4 @@
-import {Component, CSSProperties} from 'react'
+import {Component} from 'react'
 import './TodoList.css'
 import TodoList from './TodoList.js';
 import SwipeCards from './SwipeCards.js';
@@ -8,54 +8,9 @@ import card_list from './assets/cardList.json';
 import Cards from "./Cards.tsx";
 import demo from './assets/walkthrough.mp4';
 import History from "./History.tsx";
-
-export class Item {
-  id: number;
-  name: string;
-  categories: string[];
-  selected: boolean;
-
-  constructor(id: number, name: string, categories: string[], selected: boolean) {
-    this.id = id;
-    this.name = name;
-    this.categories = categories;
-    this.selected = selected;
-  }
-}
-
-export class Card {
-  name: string;
-  imgBase64: string;
-  url: string;
-  categories: string[];
-  invisible: boolean;
-
-  constructor(name: string, url: string, imgBase64: string, categories: string[], visible: boolean = false) {
-    this.name = name;
-    this.url = url;
-    this.imgBase64 = imgBase64;
-    this.categories = categories;
-    this.invisible = visible;
-  }
-
-  toBackgroundStyle(): CSSProperties {
-    if (this.imgBase64 === '') {
-      return {backgroundImage: `url(${this.url})`};
-    } else {
-      return {backgroundImage: `url(${this.imgBase64})`};
-    }
-  }
-}
-
-export class HistoryItem {
-  item: Item;
-  date: Date;
-
-  constructor(item: Item, date: Date) {
-    this.item = item;
-    this.date = date;
-  }
-}
+import {Item} from "./models/Item.tsx";
+import {Card} from "./models/Card.tsx";
+import {HistoryItem} from "./models/HistoryItem.tsx";
 
 interface HomeState {
   todoList: Item[];

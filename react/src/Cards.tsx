@@ -1,8 +1,8 @@
 import {useState} from "react";
-import {Card} from "./Home.tsx";
 import "./Cards.css";
 import "./Modal.css";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {Card} from "./models/Card.tsx";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 

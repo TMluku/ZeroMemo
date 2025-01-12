@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import TinderCard from 'react-tinder-card';
 import './SwipeCards.css';
-import {Card, Item} from "./Home";
+import {Item} from "./models/Item.tsx";
+import {Card} from "./models/Card.tsx";
 
 interface SwipeCardsProps {
   onAddItem: (item: Item) => void,
