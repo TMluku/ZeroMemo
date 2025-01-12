@@ -109,9 +109,8 @@ export default function Appendage({
                 }
                 key={i}
                 onClick={() => {
-                  const newCard = structuredClone(card);
-                  newCard.invisible = !newCard.invisible;
-                  onEditCard(newCard);
+                  card.invisible = !card.invisible;
+                  onEditCard(card);
                 }}
               >
                 <img
