@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Card} from "./Home.tsx";
 import "./Cards.css";
+import "./Modal.css";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 
@@ -83,7 +84,7 @@ export default function Cards({
       </div>
 
       {/* カードの表示部分 */}
-      <div className="cardsContainer">
+      <div className="CardsContainer">
         <p>
           非表示にしたカードはメモ時に出てこなくなります。
         </p>
@@ -91,9 +92,9 @@ export default function Cards({
           {tabCategory}のカード数: {filteredCards.length}
           （うち非表示: {filteredCards.filter((c) => c.invisible).length}）
         </p>
-        <div className="cardGrid">
+        <div className="CardsGrid">
           {/* ＋ボタンのカード */}
-          <div className="AppendageCard plusCard" onClick={openModal}>
+          <div className="CardsCard CardsCardPlus" onClick={openModal}>
             ＋
           </div>
 
@@ -104,8 +105,8 @@ export default function Cards({
             .map((card, i) => (
               <div
                 className={
-                  'AppendageCard'
-                  + (card.invisible ? ' AppendageCardInvisible' : '')
+                  'CardsCard'
+                  + (card.invisible ? ' CardsCardInvisible' : '')
                 }
                 key={i}
                 onClick={() => {
@@ -114,15 +115,15 @@ export default function Cards({
                 }}
               >
                 <img
-                  className="cardImage"
+                  className="CardsCardImage"
                   src={card.imgBase64 || card.url}
                   alt={card.name}
                 />
-                <h3 className="cardTitle">
+                <h3 className="CardsCardTitle">
                   {card.name}
                 </h3>
                 <div
-                  className="AppendageToggleVisibility"
+                  className="CardsCardVisibilityToggle"
                 >
                   <p>
                     {card.invisible ? "表示" : "非表示"}
@@ -134,8 +135,8 @@ export default function Cards({
 
         {/* モーダル */}
         {isModalOpen && (
-          <div className="modal">
-            <div className="modalContent">
+          <div className="Modal">
+            <div className="ModalContent">
               <h2>カードを追加</h2>
               <input
                 type="text"
@@ -188,7 +189,7 @@ export default function Cards({
                   }}
                 />
                 <div className="AppendageCardPreview">
-                  <canvas id="canvas"></canvas>
+                  <canvas id="canvas" />
                 </div>
               </div>
               <button onClick={addCard}>追加</button>

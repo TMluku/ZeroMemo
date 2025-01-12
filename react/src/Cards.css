@@ -12,7 +12,7 @@ div.AppendageCardPreview {
   }
 }
 
-.cardsContainer {
+.CardsContainer {
   height: calc(100vh - 9rem);
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@ div.AppendageCardPreview {
   margin-bottom: 2rem;
 }
 
-.cardGrid {
+.CardsGrid {
   display: grid;
   justify-items: center;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -32,7 +32,7 @@ div.AppendageCardPreview {
   max-width: 800px; /* 最大幅を設定 */
 }
 
-.AppendageCard {
+.CardsCard {
   position: relative;
   display: flex;
   align-items: center;
@@ -43,62 +43,53 @@ div.AppendageCardPreview {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
+  overflow: hidden;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.AppendageCardInvisible {
-  opacity: 0.5;
+.CardsCardInvisible {
+  opacity: 0.25;
 }
 
-.plusCard {
+.CardsCardPlus {
   font-size: 2rem;
   font-weight: bold;
   border: 2px dashed #aaa;
   cursor: pointer;
+  color: #1a1a1a;
   background-color: #f9f9f9;
 }
 
-.cardImage {
+.CardsCardImage {
   height: 100px;
   width: 100px;
   object-fit: contain;
 }
 
-.cardTitle {
+.CardsCardTitle {
   position: absolute;
   bottom: 10px;
   left: 10px;
   font-size: 1rem;
   margin-bottom: 10px;
+  color: #1a1a1a;
 }
 
-.cardCategories {
+.CardsCardCategories {
   font-size: 0.8rem;
   color: #666;
 }
 
-.modalContent {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  text-align: center;
-  position: relative;
-}
-
-.AppendageCardPreview canvas {
-  border: 1px solid #ccc;
-  margin-top: 10px;
-}
-
-.AppendageToggleVisibility {
+.CardsCardVisibilityToggle {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-size: 0.8rem;
   display: inline-block;
   background-color: #3333;
+  color: #1a1a1a;
+  border-radius: 0 0 0 8px;
 }
