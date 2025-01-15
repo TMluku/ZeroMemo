@@ -17,7 +17,8 @@ interface HomeState {
   todoList: Item[];
   nextTodoId: number;
   tab: "swipe" | "todo" | "cards" | "history";
-  floatingIcon: number;
+  floatingIconActive: boolean[];
+  floatingIconNextIndex: number,
   rejectedDateList: {
     [key: string]: Date
   };
@@ -41,12 +42,15 @@ export default class Home extends Component<object, HomeState> {
   };
 
   handleItemNotification = () => {
-    if (this.state.floatingIcon === 0) {
-      this.setState({floatingIcon: 1});
-      setTimeout(() => {
-        this.setState({floatingIcon: 0});
-      }, 1000);
-    }
+    const floatingIconActive = [...this.state.floatingIconActive];
+    floatingIconActive[this.state.floatingIconNextIndex] = true;
+    const floatingIconNextIndex = (this.state.floatingIconNextIndex + 1) % floatingIconActive.length;
+    this.setState({floatingIconActive, floatingIconNextIndex});
+    setTimeout(() => {
+      const floatingIconActive = [...this.state.floatingIconActive];
+      floatingIconActive[this.state.floatingIconNextIndex] = false;
+      this.setState({floatingIconActive});
+    }, 1000);
   };
 
 
@@ -131,7 +135,8 @@ export default class Home extends Component<object, HomeState> {
       todoList,
       nextTodoId,
       tab: "swipe",
-      floatingIcon: 0,
+      floatingIconActive: Array(8).fill(false),
+      floatingIconNextIndex: 0,
       rejectedDateList,
       userPrefers,
       cardList,
@@ -203,23 +208,6 @@ export default class Home extends Component<object, HomeState> {
             探す
           </div>
           <div
-            className={'Tab ' + (this.state.tab === "todo" ? 'TabSelected' : '')}
-            onClick={() => this.setState({tab: "todo"})}
-          >
-            メモ
-            <div
-              className={'TabBadge'}
-              style={{display: this.state.todoList.length === 0 ? 'none' : 'block'}}
-            >
-              {this.state.todoList.length}
-            </div>
-            <div
-              className={'TabFloatingIcon' + (this.state.floatingIcon === 1 ? ' TabFloatingIconActive' : '')}
-            >
-              +1
-            </div>
-          </div>
-          <div
             className={'Tab ' + (this.state.tab === "cards" ? 'TabSelected' : '')}
             onClick={() => this.setState({tab: "cards"})}
           >
@@ -230,6 +218,28 @@ export default class Home extends Component<object, HomeState> {
             onClick={() => this.setState({tab: "history"})}
           >
             履歴
+          </div>
+          <div
+            className={'Tab ' + (this.state.tab === "todo" ? 'TabSelected' : '')}
+            onClick={() => this.setState({tab: "todo"})}
+          >
+            メモ
+            <div
+              className={'TabBadge'}
+              style={{display: this.state.todoList.length === 0 ? 'none' : 'block'}}
+            >
+              {this.state.todoList.length}
+            </div>
+            {
+              this.state.floatingIconActive.map((active, i) => (
+                <div
+                  key={i}
+                  className={'TabFloatingIcon' + (active ? ' TabFloatingIconActive' : '')}
+                >
+                  +1
+                </div>
+              ))
+            }
           </div>
         </div>
       </main>
@@ -256,7 +266,7 @@ export default class Home extends Component<object, HomeState> {
             localStorage.setItem('demoModal', 'false')
           }}
         >
-          了解
+        了解
         </button>
       </Modal>
     </>)
