@@ -245,7 +245,7 @@ export default class Home extends Component<object, HomeState> {
       </main>
 
       <Modal
-        isOpen={this.state.demoModal}
+        isOpen={false}
         onClose={() => {
           this.setState({demoModal: false})
           localStorage.setItem('demoModal', 'false')
