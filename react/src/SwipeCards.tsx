@@ -3,6 +3,7 @@ import TinderCard from 'react-tinder-card';
 import './SwipeCards.css';
 import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
+import {SwipeRight, Undo} from "@mui/icons-material";
 
 interface SwipeCardsProps {
   onAddItem: (item: Item) => void,
@@ -25,6 +26,8 @@ export default function SwipeCards({
                                      rejectedDateList,
                                      cardList
                                    }: SwipeCardsProps) {
+
+  const [onBoarding, setOnBoarding] = useState(localStorage.getItem('onBoarding') === null);
 
   const getUserPrefers = (name: string) => {
     return userPrefers[name] || 0;
@@ -96,6 +99,8 @@ export default function SwipeCards({
         card.categories.includes('日用品') ? -1 : 1;
       onAddUserPrefers(card.name, (s: number) => s + score);
       onAddItem({id: 0, categories: card.categories, name: card.name, selected: false});
+      setOnBoarding(false);
+      localStorage.setItem('onBoarding', 'false');
     }
     if (dir === 'left') {
       onAddUserPrefers(card.name, (s: number) => s);
@@ -167,13 +172,19 @@ export default function SwipeCards({
               <h3>{card.name}</h3>
             </div>
           </TinderCard>))}
+          {onBoarding && <div style={{position: "absolute", bottom: "10%", left: "50%"}} >
+            <SwipeRight
+              className='SwipeCardsRightFinger'
+              fontSize='large'
+            />
+          </div>}
         </div>
         <div className="swipeCardButtons">
           <button
             onClick={undoSwipe}
             className="buttonUndo"
           >
-            一つ戻す ↩️
+            一つ戻す <Undo fontSize='small' />
           </button>
         </div>
       </div>

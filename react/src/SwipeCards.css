@@ -131,3 +131,22 @@
   }
 }
 
+.SwipeCardsRightFinger {
+  animation: swipeRight 2s infinite;
+}
+
+@keyframes swipeRight {
+  0% {
+    transform: scale(2.0) translateX(0);
+  }
+  25% {
+    transform: scale(2.0) translateX(100%);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(2.0) translateX(100%);
+  }
+  100% {
+    opacity: 0;
+  }
+}
