@@ -15,7 +15,8 @@ interface HomeState {
   todoList: Item[];
   nextTodoId: number;
   tab: "swipe" | "todo" | "cards" | "history";
-  floatingIcon: number;
+  floatingIconActive: boolean[];
+  floatingIconNextIndex: number,
   rejectedDateList: {
     [key: string]: Date
   };
@@ -39,12 +40,15 @@ export default class Home extends Component<object, HomeState> {
   };
 
   handleItemNotification = () => {
-    if (this.state.floatingIcon === 0) {
-      this.setState({floatingIcon: 1});
-      setTimeout(() => {
-        this.setState({floatingIcon: 0});
-      }, 1000);
-    }
+    const floatingIconActive = [...this.state.floatingIconActive];
+    floatingIconActive[this.state.floatingIconNextIndex] = true;
+    const floatingIconNextIndex = (this.state.floatingIconNextIndex + 1) % floatingIconActive.length;
+    this.setState({floatingIconActive, floatingIconNextIndex});
+    setTimeout(() => {
+      const floatingIconActive = [...this.state.floatingIconActive];
+      floatingIconActive[this.state.floatingIconNextIndex] = false;
+      this.setState({floatingIconActive});
+    }, 1000);
   };
 
 
@@ -129,7 +133,8 @@ export default class Home extends Component<object, HomeState> {
       todoList,
       nextTodoId,
       tab: "swipe",
-      floatingIcon: 0,
+      floatingIconActive: Array(8).fill(false),
+      floatingIconNextIndex: 0,
       rejectedDateList,
       userPrefers,
       cardList,
@@ -176,7 +181,7 @@ export default class Home extends Component<object, HomeState> {
       </main>
 
       <Modal
-        isOpen={this.state.demoModal}
+        isOpen={false}
         onClose={() => {
           this.setState({demoModal: false})
           localStorage.setItem('demoModal', 'false')
@@ -197,9 +202,10 @@ export default class Home extends Component<object, HomeState> {
             localStorage.setItem('demoModal', 'false')
           }}
         >
-          了解
+        了解
         </button>
       </Modal>
     </>)
   }
 }
+
