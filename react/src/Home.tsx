@@ -176,7 +176,7 @@ export default class Home extends Component<object, HomeState> {
           tab={this.state.tab}
           setTab={(tab) => this.setState({tab})}
           todoListLength={this.state.todoList.length}
-          floatingIcon={this.state.floatingIcon}
+          floatingIconActive={this.state.floatingIconActive}
         />
       </main>
 

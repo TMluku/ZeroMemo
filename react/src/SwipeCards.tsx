@@ -3,7 +3,7 @@ import TinderCard from 'react-tinder-card';
 import './SwipeCards.css';
 import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
-import {SwipeRight, Undo} from "@mui/icons-material";
+import {Swipe, Undo} from "@mui/icons-material";
 
 interface SwipeCardsProps {
   onAddItem: (item: Item) => void,
@@ -27,7 +27,7 @@ export default function SwipeCards({
                                      cardList
                                    }: SwipeCardsProps) {
 
-  const [onBoarding, setOnBoarding] = useState(localStorage.getItem('onBoarding') === null);
+  const [onBoarding, setOnBoarding] = useState(parseInt(localStorage.getItem('swipeCardsOnBoarding') || '0'));
 
   const getUserPrefers = (name: string) => {
     return userPrefers[name] || 0;
@@ -99,12 +99,18 @@ export default function SwipeCards({
         card.categories.includes('日用品') ? -1 : 1;
       onAddUserPrefers(card.name, (s: number) => s + score);
       onAddItem({id: 0, categories: card.categories, name: card.name, selected: false});
-      setOnBoarding(false);
-      localStorage.setItem('onBoarding', 'false');
+      if (onBoarding === 0) {
+        setOnBoarding(1);
+        localStorage.setItem('swipeCardsOnBoarding', '1');
+      }
     }
     if (dir === 'left') {
       onAddUserPrefers(card.name, (s: number) => s);
       onRejectItem(card.name, new Date());
+      if (onBoarding === 1) {
+        setOnBoarding(2);
+        localStorage.setItem('swipeCardsOnBoarding', '2');
+      }
     }
     if (dir === 'down') {
       onAddUserPrefers(card.name, () => -999999);
@@ -122,6 +128,10 @@ export default function SwipeCards({
       updateCurrentIndex(currentIndexRef.current + 1);
       childRefs[currentIndexRef.current].current.restoreCard();
     }
+    if (onBoarding === 2) {
+      setOnBoarding(3);
+      localStorage.setItem('swipeCardsOnBoarding', '3');
+    }
   }
 
   return (
@@ -137,7 +147,15 @@ export default function SwipeCards({
       </div>
       <div className="matching">
         <h4 className="cardLeft">
-          のこり{currentIndex + 1}枚
+          {
+            onBoarding === 0 ?
+              'いるものは右にスワイプ' :
+              onBoarding === 1 ?
+                'いらないものは左にスワイプ' :
+                onBoarding === 2 ?
+                  '一つ戻すを押してカードを戻す' :
+            `のこり${currentIndex + 1}枚`
+          }
         </h4>
         <div className="cardContainer">
           <button
@@ -172,19 +190,24 @@ export default function SwipeCards({
               <h3>{card.name}</h3>
             </div>
           </TinderCard>))}
-          {onBoarding && <div style={{position: "absolute", bottom: "10%", left: "50%"}} >
-            <SwipeRight
-              className='SwipeCardsRightFinger'
-              fontSize='large'
-            />
+          {onBoarding <= 1 && <div style={{position: "absolute", bottom: "10%", left: "50%"}}>
+              <Swipe
+                  className={
+                      onBoarding === 0 ? 'SwipeCardsRightFinger' : 'SwipeCardsLeftFinger'
+                  }
+                  fontSize='large'
+                  color='primary'
+              />
           </div>}
         </div>
         <div className="swipeCardButtons">
           <button
             onClick={undoSwipe}
-            className="buttonUndo"
+            className={
+              'buttonUndo' + (onBoarding === 2 ? ' SwipeCardsPulse' : '')
+            }
           >
-            一つ戻す <Undo fontSize='small' />
+            一つ戻す <Undo fontSize='small'/>
           </button>
         </div>
       </div>

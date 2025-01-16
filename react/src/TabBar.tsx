@@ -1,13 +1,18 @@
 import './TabBar.css'
 
 interface TabBarProps {
-  tab: "swipe" | "todo" | "cards" | "history";
-  setTab: (tab: "swipe" | "todo" | "cards" | "history") => void;
-  todoListLength: number;
-  floatingIcon: number;
+  tab: "swipe" | "todo" | "cards" | "history",
+  setTab: (tab: "swipe" | "todo" | "cards" | "history") => void,
+  todoListLength: number,
+  floatingIconActive: boolean[],
 }
 
-export const TabBar: React.FC<TabBarProps> = ({tab, setTab, todoListLength, floatingIcon}) => {
+export const TabBar: React.FC<TabBarProps> = ({
+                                                tab,
+                                                setTab,
+                                                todoListLength,
+                                                floatingIconActive,
+                                              }) => {
   return (
     <div className="ContentTabsBar">
       <div
@@ -27,11 +32,16 @@ export const TabBar: React.FC<TabBarProps> = ({tab, setTab, todoListLength, floa
         >
           {todoListLength}
         </div>
-        <div
-          className={'TabFloatingIcon' + (floatingIcon === 1 ? ' TabFloatingIconActive' : '')}
-        >
-          +1
-        </div>
+        {
+          floatingIconActive.map((active, i) => (
+            <div
+              key={i}
+              className={'TabFloatingIcon' + (active ? ' TabFloatingIconActive' : '')}
+            >
+              +1
+            </div>
+          ))
+        }
       </div>
       <div
         className={'Tab ' + (tab === "cards" ? 'TabSelected' : '')}

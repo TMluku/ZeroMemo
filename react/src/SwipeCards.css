@@ -135,9 +135,13 @@
   animation: swipeRight 2s infinite;
 }
 
+.SwipeCardsLeftFinger {
+  animation: swipeLeft 2s infinite;
+}
+
 @keyframes swipeRight {
   0% {
-    transform: scale(2.0) translateX(0);
+    transform: scale(2.0) translateX(-100%);
   }
   25% {
     transform: scale(2.0) translateX(100%);
@@ -148,5 +152,43 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes swipeLeft {
+  0% {
+    transform: scale(2.0) translateX(100%);
+  }
+  25% {
+    transform: scale(2.0) translateX(-100%);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(2.0) translateX(-100%);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.SwipeCardsPulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1.0);
+  }
+  40% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  60% {
+    transform: scale(1.0);
+  }
+  100% {
+    transform: scale(1.0);
   }
 }
