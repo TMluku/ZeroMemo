@@ -1,7 +1,7 @@
 import {useState} from "react";
 import "./Cards.css";
 import "./Modal.css";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {TouchApp, Visibility, VisibilityOff} from "@mui/icons-material";
 import {Card} from "./models/Card.tsx";
 import Modal from "./Modal.tsx";
 
@@ -26,7 +26,15 @@ export default function Cards({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tabCategory, setTabCategory] = useState(categoryList[0]); // 現在のタブのカテゴリ
 
-  const openModal = () => setIsModalOpen(true);
+  const [onBoarding, setOnBoarding] = useState(parseInt(localStorage.getItem('cardsOnBoarding') || '0'));
+
+  const openModal = () => {
+    if (onBoarding === 1) {
+      setOnBoarding(2);
+      localStorage.setItem('cardsOnBoarding', '2');
+    }
+    setIsModalOpen(true);
+  }
   const closeModal = () => {
     setIsModalOpen(false);
     resetForm();
@@ -90,8 +98,10 @@ export default function Cards({
           非表示にしたカードはメモ時に出てこなくなります。
         </p>
         <p>
-          {tabCategory}のカード数: {filteredCards.length}
-          （うち非表示: {filteredCards.filter((c) => c.invisible).length}）
+          {onBoarding === 0 ? "カードをタップして非表示/表示を切り替えられます。" :
+            onBoarding === 1 ? "カードを追加することもできます。" :
+            `${tabCategory}のカード数: ${filteredCards.length}
+            （うち非表示: ${filteredCards.filter((c) => c.invisible).length}）`}
         </p>
       </div>
 
@@ -101,6 +111,13 @@ export default function Cards({
           {/* ＋ボタンのカード */}
           <div className="CardsCard CardsCardPlus" onClick={openModal}>
             ＋
+            {onBoarding === 1 && (
+              <TouchApp
+                className="CardsCardOnBoarding"
+                fontSize="large"
+                color="primary"
+              />
+            )}
           </div>
 
           {/* 現在のカテゴリに一致するカードを表示 */}
@@ -115,6 +132,10 @@ export default function Cards({
                 }
                 key={i}
                 onClick={() => {
+                  if (onBoarding === 0) {
+                    setOnBoarding(1);
+                    localStorage.setItem('cardsOnBoarding', '1');
+                  }
                   card.invisible = !card.invisible;
                   onEditCard(card);
                 }}
@@ -135,6 +156,14 @@ export default function Cards({
                     <Visibility color="disabled" fontSize="small"/>
                   }
                 </div>
+
+                {onBoarding === 0 && i === 0 && (
+                  <TouchApp
+                    className="CardsCardOnBoarding"
+                    fontSize="large"
+                    color="primary"
+                  />
+                )}
               </div>
             ))}
         </div>
