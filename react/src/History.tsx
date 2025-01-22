@@ -2,6 +2,8 @@ import './History.css'
 import {useState} from "react";
 import {Item} from "./models/Item.tsx";
 import {HistoryItem} from "./models/HistoryItem.tsx";
+import {useProgress} from "./UseProgress.tsx";
+import {TouchApp} from "@mui/icons-material";
 
 interface HistoryProps {
   historyItems: HistoryItem[],
@@ -12,6 +14,12 @@ export default function History({historyItems, onAddItem}: HistoryProps) {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [year, setYear] = useState(parseInt(selectedDate.split('-')[0]));
   const [month, setMonth] = useState(parseInt(selectedDate.split('-')[1]));
+
+  const {
+    progress,
+    setProgress,
+  } = useProgress();
+
   const itemsGroupByDate = historyItems.reduce((
     acc: { [date: string]: HistoryItem[] },
     historyItem: HistoryItem,
@@ -64,12 +72,22 @@ export default function History({historyItems, onAddItem}: HistoryProps) {
                 <p>{historyItem.item.name}
                   <button
                     onClick={() => {
+                      if (progress === 301) {
+                        setProgress(400);
+                      }
                       const item = structuredClone(historyItem.item);
                       item.selected = false;
                       onAddItem(item);
                     }}
                   >
                     メモに追加
+                    {progress == 301 && (
+                      <TouchApp
+                        className="TouchAppOnboardingItem"
+                        fontSize="large"
+                        color="primary"
+                      />
+                    )}
                   </button>
                 </p>
               </li>
@@ -93,7 +111,9 @@ export default function History({historyItems, onAddItem}: HistoryProps) {
 
   return (
     <>
-      <h2>日付</h2>
+      <h2>
+        {progress === 301 ? '過去に追加したアイテムを再度メモに追加できます' : '日付'}
+      </h2>
       {/*年月選択*/}
       <div className="select">
         <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>

@@ -131,27 +131,28 @@
   }
 }
 
-.SwipeCardsRightFinger {
-  animation: swipeRight 2s infinite;
+.SwipeCardsFinger {
+  animation: swipingLeftRight 4s infinite;
 }
 
-.SwipeCardsLeftFinger {
-  animation: swipeLeft 2s infinite;
-}
-
-@keyframes swipeRight {
+@keyframes swipingLeftRight {
   0% {
     transform: scale(2.0) translateX(-100%);
   }
-  25% {
+  20% {
     transform: scale(2.0) translateX(100%);
   }
-  50% {
-    opacity: 0;
+  40% {
     transform: scale(2.0) translateX(100%);
+  }
+  60% {
+    transform: scale(2.0) translateX(-100%);
+  }
+  80% {
+    transform: scale(2.0) translateX(-100%);
   }
   100% {
-    opacity: 0;
+    transform: scale(2.0) translateX(-100%);
   }
 }
 

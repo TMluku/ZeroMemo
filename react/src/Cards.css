@@ -90,13 +90,23 @@
   border-radius: 0 0 0 8px;
 }
 
-.CardsCardOnBoarding {
+.TouchAppOnboarding {
   position: absolute;
   bottom: 0;
   padding: 0.5rem;
-  font-size: 0.8rem;
   display: inline-block;
-  color: #1a1a1a;
-  border-radius: 0 0 8px 0;
+  animation: pulse 1s infinite;
+}
+
+.TouchAppOnboardingTab {
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  animation: pulse 1s infinite;
+}
+
+.TouchAppOnboardingItem {
+  position: absolute;
+  display: inline-block;
   animation: pulse 1s infinite;
 }

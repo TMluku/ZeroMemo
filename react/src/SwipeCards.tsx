@@ -3,7 +3,8 @@ import TinderCard from 'react-tinder-card';
 import './SwipeCards.css';
 import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
-import {Swipe, Undo} from "@mui/icons-material";
+import {Swipe, TouchApp, Undo} from "@mui/icons-material";
+import {useProgress} from "./UseProgress.tsx";
 
 interface SwipeCardsProps {
   onAddItem: (item: Item) => void,
@@ -27,7 +28,9 @@ export default function SwipeCards({
                                      cardList
                                    }: SwipeCardsProps) {
 
-  const [onBoarding, setOnBoarding] = useState(parseInt(localStorage.getItem('swipeCardsOnBoarding') || '0'));
+  const progressContext = useProgress();
+  const onboardingProgress = progressContext.progress;
+  const setOnBoarding = progressContext.setProgress;
 
   const getUserPrefers = (name: string) => {
     return userPrefers[name] || 0;
@@ -69,6 +72,9 @@ export default function SwipeCards({
   function updateTab(category: string) {
     setTabCategory(category);
     updateList(category, false);
+    if (onboardingProgress === 2) {
+      setOnBoarding(100);
+    }
   }
 
   const tabsCategories = ['食料品', '調味料', '日用品'];
@@ -99,18 +105,13 @@ export default function SwipeCards({
         card.categories.includes('日用品') ? -1 : 1;
       onAddUserPrefers(card.name, (s: number) => s + score);
       onAddItem({id: 0, categories: card.categories, name: card.name, selected: false});
-      if (onBoarding === 0) {
+      if (onboardingProgress === 0) {
         setOnBoarding(1);
-        localStorage.setItem('swipeCardsOnBoarding', '1');
       }
     }
     if (dir === 'left') {
       onAddUserPrefers(card.name, (s: number) => s);
       onRejectItem(card.name, new Date());
-      if (onBoarding === 1) {
-        setOnBoarding(2);
-        localStorage.setItem('swipeCardsOnBoarding', '2');
-      }
     }
     if (dir === 'down') {
       onAddUserPrefers(card.name, () => -999999);
@@ -128,35 +129,51 @@ export default function SwipeCards({
       updateCurrentIndex(currentIndexRef.current + 1);
       childRefs[currentIndexRef.current].current.restoreCard();
     }
-    if (onBoarding === 2) {
-      setOnBoarding(3);
-      localStorage.setItem('swipeCardsOnBoarding', '3');
+    if (onboardingProgress === 1) {
+      setOnBoarding(2);
     }
   }
 
   return (
     <>
-      <div className="CategoryTabsBar">
+      <div
+        className="CategoryTabsBar"
+        style={progressContext.progressVisibility(2)}
+      >
         {tabsCategories.map((category, i) => (<div
           key={i}
           onClick={() => updateTab(category)}
           className={`CategoryTab ${tabCategory === category ? 'CategoryTabActive' : ''}`}
         >
           {category}
+          {(i !== 0 && onboardingProgress === 2 &&
+              <TouchApp
+                  className="TouchAppOnboardingTab"
+                  fontSize="large"
+                  color="primary"
+              />
+          )}
         </div>))}
       </div>
       <div className="matching">
-        <h4 className="cardLeft">
+        <h2 className="cardLeft">
           {
-            onBoarding === 0 ?
-              'いるものは右にスワイプ' :
-              onBoarding === 1 ?
-                'いらないものは左にスワイプ' :
-                onBoarding === 2 ?
-                  '一つ戻すを押してカードを戻す' :
-            `のこり${currentIndex + 1}枚`
+            ((progress): string => {
+              switch (progress) {
+                case 0:
+                  return 'いるものは右、いらないものは左にスワイプ';
+                case 1:
+                  return '一つ戻すボタンでスワイプしたものを取り消す';
+                case 2:
+                  return '上のタブでカテゴリを選択';
+                case 100:
+                  return '下のタブからメモを選択して選んだものを確認';
+                default:
+                  return `のこり${currentIndex + 1}枚`;
+              }
+            })(onboardingProgress)
           }
-        </h4>
+        </h2>
         <div className="cardContainer">
           <button
             className="reloadCardButton"
@@ -166,12 +183,18 @@ export default function SwipeCards({
           >
             ↻
           </button>
-          <div className="cardContainerLeftArrow">
+          <div
+            className="cardContainerLeftArrow"
+            style={progressContext.progressVisibility(1)}
+          >
             <p onClick={() => swipe('left')}>
               <span style={{fontSize: '2em'}}>≪</span> <br/> いらない
             </p>
           </div>
-          <div className="cardContainerRightArrow">
+          <div
+            className="cardContainerRightArrow"
+            style={progressContext.progressVisibility(1)}
+          >
             <p onClick={() => swipe('right')}>
               <span style={{fontSize: '2em'}}>≫</span> <br/> いる
             </p>
@@ -190,11 +213,9 @@ export default function SwipeCards({
               <h3>{card.name}</h3>
             </div>
           </TinderCard>))}
-          {onBoarding <= 1 && <div style={{position: "absolute", bottom: "10%", left: "50%"}}>
+          {onboardingProgress === 0 && <div style={{position: "absolute", bottom: "10%", left: "50%"}}>
               <Swipe
-                  className={
-                      onBoarding === 0 ? 'SwipeCardsRightFinger' : 'SwipeCardsLeftFinger'
-                  }
+                  className='SwipeCardsFinger'
                   fontSize='large'
                   color='primary'
               />
@@ -204,8 +225,9 @@ export default function SwipeCards({
           <button
             onClick={undoSwipe}
             className={
-              'buttonUndo' + (onBoarding === 2 ? ' SwipeCardsPulse' : '')
+              'buttonUndo' + (onboardingProgress === 1 ? ' SwipeCardsPulse' : '')
             }
+            style={progressContext.progressVisibility(1)}
           >
             一つ戻す <Undo fontSize='small'/>
           </button>

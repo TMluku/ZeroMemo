@@ -4,6 +4,7 @@ import "./Modal.css";
 import {TouchApp, Visibility, VisibilityOff} from "@mui/icons-material";
 import {Card} from "./models/Card.tsx";
 import Modal from "./Modal.tsx";
+import {useProgress} from "./UseProgress.tsx";
 
 const categoryList = ["食料品", "調味料", "日用品"];
 
@@ -26,12 +27,9 @@ export default function Cards({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tabCategory, setTabCategory] = useState(categoryList[0]); // 現在のタブのカテゴリ
 
-  const [onBoarding, setOnBoarding] = useState(parseInt(localStorage.getItem('cardsOnBoarding') || '0'));
-
   const openModal = () => {
-    if (onBoarding === 1) {
-      setOnBoarding(2);
-      localStorage.setItem('cardsOnBoarding', '2');
+    if (progress === 203) {
+      setProgress(300);
     }
     setIsModalOpen(true);
   }
@@ -76,6 +74,11 @@ export default function Cards({
     card.categories.includes(tabCategory)
   );
 
+  const {
+    progress,
+    setProgress,
+  } = useProgress();
+
   return (
     <>
       {/* カテゴリのタブ */}
@@ -94,15 +97,23 @@ export default function Cards({
       </div>
 
       <div className="CardsTitle">
-        <p>
-          非表示にしたカードはメモ時に出てこなくなります。
-        </p>
-        <p>
-          {onBoarding === 0 ? "カードをタップして非表示/表示を切り替えられます。" :
-            onBoarding === 1 ? "カードを追加することもできます。" :
-            `${tabCategory}のカード数: ${filteredCards.length}
-            （うち非表示: ${filteredCards.filter((c) => c.invisible).length}）`}
-        </p>
+        <h2>
+          {((p) => {
+            switch (p) {
+              case 201:
+                return "カードをタップして非表示/表示を切り替えられます。";
+              case 202:
+                return "非表示のカードは出現しなくなります。";
+              case 203:
+                return "新規にカードを追加することもできます。";
+              case 300:
+                return "下のタブの履歴から過去のカードの選択を見ることができます。";
+              default:
+                return `${tabCategory}のカード数: ${filteredCards.length}
+            （うち非表示: ${filteredCards.filter((c) => c.invisible).length}）`
+            }
+          })(progress)}
+        </h2>
       </div>
 
       {/* カードの表示部分 */}
@@ -111,9 +122,9 @@ export default function Cards({
           {/* ＋ボタンのカード */}
           <div className="CardsCard CardsCardPlus" onClick={openModal}>
             ＋
-            {onBoarding === 1 && (
+            {progress === 203 && (
               <TouchApp
-                className="CardsCardOnBoarding"
+                className="TouchAppOnboarding"
                 fontSize="large"
                 color="primary"
               />
@@ -132,9 +143,10 @@ export default function Cards({
                 }
                 key={i}
                 onClick={() => {
-                  if (onBoarding === 0) {
-                    setOnBoarding(1);
-                    localStorage.setItem('cardsOnBoarding', '1');
+                  if (progress === 201) {
+                    setProgress(202);
+                  } else if (progress === 202) {
+                    setProgress(203);
                   }
                   card.invisible = !card.invisible;
                   onEditCard(card);
@@ -157,9 +169,9 @@ export default function Cards({
                   }
                 </div>
 
-                {onBoarding === 0 && i === 0 && (
+                {(progress == 201 || progress == 202) && i === 0 && (
                   <TouchApp
-                    className="CardsCardOnBoarding"
+                    className="TouchAppOnboarding"
                     fontSize="large"
                     color="primary"
                   />

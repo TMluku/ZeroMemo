@@ -10,6 +10,7 @@ import {HistoryItem} from "./models/HistoryItem.tsx";
 import Modal from "./Modal.tsx";
 import {TabBar} from "./TabBar.tsx";
 import Content from "./Content.tsx";
+import {OnboardingProgressProvider} from "./TutorialContext.tsx";
 
 interface HomeState {
   todoList: Item[];
@@ -154,57 +155,59 @@ export default class Home extends Component<object, HomeState> {
 
   render() {
     return (<>
-      <main id="Home">
-        <Content
-          tab={this.state.tab}
-          todoList={this.state.todoList}
-          cardList={this.state.cardList}
-          historyList={this.state.historyList}
-          userPrefers={this.state.userPrefers}
-          rejectedDateList={this.state.rejectedDateList}
-          onAddItem={this.handleAddItem}
-          onRejectItem={this.handleReject}
-          onAddUserPrefers={this.handleModifyOrAddUserPrefers}
-          onDeleteItems={this.handleDeleteItems}
-          onToggleListSelected={this.handleChangeItem}
-          onAppendCard={this.handleAppendCard}
-          onEditCard={this.handleEditCard}
-          onAppendHistories={this.handleAppendHistories}
-          onItemNotification={this.handleItemNotification}
-        />
-        <TabBar
-          tab={this.state.tab}
-          setTab={(tab) => this.setState({tab})}
-          todoListLength={this.state.todoList.length}
-          floatingIconActive={this.state.floatingIconActive}
-        />
-      </main>
-
-      <Modal
-        isOpen={false}
-        onClose={() => {
-          this.setState({demoModal: false})
-          localStorage.setItem('demoModal', 'false')
-        }}
-      >
-        <h2>デモンストレーション</h2>
-        <div className="modalWalkthroughVideo">
-          <video
-            src={demo}
-            autoPlay
-            muted
-            height={300}
+      <OnboardingProgressProvider>
+        <main id="Home">
+          <Content
+            tab={this.state.tab}
+            todoList={this.state.todoList}
+            cardList={this.state.cardList}
+            historyList={this.state.historyList}
+            userPrefers={this.state.userPrefers}
+            rejectedDateList={this.state.rejectedDateList}
+            onAddItem={this.handleAddItem}
+            onRejectItem={this.handleReject}
+            onAddUserPrefers={this.handleModifyOrAddUserPrefers}
+            onDeleteItems={this.handleDeleteItems}
+            onToggleListSelected={this.handleChangeItem}
+            onAppendCard={this.handleAppendCard}
+            onEditCard={this.handleEditCard}
+            onAppendHistories={this.handleAppendHistories}
+            onItemNotification={this.handleItemNotification}
           />
-        </div>
-        <button
-          onClick={() => {
+          <TabBar
+            tab={this.state.tab}
+            setTab={(tab) => this.setState({tab})}
+            todoListLength={this.state.todoList.length}
+            floatingIconActive={this.state.floatingIconActive}
+          />
+        </main>
+
+        <Modal
+          isOpen={false}
+          onClose={() => {
             this.setState({demoModal: false})
             localStorage.setItem('demoModal', 'false')
           }}
         >
-        了解
-        </button>
-      </Modal>
+          <h2>デモンストレーション</h2>
+          <div className="modalWalkthroughVideo">
+            <video
+              src={demo}
+              autoPlay
+              muted
+              height={300}
+            />
+          </div>
+          <button
+            onClick={() => {
+              this.setState({demoModal: false})
+              localStorage.setItem('demoModal', 'false')
+            }}
+          >
+            了解
+          </button>
+        </Modal>
+      </OnboardingProgressProvider>
     </>)
   }
 }
