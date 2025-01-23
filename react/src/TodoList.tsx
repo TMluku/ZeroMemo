@@ -49,20 +49,20 @@ export default function TodoList({
           </div>
         ))}
       </div>
-      <h2 style={{marginBottom: '0'}}>
+      <h3 style={{marginBottom: '0'}}>
         {((p) => {
           switch (p) {
             case 101:
-              return 'リストのアイテムをタップして解決状態にします';
+              return 'タップしてアイテムを解決';
             case 102:
-              return '削除ボタンで解決したアイテムを削除できます';
+              return '削除ボタンで解決したアイテムを削除';
             case 200:
-              return '下のタブのカードからカード一覧を表示';
+              return '下のタブのカードをタップ';
             default:
               return 'メモ';
           }
         })(progress)}
-      </h2>
+      </h3>
       <div className='TodoListDiv'>
         <ul className='TodoListUl'>
           {

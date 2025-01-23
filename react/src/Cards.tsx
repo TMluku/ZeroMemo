@@ -28,12 +28,12 @@ export default function Cards({
   const [tabCategory, setTabCategory] = useState(categoryList[0]); // 現在のタブのカテゴリ
 
   const openModal = () => {
-    if (progress === 203) {
-      setProgress(300);
-    }
     setIsModalOpen(true);
   }
   const closeModal = () => {
+    if (progress === 203) {
+      setProgress(300);
+    }
     setIsModalOpen(false);
     resetForm();
   };
@@ -97,23 +97,23 @@ export default function Cards({
       </div>
 
       <div className="CardsTitle">
-        <h2>
+        <h3>
           {((p) => {
             switch (p) {
               case 201:
-                return "カードをタップして非表示/表示を切り替えられます。";
+                return "タップしてカードの非表示/表示を切り替え";
               case 202:
-                return "非表示のカードは出現しなくなります。";
+                return "非表示のカードは出現しなくなります";
               case 203:
-                return "新規にカードを追加することもできます。";
+                return "タップして新規にカードを追加";
               case 300:
-                return "下のタブの履歴から過去のカードの選択を見ることができます。";
+                return "下のタブの履歴をタップ";
               default:
                 return `${tabCategory}のカード数: ${filteredCards.length}
             （うち非表示: ${filteredCards.filter((c) => c.invisible).length}）`
             }
           })(progress)}
-        </h2>
+        </h3>
       </div>
 
       {/* カードの表示部分 */}

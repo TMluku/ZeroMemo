@@ -111,9 +111,9 @@ export default function History({historyItems, onAddItem}: HistoryProps) {
 
   return (
     <>
-      <h2>
-        {progress === 301 ? '過去に追加したアイテムを再度メモに追加できます' : '日付'}
-      </h2>
+      <h3>
+        {progress === 301 ? 'タップして過去のアイテムをメモに追加' : '日付'}
+      </h3>
       {/*年月選択*/}
       <div className="select">
         <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>

@@ -113,9 +113,6 @@ export default function SwipeCards({
       onAddUserPrefers(card.name, (s: number) => s);
       onRejectItem(card.name, new Date());
     }
-    if (dir === 'down') {
-      onAddUserPrefers(card.name, () => -999999);
-    }
   }
 
   const swipe = async (dir: 'up' | 'down' | 'left' | 'right') => {
@@ -156,24 +153,24 @@ export default function SwipeCards({
         </div>))}
       </div>
       <div className="matching">
-        <h2 className="cardLeft">
+        <h3 className="cardLeft">
           {
             ((progress): string => {
               switch (progress) {
                 case 0:
                   return 'いるものは右、いらないものは左にスワイプ';
                 case 1:
-                  return '一つ戻すボタンでスワイプしたものを取り消す';
+                  return '一つ戻すボタンでスワイプしたカードを戻す';
                 case 2:
-                  return '上のタブでカテゴリを選択';
+                  return '上のタブでカードのカテゴリを選択';
                 case 100:
-                  return '下のタブからメモを選択して選んだものを確認';
+                  return '下のタブのメモをタップ';
                 default:
                   return `のこり${currentIndex + 1}枚`;
               }
             })(onboardingProgress)
           }
-        </h2>
+        </h3>
         <div className="cardContainer">
           <button
             className="reloadCardButton"
@@ -224,12 +221,17 @@ export default function SwipeCards({
         <div className="swipeCardButtons">
           <button
             onClick={undoSwipe}
-            className={
-              'buttonUndo' + (onboardingProgress === 1 ? ' SwipeCardsPulse' : '')
-            }
+            className="buttonUndo"
             style={progressContext.progressVisibility(1)}
           >
             一つ戻す <Undo fontSize='small'/>
+            {(onboardingProgress === 1 &&
+                <TouchApp
+                    className="TouchAppOnboardingItem"
+                    fontSize="large"
+                    color="primary"
+                />
+            )}
           </button>
         </div>
       </div>
