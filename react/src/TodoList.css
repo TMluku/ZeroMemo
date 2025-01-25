@@ -26,6 +26,7 @@
 }
 
 .TodoListLi {
+  position: relative;
   padding: 0.4em;
   background: #1a1a1a;
   border: 1px solid #cdcdcd;

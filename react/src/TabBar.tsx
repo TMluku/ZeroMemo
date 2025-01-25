@@ -1,6 +1,6 @@
 import './TabBar.css'
 import {useProgress} from "./UseProgress.tsx";
-import {TouchApp} from "@mui/icons-material";
+import {CircleOutlined} from "@mui/icons-material";
 
 interface TabBarProps {
   tab: "swipe" | "todo" | "cards" | "history",
@@ -57,8 +57,8 @@ export function TabBar(props: TabBarProps) {
           </div>
         ))}
         {progress === 100 && (
-          <TouchApp
-            className="TouchAppOnboardingTab"
+          <CircleOutlined
+            className="OnboardingRipple"
             fontSize="large"
             color="primary"
           />
@@ -76,8 +76,8 @@ export function TabBar(props: TabBarProps) {
       >
         カード
         {progress === 200 && (
-          <TouchApp
-            className="TouchAppOnboardingTab"
+          <CircleOutlined
+            className="OnboardingRipple"
             fontSize="large"
             color="primary"
           />
@@ -95,8 +95,8 @@ export function TabBar(props: TabBarProps) {
       >
         履歴
         {progress === 300 && (
-          <TouchApp
-            className="TouchAppOnboardingTab"
+          <CircleOutlined
+            className="OnboardingRipple"
             fontSize="large"
             color="primary"
           />

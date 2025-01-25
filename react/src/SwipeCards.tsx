@@ -3,7 +3,7 @@ import TinderCard from 'react-tinder-card';
 import './SwipeCards.css';
 import {Item} from "./models/Item.tsx";
 import {Card} from "./models/Card.tsx";
-import {Swipe, TouchApp, Undo} from "@mui/icons-material";
+import {CircleOutlined, Swipe, Undo} from "@mui/icons-material";
 import {useProgress} from "./UseProgress.tsx";
 
 interface SwipeCardsProps {
@@ -144,8 +144,8 @@ export default function SwipeCards({
         >
           {category}
           {(i !== 0 && onboardingProgress === 2 &&
-              <TouchApp
-                  className="TouchAppOnboardingTab"
+              <CircleOutlined
+                  className="OnboardingRipple"
                   fontSize="large"
                   color="primary"
               />
@@ -221,13 +221,12 @@ export default function SwipeCards({
         <div className="swipeCardButtons">
           <button
             onClick={undoSwipe}
-            className="buttonUndo"
             style={progressContext.progressVisibility(1)}
           >
             一つ戻す <Undo fontSize='small'/>
             {(onboardingProgress === 1 &&
-                <TouchApp
-                    className="TouchAppOnboardingItem"
+                <CircleOutlined
+                    className="OnboardingRipple"
                     fontSize="large"
                     color="primary"
                 />

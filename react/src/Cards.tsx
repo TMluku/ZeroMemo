@@ -1,7 +1,7 @@
 import {useState} from "react";
 import "./Cards.css";
 import "./Modal.css";
-import {TouchApp, Visibility, VisibilityOff} from "@mui/icons-material";
+import {CircleOutlined, Visibility, VisibilityOff} from "@mui/icons-material";
 import {Card} from "./models/Card.tsx";
 import Modal from "./Modal.tsx";
 import {useProgress} from "./UseProgress.tsx";
@@ -123,8 +123,8 @@ export default function Cards({
           <div className="CardsCard CardsCardPlus" onClick={openModal}>
             ＋
             {progress === 203 && (
-              <TouchApp
-                className="TouchAppOnboarding"
+              <CircleOutlined
+                className="OnboardingRipple"
                 fontSize="large"
                 color="primary"
               />
@@ -170,8 +170,8 @@ export default function Cards({
                 </div>
 
                 {(progress == 201 || progress == 202) && i === 0 && (
-                  <TouchApp
-                    className="TouchAppOnboarding"
+                  <CircleOutlined
+                    className="OnboardingRipple"
                     fontSize="large"
                     color="primary"
                   />

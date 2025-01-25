@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {Item} from "./models/Item.tsx";
 import {useProgress} from "./UseProgress.tsx";
-import {TouchApp} from "@mui/icons-material";
+import {CircleOutlined} from "@mui/icons-material";
 
 
 interface TodoListProps {
@@ -67,7 +67,7 @@ export default function TodoList({
         <ul className='TodoListUl'>
           {
             list
-              .map((item, i) => (
+              .map(item => (
                 <label key={item.id}>
                   <li className={`TodoListLi ${item.selected ? 'TodoListLiSelected' : ''}`}>
                     <input
@@ -83,9 +83,9 @@ export default function TodoList({
                       }}
                     />
                     {item.name}
-                    {i === 0 && progress === 101 && (
-                      <TouchApp
-                        className="TouchAppOnboardingItem"
+                    {progress === 101 && (
+                      <CircleOutlined
+                        className="OnboardingRipple"
                         fontSize="large"
                         color="primary"
                       />
@@ -130,8 +130,8 @@ export default function TodoList({
           >
             削除 ✅
             {progress == 102 && (
-              <TouchApp
-                className="TouchAppOnboardingItem"
+              <CircleOutlined
+                className="OnboardingRipple"
                 fontSize="large"
                 color="primary"
               />

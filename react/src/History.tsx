@@ -3,7 +3,7 @@ import {useState} from "react";
 import {Item} from "./models/Item.tsx";
 import {HistoryItem} from "./models/HistoryItem.tsx";
 import {useProgress} from "./UseProgress.tsx";
-import {TouchApp} from "@mui/icons-material";
+import {CircleOutlined} from "@mui/icons-material";
 
 interface HistoryProps {
   historyItems: HistoryItem[],
@@ -82,8 +82,8 @@ export default function History({historyItems, onAddItem}: HistoryProps) {
                   >
                     メモに追加
                     {progress == 301 && (
-                      <TouchApp
-                        className="TouchAppOnboardingItem"
+                      <CircleOutlined
+                        className="OnboardingRipple"
                         fontSize="large"
                         color="primary"
                       />
